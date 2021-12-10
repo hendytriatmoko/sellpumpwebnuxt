@@ -1,0 +1,11 @@
+// Ref: https://github.com/nuxt-community/vuetify-module#customvariables
+//
+// The variables you want to modify
+// $font-size-root: 20px;
+// $body-font-family: "Questrial";
+// $heading-font-family: $body-font-family;
+// $font-size-root: 18px;
+@import url('https://fonts.googleapis.com/css2family=Poppins:wght@400;700&display=swap');
+$body-font-family: 'Poppins', sans-serif;
+$heading-font-family: 'Poppins',sans-serif ;
+$font-size-root: 16px;
