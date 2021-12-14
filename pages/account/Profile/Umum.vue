@@ -1,197 +1,5 @@
 <template>
   <div>
-    <h2>Performa Pembelian</h2>
-    <div 
-      @click="verifikasiFoto=true" 
-      class="d-flex align-center justify-space-between px-4 py-2" 
-      style="border:2px solid #E5E5E5;cursor:pointer;" 
-      v-if="pengguna.id_mst_verifikasi_alamat_doc == 2
-        || pengguna.id_mst_verifikasi_alamat_doc == 5
-        || pengguna.id_mst_verifikasi_alamat_doc == 1">
-        <div> <v-icon color="red" class="pr-2">mdi-map-marker-radius</v-icon> Alamat anda sedang dalam proses verifikasi. <span v-if="pengguna.id_mst_verifikasi_alamat_doc == 2"> Masukkan kode verifikasi</span></div>
-        <v-icon>mdi-chevron-right</v-icon>
-    </div>
-    <br />
-    <div 
-       :style="pengguna.id_type_pinalti == 0 ? 'border-left:10px solid green;border-top:2px solid #E5E5E5;border-right:2px solid #E5E5E5;border-bottom:2px solid #E5E5E5;border-radius:10px'
-       : pengguna.id_type_pinalti == 1 ? 'border-left:10px solid #F2C94C;border-top:2px solid #E5E5E5;border-right:2px solid #E5E5E5;border-bottom:2px solid #E5E5E5;border-radius:10px'
-       : pengguna.id_type_pinalti == 2 ? 'border-left:10px solid #F2994A;border-top:2px solid #E5E5E5;border-right:2px solid #E5E5E5;border-bottom:2px solid #E5E5E5;border-radius:10px'
-       : pengguna.id_type_pinalti == 3 ? 'border-left:10px solid #EB5757;border-top:2px solid #E5E5E5;border-right:2px solid #E5E5E5;border-bottom:2px solid #E5E5E5;border-radius:10px' : ''"
-      rounded="lg" 
-      elevation="6" 
-      raised >
-
-      <v-card-title  class="d-flex align-center justify-space-between">
-        <div style="cursor:pointer" @click="pelanggaranDetail = true" class="d-flex align-center"> 
-          <v-avatar size="40" class="mx-4 my-2">
-            <v-img
-              src="/img/icons/akun_aman.webp"
-              contain
-              v-if="pengguna.id_type_pinalti == 0"
-            ></v-img>
-
-            <v-img
-             src="/img/icons/akun_wanprestasi1.webp"
-              contain
-              v-if="pengguna.id_type_pinalti == 1"
-            ></v-img>
-
-            <v-img
-              src="/img/icons/akun_wanprestasi2.webp"
-              contain
-              v-if="pengguna.id_type_pinalti == 2"
-            ></v-img>
-
-            <v-img
-               src="/img/icons/akun_blokir.webp"
-              contain
-              v-if="pengguna.id_type_pinalti == 3"
-            ></v-img>
-          </v-avatar>
-          <h2>Harap Diperhatikan!</h2>     
-        </div>
-
-        <v-btn icon >
-          <v-icon @click="pelanggaran = true" color="black">mdi-help-circle</v-icon>
-        </v-btn>
-      </v-card-title>
-      <v-card-text style="cursor:pointer" @click="pelanggaranDetail = true" class="pl-5 pr-10">        
-        <h4 v-if="pengguna.id_type_pinalti == 0">
-          Akun Anda tidak pernah melakukan pembatalan transaksi. Hindari
-          pembatalan transaksi agar akun anda tidak diblokir.
-        </h4>
-
-        <h4 v-if="pengguna.id_type_pinalti == 1">
-          Anda telah melakukan 1x pembatalan transaksi pembelian. Hindari pembatalan kembali
-          agar akun anda tidak terkena suspend ( tidak dapat melakukan penawaran selama 7 hari )
-        </h4>
-
-        <h4 v-if="pengguna.id_type_pinalti == 2">
-          Anda telah melakukan 2x pembatalan transaksi pembelian. Hindari pembatalan kembali
-          agar akun anda tidak terkena suspend ( tidak dapat melakukan penawaran selama 14 hari )
-        </h4>
-
-        <h4 v-if="pengguna.id_type_pinalti == 3">
-          Anda telah melakukan 3x atau lebih pembatalan transaksi pembelian. Hindari pembatalan kembali
-          agar akun anda tidak terkena suspend ( tidak dapat melakukan penawaran selama 14 hari )
-        </h4>
-      </v-card-text>
-    </div>
-
-    <!-- <br />
-
-    <v-card outlined rounded="lg" :color="color" elevation="6" raised>
-      <v-card class="ma-2">
-        <div class="d-flex align-center">
-          <v-avatar size="40" class="mx-4 my-2">
-            <v-img
-              src="/img/icons/akun_aman.webp"
-              contain
-              v-if="pengguna.id_type_pinalti == 0"
-            ></v-img>
-
-            <v-img
-              src="/img/icons/akun_wanprestasi1.webp"
-              contain
-              v-if="pengguna.id_type_pinalti == 1"
-            ></v-img>
-
-            <v-img
-              src="/img/icons/akun_wanprestasi2.webp"
-              contain
-              v-if="pengguna.id_type_pinalti == 2"
-            ></v-img>
-
-            <v-img
-              src="/img/icons/akun_blokir.webp"
-              contain
-              v-if="pengguna.id_type_pinalti == 3"
-            ></v-img>
-          </v-avatar>
-
-          <h2>Harap Diperhatikan!</h2>
-        </div>
-
-        <div class="mx-2">
-          <h4 v-if="pengguna.id_type_pinalti == 0">
-            Akun Anda tidak pernah melakukan pembatalan transaksi. Hindari
-            pembatalan transaksi agar akun anda tidak diblokir.
-          </h4>
-
-          <h4 v-if="pengguna.id_type_pinalti == 1">
-            Anda telah melakukan 1x pembatalan transaksi. Hindari melakukan
-            pembatalan transaksi karena dapat mengakibatkan Tiket anda hangus.
-          </h4>
-
-          <h4 v-if="pengguna.id_type_pinalti == 2">
-            Anda telah melakukan 2x pembatalan transaksi. Hindari melakukan
-            pembatalan transaksi karena dapat mengakibatkan akun anda di
-            blokir selama 14 hari.
-          </h4>
-
-          <h4 v-if="pengguna.id_type_pinalti == 3">
-            Anda telah melakukan 3x pembatalan transaksi yang mengakibatkan
-            akun anda di blokir selamanya.
-          </h4>
-
-          <p class="my-2">
-            Untuk informasi tentang kebijakan, silahkan kunjungi Bantuan
-            <NuxtLink to="/bantuan">disini</NuxtLink>
-          </p>
-
-          <flip-countdown
-            :deadline="
-              moment
-                .utc(pengguna.end_time_beku)
-                .add(utc, 'h')
-                .format('YYYY-MM-DD HH:mm:ss')
-            "
-            v-if="
-              pengguna.id_mst_user_status == 3 &&
-              pengguna.id_type_pinalti == 3
-            "
-          ></flip-countdown>
-        </div>
-      </v-card>
-    </v-card> -->
-
-    <!-- <br />
-
-    <div>
-      Keterangan:
-      <ul class="red--text">
-        <li>
-          <strong> Melakukan 1x pembatalan transaksi </strong>
-          <p>
-            Anda melakukan pembatalan transaksi 1x yang mengakibatkan Tiket
-            anda hangus.
-          </p>
-        </li>
-
-        <li>
-          <strong> Melakukan 2x pembatalan transaksi </strong>
-          <p>
-            Anda melakukan pembatalan transaksi 2x yang mengakibatkan akun
-            anda di blokir selama 14 hari.
-          </p>
-        </li>
-
-        <li>
-          <strong> Melakukan 3x pembatalan transaksi </strong>
-          <p>
-            Anda melakukan pembatalan transaksi 3x yang mengakibatkan akun
-            anda di blokir selamanya.
-          </p>
-        </li>
-      </ul>
-
-      <div class="text-justify ml-2 ml-lg-2">
-        Selengkapnya mengenai pelanggaran Tawar Bersama dapat dilihat
-        <nuxt-link to="/tentang?tab=tbrules">disini</nuxt-link>
-      </div>
-    </div> -->
-
-    <br />
 
     <h2>Profil Umum</h2>
 
@@ -236,17 +44,32 @@
       <v-card rounded="lg" elevation="6" raised>
         <div class="d-flex align-center justify-space-between">
           <v-container>
-            <div class="teal--text">Nomor Handphone</div>
-            <div>{{ user.nomor_hp }}</div>
-          </v-container>
-          <v-icon
-            color="#008693"
-            medium
-            class="mr-4 ml-1"
-            v-if="pengguna.nomor_hp_verified == true"
-          >
-            mdi-check-decagram
-          </v-icon>
+          <div class="teal--text">Nomor Handphone</div>
+          <div class="d-flex align-center justify-space-between" v-if="!ubahWA">
+            <div>{{ user.nomor_whatsapp }}</div>
+
+            <v-btn
+              text
+              @click="ubahWA = true"
+              color="#008693"
+              style="text-transform: none"
+            >
+              Ubah
+            </v-btn>
+          </div>
+
+          <v-text-field
+            v-model="formNomorWA"
+            outlined
+            dense
+            append-icon="mdi-content-save"
+            append-outer-icon="mdi-close"
+            @click:append-outer="ubahWA = false"
+            @click:append="saveData('nomor_whatsapp', formNomorWA)"
+            :rules="waRules"
+            v-else
+          ></v-text-field>
+        </v-container>
         </div>
       </v-card>
 
@@ -303,142 +126,6 @@
           </v-icon>
         </div>
       </v-card>
-      <br />
-
-      <v-card rounded="lg" elevation="6" raised>
-        <v-container>
-          <div class="teal--text">Alamat</div>
-          <div
-            class="d-flex align-center justify-space-between"
-            
-          >
-            <div v-if="pengguna.id_mst_verifikasi_alamat_doc == 4 || pengguna.id_mst_verifikasi_alamat_doc == 5 || pengguna.id_mst_verifikasi_alamat_doc == 2 || pengguna.id_mst_verifikasi_alamat_doc == 1">
-              Belum Diatur
-            </div>
-            <div v-if="pengguna.id_mst_verifikasi_alamat_doc == 3">
-              {{ pengguna.alamat }}
-            </div>
-            <div>
-              <v-btn
-                text
-                color="#EB5757"
-                style="text-transform: none"
-                to="/account/verifikasi-alamat"
-                v-if="pengguna.id_mst_verifikasi_alamat_doc == 4"
-              >
-                Verifikasi
-              </v-btn>
-              <div style="color: #219653" v-if="pengguna.id_mst_verifikasi_alamat_doc == 5">
-                <v-tooltip bottom>
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-btn
-                      color="#219653"
-                      text
-                      dark
-                      v-bind="attrs"
-                      v-on="on"
-                      to="/account/verifikasi-alamat"
-                    >
-                      Proses Verifikasi Pengajuan
-                    </v-btn>
-                  </template>
-                  <span>Ubah Alamat</span>
-                </v-tooltip>
-              </div>
-              <div style="color: #219653" v-if="pengguna.id_mst_verifikasi_alamat_doc == 2">
-                <v-tooltip bottom>
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-btn
-                      color="#219653"
-                      text
-                      dark
-                      v-bind="attrs"
-                      v-on="on"
-                      @click="verifikasiFoto=true"
-                    >
-                      Proses Verifikasi Alamat
-                    </v-btn>
-                  </template>
-                  <span>Unggah Kode Verifikasi</span>
-                </v-tooltip>
-              </div>
-              <div style="color: #219653" v-if="pengguna.id_mst_verifikasi_alamat_doc == 1">
-                <v-tooltip bottom>
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-btn
-                      color="#219653"
-                      text
-                      dark
-                      v-bind="attrs"
-                      v-on="on"
-                      to="/account/verifikasi-alamat"
-                    >
-                      Alamat Ditolak
-                    </v-btn>
-                  </template>
-                  <span>Ajukan Ulang Alamat ?</span>
-                </v-tooltip>
-              </div>
-              
-            </div>
-            <v-icon
-              color="#008693"
-              medium
-              class="mr-1 ml-1"
-              v-if="pengguna.alamat_verified == true"
-            >
-              mdi-check-decagram
-            </v-icon>
-          </div>
-        </v-container>
-      </v-card>
-      <br />
-      
-      <v-card rounded="lg" elevation="6" raised>
-        <v-container>
-          <div class="teal--text">Deskripsi</div>
-          <div
-            class="d-flex align-center justify-space-between"
-            v-if="!ubahDeskripsi"
-          >
-            <div>{{ user.deskripsi }}</div>
-
-            <v-btn
-              text
-              @click="ubahDeskripsi = true"
-              color="#008693"
-              style="text-transform: none"
-            >
-              Ubah
-            </v-btn>
-          </div>
-
-          <v-text-field
-            v-model="formDeskripsi"
-            outlined
-            dense
-            append-icon="mdi-content-save"
-            append-outer-icon="mdi-close"
-            @click:append-outer="ubahDeskripsi = false"
-            @click:append="saveData('deskripsi', formDeskripsi)"
-            :rules="deskripsiRules"
-            v-else
-          ></v-text-field>
-        </v-container>
-      </v-card>
-      <br />
-      <v-card
-        rounded="lg"
-        elevation="6"
-        raised
-        v-if="user.id_verifikasi_ktp == 3"
-      >
-        <v-container>
-          <div class="teal--text">Kode Referal</div>
-          <div>{{ user.code_referral }}</div>
-        </v-container>
-      </v-card>
-
       <br />
 
       

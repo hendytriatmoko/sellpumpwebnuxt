@@ -8,14 +8,14 @@
         href="https://play.google.com/store/apps/details?id=com.digitalnetworkasia.simotorbeta"
         class="black--text" target="_blank"
       >
-        <span> Download SiMotor App </span>
+        <span> Griya Seller Pump </span>
       </a>
       <v-spacer></v-spacer>
       <a href="/tentang?tab=about" class="black--text">
-        <span>Tentang SiMotor</span>
+        <span>Tentang GSP</span>
       </a>
       <a href="/tentang?tab=bantuan" class="black--text">
-        <span class="mx-2">Bantuan SiMotor</span>
+        <span class="mx-2">Bantuan GSP</span>
       </a>
     </v-system-bar>
  
@@ -27,8 +27,12 @@
       v-if="$vuetify.breakpoint.smAndUp || isHome"
 
     >
-      <nuxt-link to="/">
-        <v-img src="/img/simotor_logo.webp" width="200" contain></v-img>
+      <nuxt-link to="/" class="d-flex ml-5 mr-5">
+        <v-img src="/img/gsp1.png" width="50"></v-img>
+        <div class="ml-3">
+          <h3>Griya</h3>
+          <h5>Seller Pump</h5>
+        </div>
       </nuxt-link>
 
       <v-menu open-on-hover offset-y v-if="$vuetify.breakpoint.smAndUp">
@@ -148,31 +152,24 @@ export default {
     categories: [
       {
         id: 1,
-        title: 'Iklan Tawar Bersama',
+        title: 'Produk Terlaris',
         route: '/iklantb',
       },
       {
         id: 2,
-        title: 'Iklan Baris',
+        title: 'Katalog',
         route: '/kategori-ib',
       },
-      {
-        id: 4,
-        title: 'Aksesoris & Suku Cadang',
-        route: '/aksesoris-sparepart',
-      },
-      { id: 3, title: 'Tiket Tawar Bersama', route: '/ticket' },
-       { id: 5, title: 'Cek Harga Pasar', route: '/harga-pasar' },
     ],
     jual: [
       {
         id: 1,
-        title: 'Tambah Unit',
+        title: 'Tambah Iklan',
         route: '/garage/add-unit',
       },
       {
         id: 2,
-        title: 'Tambah Iklan',
+        title: 'Tambah Artikel',
         route: '/seller/add',
       },
     ],

@@ -27,98 +27,19 @@
     <br />
 
     <div style="max-width: 1240px; margin: 0 auto !important">
-      <v-row align="center" v-if="$vuetify.breakpoint.xs">
-        <v-col
-          cols="4"
-          align="center"
-          v-for="(item, index) in categories"
-          :key="index"
-        >
-          <v-card flat :href="item.route">
-            <v-img :src="item.src"></v-img>
-            <v-card-text>{{ item.title }}</v-card-text>
-          </v-card>
-        </v-col>
-      </v-row>
-      <div v-if="iklanPromo.length > 0">
-        <v-img src="/img/banner_event.webp"></v-img>
-      </div>
-      <br>
-      <!-- <v-row v-if="iklanPromo.length > 0">
-        <v-col cols="12" sm="12">
-          <v-card rounded="lg" >
-            <v-container>
-              <div class="scrolling-wrapper-flexbox ">
-                <div
-                  v-for="item in iklanPromo"
-                  :key="item._source.id"
-                >
-                  <list-promo :item="item" />
-                </div>
-              </div>
-            </v-container>
-          </v-card>
-        </v-col>
-      </v-row> -->
-      <v-row v-if="iklanPromo.length > 0" class="mx-1" style="border:2px solid #E5E5E5;border-radius:10px">
-        <v-col cols="12" sm="12" >
-          <v-sheet
-          >
-            <v-slide-group
-              v-model="model"
-              active-class="success"
-              show-arrows
-            >
-              <v-slide-item
-                v-for="item in iklanPromo"
-                :key="item._source.id"
-              >
-                <list-promo :item="item" />
-              </v-slide-item>
-            </v-slide-group>
-          </v-sheet>
-        </v-col>
-      </v-row>
-      <!-- <v-row align="center" v-if="iklanPromo.length > 0">
-        <v-col cols="12" sm="9">
-          <v-card color="#4AB7C3" max-width="900" height="420" rounded="lg">
-            <v-img src="/img/bannerpromo.webp" width="900" height="420">
-            </v-img>
-            <br />
-          </v-card>
-        </v-col>
-
-        <v-col cols="12" sm="3">
-          <div class="scrolling-wrapper-flexbox text-center mx-2 mt-2">
-            <v-card
-              color="#4AB7C3"
-              class="mb-2 mx-2"
-              rounded="lg"
-              height="420"
-              width="500"
-              v-for="item in iklanPromo"
-              :key="item._source.id"
-            >
-              <list-promo :item="item" />
-            </v-card>
-          </div>
-        </v-col>
-      </v-row> -->
-
       <v-row align="start">
         <v-col cols="12" sm="9">
           <v-card rounded="lg" elevation="6" height="330px">
             <v-container>
               <div class="d-flex align-center justify-space-between ml-4 my-2">
-                <h2>Jadwal Tawar Bersama</h2>
+                <h2>Produk Terlaris</h2>
 
                 <nuxt-link to="/jadwal"  style="color: #20929D"> Lihat Semua </nuxt-link>
               </div>
 
               <div v-if="jadwal.length > 0">
                 <div class="ml-4">
-                  Ikuti jadwal Tawar Bersama disini ya, untuk mendapatkan motor
-                  incaran kamu...!!!
+                  Rekomendasi produk produk terlaris dari Griya Seller Pump
                 </div>
 
                 <div class="scrolling-wrapper-flexbox text-center">

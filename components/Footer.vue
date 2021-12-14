@@ -5,9 +5,9 @@
     <v-card flat color="grey lighten-2" >
       <v-container>
         <v-row>
-          <v-col cols="6" sm="2">
-            <h2>SiMotor</h2>
-            <a href="/tentang?tab=about" target="_blank"> <div class="black--text">Tentang SiMotor</div></a>
+          <v-col cols="6" sm="3">
+            <h2>Griya Seller Pump</h2>
+            <a href="/tentang?tab=about" target="_blank"> <div class="black--text">Tentang Griya Seller Pump</div></a>
            <a href="https://blog.simotor.id/" target="_blank"> <div class="black--text">Blog</div></a>
         
              <a href="/tentang?tab=faq" target="_blank" > <div class="black--text">FAQ</div></a>
@@ -16,7 +16,7 @@
           <v-col cols="6" sm="4">
             <h2>Bantuan dan Panduan</h2>
             <a href="/tentang?tab=bantuan" target="_blank">
-            <div class="black--text">Bantuan SiMotor</div>
+            <div class="black--text">Bantuan Griya Seller Pump</div>
             </a>
             <a href="/tentang?tab=ketentuan" target="_blank">
               <div class="black--text">Ketentuan Penggunaan</div>
@@ -33,38 +33,82 @@
           </v-col>
 
           <v-col cols="12" sm="2">
-            <h2>Ikuti Kami</h2>
-            <br />
-            <v-row justify="space-around">
-              <a
-                href="https://www.facebook.com/OfficialSiMotor/"
-                target="_blank"
-              >
-                <v-icon large color="blue">mdi-facebook</v-icon>
-              </a>
-              <a href="https://www.instagram.com/simotor.id/" target="_blank">
-                <v-icon large color="purple">mdi-instagram</v-icon>
-              </a>
-              <a
-                href="https://www.youtube.com/channel/UCBExlB0xnMoTDT8LwVKg9oA"
-                target="_blank"
-              >
-                <v-icon large color="red">mdi-youtube</v-icon>
-              </a>
-            </v-row>
+            <div>
+              <h2>Ikuti Kami</h2>
+              <br />
+              <v-row justify="space-around">
+                <a
+                  href="https://www.facebook.com/OfficialSiMotor/"
+                  target="_blank"
+                >
+                  <v-icon large color="blue">mdi-facebook</v-icon>
+                </a>
+                <a href="https://www.instagram.com/simotor.id/" target="_blank">
+                  <v-icon large color="purple">mdi-instagram</v-icon>
+                </a>
+                <a
+                  href="https://www.youtube.com/channel/UCBExlB0xnMoTDT8LwVKg9oA"
+                  target="_blank"
+                >
+                  <v-icon large color="red">mdi-youtube</v-icon>
+                </a>
+              </v-row>
+            </div>
+            <br>
+            <div>
+              <h2>Marketplace</h2>
+              <br />
+              <v-row justify="space-around">
+                <a
+                  href="https://www.facebook.com/OfficialSiMotor/"
+                  target="_blank"
+                >
+                  <v-img src="/img/tokped.png" style="margin-top:-10px" width="70" ></v-img>
+                </a>
+                <a href="https://www.instagram.com/simotor.id/" target="_blank">
+                  <v-img src="/img/bukalapak.png" width="50" ></v-img>
+                </a>
+              </v-row>
+            </div>
           </v-col>
 
           <v-spacer></v-spacer>
 
-          <v-col cols="12" sm="2" align="center">
-            <v-img src="/img/simotor-logo.webp" width="150"></v-img>
-            <a
-              href="https://play.google.com/store/apps/details?id=com.digitalnetworkasia.simotorbeta"
-              target="_blank"
-            >
-            <br />
-              <v-img src="/img/playstore.png" width="150"></v-img>
-            </a>
+          <v-col cols="12" sm="2">
+            <div>
+              <h2>Shipping</h2>
+              <br />
+              <v-row justify="space-around">
+                <a
+                  href="https://www.facebook.com/OfficialSiMotor/" target="_blank"
+                >
+                  <v-img src="/img/tiki.png" style="margin-top:-10px" width="70" ></v-img>
+                </a>
+                <a href="https://www.instagram.com/simotor.id/" target="_blank">
+                  <v-img src="/img/posindo.png" width="50" ></v-img>
+                </a>
+                <a href="https://www.instagram.com/simotor.id/" target="_blank">
+                  <v-img src="/img/jne.png" width="50" ></v-img>
+                </a>
+              </v-row>
+            </div>
+            <br>
+            <div>
+              <h2>Transfer Bank</h2>
+              <br />
+              <v-row justify="space-around">
+                <a
+                  href="https://www.facebook.com/OfficialSiMotor/" target="_blank"
+                >
+                  <v-img src="/img/bca.jpg" style="margin-top:-10px" width="70" ></v-img>
+                </a>
+                <a
+                  href="https://www.facebook.com/OfficialSiMotor/" target="_blank"
+                >
+                  <v-img src="/img/mandiri.jpg" style="margin-top:-10px" width="70" ></v-img>
+                </a>
+              </v-row>
+            </div>
           </v-col>
         </v-row>
       </v-container>
@@ -73,8 +117,8 @@
     <v-card>
       <v-footer>
         <v-card-text class="text-center">
-          &copy; 2019 —
-          <strong>Digital Nayaka Abhinaya</strong>
+          &copy; 2021 —
+          <strong>Zyrax Digital Service</strong>
         </v-card-text>
       </v-footer>
     </v-card>
