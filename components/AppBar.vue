@@ -106,19 +106,6 @@
       </v-menu>
 
       <v-btn
-        color="#000000"
-        text
-        rounded
-        class="mx-2"
-        :x-small="$vuetify.breakpoint.xs ? true : false"
-        to="/login"
-        v-if="guest"
-        @click="$cookies.set('prevUrl', $route.path)"
-      >
-        Masuk/Daftar
-      </v-btn>
-
-      <v-btn
         color="#0288D1"
         dark
         v-if="guest"
@@ -126,9 +113,8 @@
         :x-small="$vuetify.breakpoint.xs ? true : false"
         to="/login"
         :slot="$vuetify.breakpoint.xs ? 'extension' : 'default'"
-        @click="$cookies.set('prevUrl', $route.path)"
       >
-        Jual
+        Masuk/Daftar
         <v-icon>mdi-plus</v-icon>
       </v-btn>
 
@@ -165,12 +151,17 @@ export default {
       {
         id: 1,
         title: 'Tambah Iklan',
-        route: '/garage/add-unit',
+        route: '/seller/add-iklan',
       },
       {
         id: 2,
         title: 'Tambah Artikel',
-        route: '/seller/add',
+        route: '/seller/add-artikel',
+      },
+      {
+        id: 3,
+        title: 'Tambah Merk & Kategori',
+        route: '/seller/add-merk-kategori',
       },
     ],
     keyword: '',

@@ -7,42 +7,7 @@
       crossorigin="anonymous"
     />
 
-    <v-system-bar
-      app
-      height="30"
-      window
-      class="d-none d-sm-flex white--text"
-      color="#20929D"
-      dark
-    >
-      <div v-if="hits.id_mst_iklan_jenis == 5">
-        <span style="text-align: center" class="ml-6">
-          Aksesoris dan Suku Cadang adalah iklan yang berisi aksesoris dan
-          sparepart dalam kondisi baru maupun bekas.
-          <a href="/tentang?tab=aksesoris" class="yellow--text">
-            <b> Selengkapnya tentang aksesoris & suku cadang disini </b>
-          </a>
-        </span>
-      </div>
-      <div v-if="hits.id_mst_iklan_jenis == 1">
-        <span style="text-align: center" class="ml-6">
-          Iklan baris adalah iklan motor yang dijual dengan kondisi siap pakai.
-          <a href="/tentang?tab=iklanbaris" class="yellow--text">
-            Selengkapnya tentang iklan baris disini.
-          </a>
-        </span>
-      </div>
-      <div v-if="hits.id_mst_iklan_jenis == 2">
-        <span style="text-align: center" class="ml-6">
-          Tawar bersama adalah fitur dimana pembeli dapat melakukan aktivitas
-          penawaran pada iklan yang sedang tayang.
-          <a href="/tentang?tab=tawarbersama" class="yellow--text">
-            Selengkapnya tentang tawar bersama disini.
-          </a>
-        </span>
-      </div>
-    </v-system-bar>
-  <v-system-bar app height="30" window  class="d-none d-sm-flex white--text" style="margin-top:2%;"      
+  <v-system-bar app height="30" window  class="d-none d-sm-flex white--text"      
        >
       <v-icon class="ml-6">mdi-cellphone</v-icon>
       <a
@@ -66,10 +31,13 @@
       color="white"
       id="bar"
       v-if="$vuetify.breakpoint.smAndUp || isHome"
-      style="margin-top:4%"
     >
-      <nuxt-link to="/">
-        <v-img src="/img/simotor_logo.webp" width="200" contain></v-img>
+      <nuxt-link to="/" class="d-flex ml-5 mr-5">
+        <v-img src="/img/gsp1.png" width="50"></v-img>
+        <div class="ml-3">
+          <h3>Griya</h3>
+          <h5>Seller Pump</h5>
+        </div>
       </nuxt-link>
 
       <v-menu open-on-hover offset-y v-if="$vuetify.breakpoint.smAndUp">
@@ -80,7 +48,7 @@
           </v-btn>
         </template>
 
-        <v-list>
+        <!-- <v-list>
           <v-list-item
             v-for="item in categories"
             :key="item.id"
@@ -92,10 +60,10 @@
               <v-icon>mdi-chevron-right</v-icon>
             </v-list-item-action>
           </v-list-item>
-        </v-list>
+        </v-list> -->
       </v-menu>
 
-      <v-menu open-on-hover offset-y v-if="$vuetify.breakpoint.smAndUp">
+      <!-- <v-menu open-on-hover offset-y v-if="$vuetify.breakpoint.smAndUp">
         <template v-slot:activator="{ on, attrs }" v-if="!guest">
           <v-btn text v-bind="attrs" v-on="on" class="mx-2" color="#000000">
             Jual
@@ -112,7 +80,7 @@
             </v-list-item-action>
           </v-list-item>
         </v-list>
-      </v-menu>
+      </v-menu> -->
 
       <v-spacer></v-spacer>
 
@@ -168,103 +136,6 @@
       </v-btn>
 
       <account v-else />
-      <template v-slot:extension>
-        <div class="row" id="hidden" style="display:none">
-        <v-tabs
-          v-model="tab"
-          background-color="white"
-          slider-color="#20929D"
-          show-arrows
-          class="mx-7 pt-6"
-        >
-          <v-tab @click="$vuetify.goTo(0)">Info Iklan</v-tab>
-          <v-tab
-            @click="$vuetify.goTo('#info-paket')"
-            v-if="hits.id_mst_iklan_type == 2"
-          >
-            Info Paket
-          </v-tab>
-          <v-tab @click="$vuetify.goTo('#info-penjual')"> Info Penjual </v-tab>
-          <v-tab
-            @click="$vuetify.goTo('#detail-unit')"
-            v-if="hits.id_mst_iklan_jenis != 5 && hits.id_mst_iklan_type == 1" 
-          >
-            Spesifikasi
-          </v-tab>
-        </v-tabs>
-
-        <v-spacer></v-spacer>
-        <div style="margin-top:-50px">
-        <!-- <v-btn
-          text
-          height="47"
-          class="white"
-          href="https://play.google.com/store/apps/details?id=com.digitalnetworkasia.simotorbeta"
-          target="_blank"
-        >
-          <v-icon left> mdi-google-play </v-icon>
-          Download App
-        </v-btn> -->
-        <!-- <v-tooltip bottom v-if="!guest">
-          <template v-slot:activator="{ on }">
-            <v-btn text height="47" class="white" v-on="on" @click="doFavorit">
-              <v-icon left v-if="favorit == undefined || favorit.length == 0">
-                mdi-heart-outline
-              </v-icon>
-
-              <v-icon color="red" left v-else>mdi-heart</v-icon>
-
-              Favorit
-            </v-btn>
-          </template>
-
-          <span>Favorit</span>
-        </v-tooltip> -->
-
-        <!-- <v-menu offset-y>
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn text height="47" class="white" v-bind="attrs" v-on="on">
-              <v-icon left>mdi-share-variant-outline</v-icon> Bagikan
-            </v-btn>
-          </template>
-
-          <v-list>
-            <v-list-item v-for="(network, index) in networks" :key="index">
-              <ShareNetwork
-                :network="network.network"
-                :key="network.network"
-                :style="{ backgroundColor: network.color }"
-                :url="sharing.url"
-                :title="sharing.title"
-                :description="sharing.description"
-                :quote="sharing.quote"
-                :hashtags="sharing.hashtags"
-                :twitterUser="sharing.twitterUser"
-              >
-                <i :class="network.icon"></i>
-                <span>{{ network.name }}</span>
-              </ShareNetwork>
-            </v-list-item>
-          </v-list>
-        </v-menu> -->
-
-        <!-- <v-tooltip
-          bottom
-          v-if="hits.id_app_user == user.id && hits.id_mst_iklan_status != 2"
-        >
-          <template v-slot:activator="{ on }">
-            <v-btn text height="47" class="white" v-on="on" @click="edit">
-              <v-icon left>mdi-pencil</v-icon> Edit
-            </v-btn>
-          </template>
-
-          <span>Edit</span>
-        </v-tooltip> -->
-        </div>
-        </div>
-      </template>
-      <!-- </v-toolbar> -->
-      <!-- </template> -->
     </v-app-bar>
     <v-row style="margin-top:5px">
       <v-col cols="10" sm="10">
@@ -308,45 +179,7 @@
         <span>Favorit</span>
       </v-tooltip>
 
-      <v-menu offset-y>
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn icon v-bind="attrs" v-on="on">
-            <v-icon left>mdi-share-variant-outline</v-icon>
-          </v-btn>
-        </template>
 
-        <v-list>
-          <v-list-item v-for="(network, index) in networks" :key="index">
-            <ShareNetwork
-              :network="network.network"
-              :key="network.network"
-              :style="{ backgroundColor: network.color }"
-              :url="sharing.url"
-              :title="sharing.title"
-              :description="sharing.description"
-              :quote="sharing.quote"
-              :hashtags="sharing.hashtags"
-              :twitterUser="sharing.twitterUser"
-            >
-              <i :class="network.icon"></i>
-              <span>{{ network.name }}</span>
-            </ShareNetwork>
-          </v-list-item>
-        </v-list>
-      </v-menu>
-
-      <v-tooltip
-        bottom
-        v-if="hits.id_app_user == user.id && hits.id_mst_iklan_status != 2"
-      >
-        <template v-slot:activator="{ on }">
-          <v-btn icon v-on="on" :to="'/seller/edit/' + productid">
-            <v-icon left>mdi-pencil</v-icon>
-          </v-btn>
-        </template>
-
-        <span>Edit</span>
-      </v-tooltip>
     </v-app-bar>
 
     <v-dialog v-model="dialog" width="500">
@@ -394,15 +227,6 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-window.addEventListener("scroll", () =>{
-    if (window.pageYOffset > 100) {
-        document.getElementById("hidden").style.display = "";   
-        document.getElementById("bar").style.height = "120px";          
-    }else{
-        document.getElementById("hidden").style.display = "none";
-        document.getElementById("bar").style.height = "70px";   
-    }
-})
 export default {
   name: 'app-bar-iklan',
   props: ['items', 'hits'],
@@ -489,59 +313,6 @@ export default {
     go() {
       this.$refs.childComponent.hasilPencarian()
     },
-    async getFavorit() {
-      await this.$axios
-        .get('/iklan/v3/iklan_favorit', {
-          params: {
-            id_app_user: this.user.id,
-            id_iklan: this.productid,
-            limit: 1,
-          },
-          headers: { Authorization: 'Bearer ' + this.user.token },
-        })
-        .then((response) => {
-          let data = response.data
-          let { hits } = data.hits
-          this.favorit = hits[0]
-        })
-        .catch((error) => {
-          let responses = error.response.data
-          console.log(responses.api_message)
-        })
-    },
-    async doFavorit() {
-      let formData = new FormData()
-      formData.set('id_iklan', this.productid)
-      formData.set('id_app_user', this.user.id)
-      await this.$axios
-        .post('/iklan/v3/iklan_favorit', formData, {
-          headers: { Authorization: 'Bearer ' + this.user.token },
-        })
-        .then((response) => {
-          let { data } = response
-          this.setAlert({
-            status: true,
-            color: 'success',
-            text: data.api_message,
-          })
-          this.getFavorit()
-        })
-        .catch((error) => {
-          let responses = error.response.data
-          console.log(responses.api_message)
-          if (error.response.status == 403) {
-            this.setAuth({})
-            this.$cookies.set('user', null)
-            this.$cookies.set('prevUrl', this.$route.path)
-            this.setAlert({
-              status: true,
-              color: 'error',
-              text: responses.api_message,
-            })
-            this.$router.push('/login')
-          }
-        })
-    },
     edit() {
       this.dialog = true
       this.judul = this.hits.judul
@@ -622,18 +393,7 @@ export default {
     },
   },
   async created() {
-    setInterval(() => {
-      this.sharing = {
-        url:  'https://simotor.id/detail-iklan/' +
-        this.hits.judul.toLowerCase().replace(/ /g, '-').replace(/[/]/g, '-') +
-        '-' + this.productid,
-        title: this.hits.judul,
-        description: this.hits.deskripsi,
-        quote: this.hits.judul,
-        hashtags: 'nuxtjs,simotor',
-        twitterUser: 'simotor',
-      }
-    }, 1000)
+    console.log('id getter', this.productid)
   },
 }
 </script>

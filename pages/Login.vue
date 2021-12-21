@@ -11,7 +11,7 @@
         <v-img src="/img/login1.webp" width="1000" height="600"> </v-img>
       </v-col>
 
-      <v-col cols="12" sm="6" v-if="phoneDisplay">
+      <v-col cols="12" sm="6" >
         <v-row>
           <v-spacer></v-spacer>
 
@@ -22,14 +22,21 @@
             <br />
 
             <v-text-field
-              v-model="phone"
+              v-model="email"
               dense
-              :rules="phoneRules"
-              placeholder="Nomor Handphone"
-              prepend-inner-icon="mdi-phone"
+              :rules="emailRules"
+              placeholder="Email"
+              prepend-inner-icon="mdi-gmail"
               outlined
-              v-mask="mask"
-              @keyup.enter="logincheck"
+              autofocus
+            ></v-text-field>
+            <v-text-field
+              v-model="password"
+              dense
+              :rules="passwordRules"
+              placeholder="Password"
+              prepend-inner-icon="mdi-lock"
+              outlined
               autofocus
             ></v-text-field>
           </v-col>
@@ -45,9 +52,9 @@
               block
               color="#20929D"
               class="white--text"
-              :disabled="!valid"
-              @click="logincheck"
+              :disabled="email != '' && password.length >= 3 ? false : true"
               rounded
+              @click="checkAkun()"
             >
               Masuk
             </v-btn>
@@ -58,18 +65,6 @@
 
         <br />
 
-        <v-row>
-          <v-spacer></v-spacer>
-
-          <v-col cols="11" sm="6" class="d-flex align-center">
-            <v-divider></v-divider>
-            <span class="mx-4 text--secondary">Atau masuk menggunakan</span>
-            <v-divider></v-divider>
-          </v-col>
-
-          <v-spacer></v-spacer>
-        </v-row>
-
         <v-row dense>
           <v-spacer></v-spacer>
 
@@ -79,6 +74,10 @@
               <h5>
                 Belum memiliki Akun?
                 <NuxtLink to="/register" style="color: #20929D"> Daftar Sekarang </NuxtLink>
+              </h5>
+              <h5>
+                Lupa password?
+                <span @click="lupa_password=true" style="color: #20929D;cursor:pointer"> klik disini </span>
               </h5>
 
               <br />
@@ -98,143 +97,79 @@
           <v-spacer></v-spacer>
         </v-row>
       </v-col>
-
-      <v-col cols="12" sm="6" align="center" v-if="methodDisplay">
-        <h2>Pilih metode verifikasi</h2>
-        <div>
-          Pilih salah satu metode dibawah ini untuk mendapatkankode verifikasi
-        </div>
-
-        <br />
-
-        <v-row justify="center">
-          <v-col cols="12" sm="5">
-            <v-card rounded="lg" @click="waMethod">
-              <v-list>
-                <v-list-item>
-                  <v-list-item-icon>
-                    <v-icon color="#20929D" large>mdi-whatsapp</v-icon>
-                  </v-list-item-icon>
-
-                  <v-list-item-content>
-                    <v-list-item-title class="teal--text">
-                      WhatsApp ke
-                    </v-list-item-title>
-
-                    <v-list-item-subtitle>
-                      {{ phone }}
-                    </v-list-item-subtitle>
-                  </v-list-item-content>
-                </v-list-item>
-              </v-list>
-            </v-card>
-          </v-col>
-
-          <v-col cols="12" sm="5">
-            <v-card rounded="lg" @click="smsMethod">
-              <v-list>
-                <v-list-item>
-                  <v-list-item-icon>
-                    <v-icon color="#20929D" large>mdi-android-messages</v-icon>
-                  </v-list-item-icon>
-
-                  <v-list-item-content>
-                    <v-list-item-title class="teal--text">
-                      SMS ke
-                    </v-list-item-title>
-
-                    <v-list-item-subtitle>
-                      {{ phone }}
-                    </v-list-item-subtitle>
-                  </v-list-item-content>
-                </v-list-item>
-              </v-list>
-            </v-card>
-          </v-col>
-        </v-row>
-
-        <br />
-
-        <p @click="ubah">
-          Bukan nomor Anda?
-          <a>Ubah sekarang</a>
-        </p>
-      </v-col>
-
-      <v-col cols="12" sm="6" align="center" v-if="otpDisplay">
-        <h2>Verifikasi OTP</h2>
-        <div>
-          Masukan kode verifikasi yang kami kiriminkan ke nomor {{ phone }}
-        </div>
-
-        <br />
-
-        <v-row>
-          <v-spacer></v-spacer>
-
-          <v-col cols="12" sm="8">
-            <div style="display: flex; flex-direction: row">
-              <v-otp-input
-                ref="otpInput"
-                input-classes="otp-input"
-                separator="-"
-                :num-inputs="6"
-                :should-auto-focus="true"
-                :is-input-num="true"
-                @on-complete="handleOnComplete"
-              />
-            </div>
-
-            <br />
-
-            <p v-if="countdown">
-              Belum menerima kode? Tunggu
-              <countdown
-                ref="countdown"
-                :time="60 * 1000"
-                @end="countdown = !countdown"
-              >
-                <template slot-scope="props">
-                  {{ props.seconds }} Detik.
-                </template>
-              </countdown>
-            </p>
-
-            <p v-else>
-              Belum menerima kode?
-              <a @click="resend">Resend</a>
-            </p>
-          </v-col>
-
-          <v-spacer></v-spacer>
-        </v-row>
-
-        <v-row>
-          <v-spacer></v-spacer>
-
-          <v-col cols="12" sm="6">
-            <v-btn dark block color="#22939E" @click="login" :disabled="!valid">
-              Verifikasi
-            </v-btn>
-
-            <br />
-
-            <p @click="ubah">
-              Bukan nomor Anda?
-              <a>Ubah sekarang</a>
-            </p>
-          </v-col>
-
-          <v-spacer></v-spacer>
-        </v-row>
-      </v-col>
     </v-row>
+    <v-dialog max-width="600px" v-model="expired">
+      <v-card>
+        <v-toolbar flat dense color="#20929D">
+          <v-toolbar-title><b>Verification Expired</b></v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-btn icon @click="expired = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+        </v-toolbar>
+        <br>
+        <v-alert border="left" colored-border type="warning" elevation="2">
+          <strong>Catatan Penting.</strong>
+          <br />
+          kode verifikasi email anda expired, harap konfirmasi melalui email setelah mengirim ulang kode verifikasi
+        </v-alert>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            class="ma-1"
+            color="#20929D"
+            dark
+            @click="resendVerification()"
+          >
+            Resend
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-dialog max-width="600px" v-model="lupa_password">
+      <v-card>
+        <v-toolbar flat dense color="#20929D">
+          <v-toolbar-title><b>Lupa Password ?</b></v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-btn icon @click="lupa_password = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+        </v-toolbar>
+        <br>
+        <v-alert border="left" colored-border type="warning" elevation="2">
+          <strong>Catatan Penting.</strong>
+          <br />
+          tautan untuk mengubah kata sandi akan dikirim melalui email, harap konfirmasi dan ubah kata sandi anda melalui tautan yang diterima pada email anda
+        </v-alert>
+        <v-text-field
+          v-model="email"
+          class="mx-4"
+          dense
+          :rules="emailRules"
+          placeholder="Email"
+          prepend-inner-icon="mdi-gmail"
+          outlined
+          autofocus
+        ></v-text-field>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            class="ma-1"
+            color="#20929D"
+            @click="forgotPasswordCheck()"
+            :disabled="email == '' ? true : false"
+          >
+            Kirim
+          </v-btn>
+          <v-btn>Cancel</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import { mask } from 'vue-the-mask'
 import Vue from 'vue'
 import OtpInput from '@bachdgvn/vue-otp-input'
 import VueCountdown from '@chenfengyuan/vue-countdown'
@@ -244,26 +179,19 @@ Vue.component(VueCountdown.name, VueCountdown)
 
 export default {
   name: 'login',
-  directives: { mask },
   data: () => ({
     phone: '',
-    method: '',
-    phoneRules: [
-      (v) => !!v || 'Nomor HP wajib diisi (Min 10, Max 13)',
-      (v) => v && v.length >= 10,
+    email: '',
+    password: '',
+    expired: false,
+    lupa_password: false,
+    emailRules: [
+      (v) => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'E-mail must be valid'
     ],
-    otpRules: [
-      (v) => !!v || 'OTP harus dimasukkan',
-      (v) => (v && v.length == 6) || 'OTP harus 6 digit',
-      (v) => /^\d+$/.test(v) || 'Harus Angka',
+    passwordRules: [
+      (v) => v && v.length >= 3 || 'Password must be valid'
     ],
-    mask: '#############',
     valid: true,
-    phoneDisplay: true,
-    methodDisplay: false,
-    otpDisplay: false,
-    otp: '',
-    countdown: true,
   }),
   computed: {
     ...mapGetters({
@@ -276,20 +204,88 @@ export default {
       setAlert: 'alert/set',
       setAuth: 'auth/set',
     }),
-    handleOnComplete(value) {
-      this.otp = value
-      this.login()
-    },
-    async logincheck() {
+    async checkAkun(){
       let formData = new FormData()
 
-      formData.append('nomor_hp', this.phone)
+      formData.append('email', this.email)
+      formData.append('password', this.password)
 
       await this.$axios
-        .post('/user/v3/user/logincheck', formData)
-        .then(() => {
-          this.phoneDisplay = false
-          this.methodDisplay = true
+        .post('/user/v1/user/check', formData)
+        .then((response) => {
+          console.log('respon check', response)
+          this.login()
+        })
+        .catch((error) => {
+          let responses = error.response.data
+          if (responses.api_message == 'Verification Expired') {
+            this.expired = true
+          } else if (responses.api_message != 'Verification Expired'){
+            this.setAlert({
+              status: true,
+              color: 'error',
+              text: responses.api_message,
+            })
+          }
+        })
+    },
+    async resendVerification(){
+      let formData = new FormData()
+
+      formData.append('email', this.email)
+      formData.append('password', this.password)
+
+      await this.$axios
+        .post('/user/v1/user/resend_verification', formData)
+        .then((response) => {
+          console.log(response)
+          this.expired = false
+        })
+        .catch((error) => {
+          let responses = error.response.data
+          console.log(responses)
+        })
+    },
+    async forgotPasswordCheck(){
+      let formData = new FormData()
+
+      formData.append('email', this.email)
+      formData.append('password', this.password)
+
+      await this.$axios
+        .post('/user/v1/user/check', formData)
+        .then((response) => {
+          console.log('respon check', response)
+          this.forgotPassword()
+        })
+        .catch((error) => {
+          let responses = error.response.data
+          if (responses.api_message == 'Verification Expired') {
+            this.forgotPassword()
+          } else if (responses.api_message != 'Verification Expired'){
+            this.setAlert({
+              status: true,
+              color: 'error',
+              text: 'Email belum terdaftar',
+            })
+          }
+        })
+    },
+    async forgotPassword(){
+      let formData = new FormData()
+
+      formData.append('email', this.email)
+
+      await this.$axios
+        .post('/user/v1/user/forgot_password', formData)
+        .then((response) => {
+          console.log(response)
+          this.lupa_password = false
+          this.setAlert({
+            status: true,
+            color: 'success',
+            text: 'Lupa password berhasil, silahkan check email anda',
+          })
         })
         .catch((error) => {
           let responses = error.response.data
@@ -298,75 +294,39 @@ export default {
             color: 'error',
             text: responses.api_message,
           })
-        })
-    },
-    async resend() {
-      if (this.method == 'sms') {
-        await this.smsMethod()
-      } else {
-        await this.waMethod()
-      }
-      this.countdown = !this.countdown
-    },
-    ubah() {
-      this.methodDisplay = false
-      this.otpDisplay = false
-      this.phoneDisplay = true
-      this.otp = ''
-    },
-    async smsMethod() {
-      this.method = 'sms'
-
-      let formData = new FormData()
-
-      formData.set('nomor_hp', this.phone)
-
-      await this.$axios.post('/user/v3/user/otprequest', formData).then(() => {
-        this.methodDisplay = false
-        this.otpDisplay = true
-      })
-    },
-    async waMethod() {
-      this.method = 'wa'
-
-      let formData = new FormData()
-
-      formData.set('nomor_hp', this.phone)
-
-      await this.$axios
-        .post('/user/v3/user/otpwarequest', formData)
-        .then(() => {
-          this.methodDisplay = false
-          this.otpDisplay = true
         })
     },
     async login() {
       let formData = new FormData()
 
-      formData.append('nomor_hp', this.phone)
-      formData.append('id_token', this.otp)
-      formData.append('id_one_signal', this.$root.$children[0].notif)
+      formData.append('email', this.email)
+      formData.append('password', this.password)
 
       await this.$axios
-        .post('/user/v3/user/login', formData)
+        .post('/user/v1/user/signin', formData)
         .then((response) => {
-          let { data } = response.data
-          this.setAuth(data[0])
-          this.$cookies.set('user', JSON.stringify(data[0]))
-          this.setAlert({
-            status: true,
-            color: 'success',
-            text: 'Selamat Datang ' + this.user.nama,
-          })
-          this.phone = ''
-          this.otp = ''
-          this.otpDisplay = false
-          this.phoneDisplay = true
-          if (this.$cookies.get('prevUrl') != null) {
-            this.$router.push(this.$cookies.get('prevUrl'))
-            this.$cookies.set('prevUrl', null)
+          if (response.data.token == '') {
+            this.setAlert({
+              status: true,
+              color: 'error',
+              text: 'Email atau password salah',
+            })
           } else {
-            this.$router.push('/')
+            let { data } = response.data
+            this.setAuth(data[0])
+            this.$cookies.set('user', JSON.stringify(data[0]))
+            this.$cookies.set('token', JSON.stringify(response.data.token))
+            this.setAlert({
+              status: true,
+              color: 'success',
+              text: 'Selamat Datang ' + this.user.nama,
+            })
+            if (this.$cookies.get('prevUrl') != null) {
+              this.$router.push(this.$cookies.get('prevUrl'))
+              this.$cookies.set('prevUrl', null)
+            } else {
+              this.$router.push('/')
+            }
           }
         })
         .catch((error) => {
@@ -378,64 +338,6 @@ export default {
           })
         })
     },
-    async googleLogin(tokenGoogle, email) {
-      let formData = new FormData()
-
-      formData.set('id_token', tokenGoogle)
-      formData.set('email', email)
-      formData.set('id_one_signal', this.$root.$children[0].notif)
-
-      await this.$axios
-        .post('/user/v3/user/login', formData)
-        .then((response) => {
-          let { data } = response.data
-          this.setAuth(data[0])
-          this.$cookies.set('user', JSON.stringify(data[0]))
-          this.setAlert({
-            status: true,
-            color: 'success',
-            text: 'Selamat Datang ' + this.user.nama,
-          })
-          if (this.$cookies.get('prevUrl') != null) {
-            this.$router.push(this.$cookies.get('prevUrl'))
-            this.$cookies.set('prevUrl', null)
-          } else {
-            this.$router.push('/')
-          }
-        })
-        .catch((error) => {
-          let responses = error.response.data
-          this.setAlert({
-            status: true,
-            color: 'error',
-            text: responses.api_message,
-          })
-        })
-    },
-  },
-  async mounted() {
-    var uiConfig = {
-      signInOptions: [
-        {
-          provider: this.$fireModule.auth.GoogleAuthProvider.PROVIDER_ID,
-        },
-      ],
-      signInFlow: 'popup',
-      callbacks: {
-        signInSuccessWithAuthResult: (authResult) => {
-          if (authResult) {
-            var user = authResult.user
-            var credential = authResult.credential
-            this.googleLogin(credential.idToken, user.email)
-          }
-          return false
-        },
-      },
-    }
-    var ui =
-      firebaseui.auth.AuthUI.getInstance() ||
-      new firebaseui.auth.AuthUI(this.$fireModule.auth())
-    ui.start('#firebaseui-auth-container', uiConfig)
   },
 }
 </script>

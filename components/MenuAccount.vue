@@ -3,14 +3,7 @@
     <v-tooltip bottom>
       <template v-slot:activator="{ on, attrs }">
         <v-btn icon to="/account/profile/notifikasi">
-          <v-badge
-            :content="countNotif"
-            :value="countNotif"
-            color="orange"
-            overlap
-          >
             <v-icon v-bind="attrs" v-on="on" color="#000000">mdi-cart-variant</v-icon>
-          </v-badge>
         </v-btn>
       </template>
       <span>Notifikasi</span>
@@ -348,68 +341,6 @@ export default {
       setTicket: 'ticket/set',
       setAlert: 'alert/set',
     }),
-    async getNotif() {
-      await this.$axios
-        .get('/log/v3/log/notifikasi', {
-          params: {
-            id_user: this.user.id,
-            is_read: false,
-            limit: 1,
-          },
-          headers: { Authorization: 'Bearer ' + this.user.token },
-        })
-        .then((response) => {
-          let { data } = response
-          this.countNotif = data.count
-        })
-        .catch((error) => {
-          let responses = error.response.data
-          console.log(responses.api_message)
-          if (error.response.status == 403) {
-            this.setAuth({})
-            this.$cookies.set('user', null)
-            this.$cookies.set('prevUrl', this.$route.path)
-            this.setAlert({
-              status: true,
-              color: 'error',
-              text: responses.api_message,
-            })
-            this.$router.push('/login')
-          }
-        })
-    },
-
-    async getChats() {
-      await this.$fire.firestore
-        .collection('chat')
-        .doc(String(this.user.id))
-        .collection('user_messages')
-        .where('Seen', '==', false)
-        .onSnapshot((querySnapshot) => {
-          let messages = []
-          querySnapshot.forEach((doc) => {
-            messages.push(doc.data())
-          })
-          this.chats = messages
-        })
-    },
-    async statusTiket() {
-      await this.$axios
-        .get('/tiket/v3/total_tiket', {
-          params: {
-            id_app_user: this.user.id,
-          },
-          headers: { Authorization: 'Bearer ' + this.user.token },
-        })
-        .then((response) => {
-          let { data } = response.data
-          this.setTicket(data)
-        })
-        .catch((error) => {
-          let responses = error.response.data
-          console.log(responses.api_message)
-        })
-    },
     signOut() {
       this.setAuth({})
       this.$cookies.set('user', null)
@@ -417,9 +348,6 @@ export default {
     },
   },
   async created() {
-    await this.getNotif()
-    await this.getChats()
-    await this.statusTiket()
   },
 }
 </script>

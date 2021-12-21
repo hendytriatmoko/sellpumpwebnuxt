@@ -10,7 +10,7 @@
         <v-img src="/img/login1.webp" width="1100" height="600"> </v-img>
       </v-col>
 
-      <v-col cols="12" sm="6" v-if="phoneDisplay">
+      <v-col cols="12" sm="6">
         <h3 class="ml-12">Hi, Pengguna Baru!</h3>
         <div class="ml-12 text--secondary">
           Silahkan masuk untuk melanjutkan
@@ -23,7 +23,7 @@
 
           <v-col cols="12" sm="10">
             <v-text-field
-              v-model="name"
+              v-model="nama"
               dense
               :rules="nameRules"
               placeholder="Nama akun"
@@ -32,23 +32,35 @@
               counter="35"
               :maxlength="35"
             ></v-text-field>
-          </v-col>
-
-          <v-spacer></v-spacer>
-        </v-row>
-
-        <v-row>
-          <v-spacer></v-spacer>
-
-          <v-col cols="12" sm="10">
             <v-text-field
               v-model="phone"
               dense
               :rules="phoneRules"
-              placeholder="Nomor Ponsel"
+              placeholder="No Telpon"
               prepend-inner-icon="mdi-phone"
               outlined
-              v-mask="mask"
+              counter="35"
+              :maxlength="35"
+            ></v-text-field>
+            <v-text-field
+              v-model="email"
+              dense
+              :rules="emailRules"
+              placeholder="Email"
+              prepend-inner-icon="mdi-gmail"
+              outlined
+              counter="35"
+              :maxlength="40"
+            ></v-text-field>
+            <v-text-field
+              v-model="password"
+              dense
+              :rules="passwordRules"
+              placeholder="Password"
+              prepend-inner-icon="mdi-lock"
+              outlined
+              counter="35"
+              :maxlength="35"
             ></v-text-field>
           </v-col>
 
@@ -63,8 +75,8 @@
               block
               color="#20929D"
               class="white--text"
-              :disabled="!valid"
-              @click="signupcheck"
+              :disabled="nama != '' && phone != '' && email != '' && password != '' ? false : true"
+              @click="checkAkun()"
               rounded
             >
               Daftar
@@ -192,8 +204,10 @@ export default {
   directives: { mask },
   middleware: 'auth',
   data: () => ({
-    name: '',
+    nama: '',
     phone: '',
+    email: '',
+    password: '',
     nameRules: [
       (v) => !!v || 'Nama Lengkap wajib diisi',
       (v) => v.length >= 2 || 'Min 2 karakter',
@@ -203,16 +217,13 @@ export default {
       (v) => !!v || 'Nomor Handphone wajib diisi (Min 10, Max 13)',
       (v) => v && v.length >= 10,
     ],
-    otpRules: [
-      (v) => !!v || 'OTP is required',
-      (v) => (v && v.length == 6) || 'OTP harus 6 digit',
+    emailRules: [
+      (v) => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'E-mail harus aktif'
     ],
-    mask: '#############',
+    passwordRules: [
+      (v) => v && v.length >= 8 || 'Password minimal 8 karakter'
+    ],
     valid: true,
-    phoneDisplay: true,
-    otpDisplay: false,
-    otp: '',
-    countdown: true,
   }),
   computed: {
     ...mapGetters({
@@ -228,81 +239,53 @@ export default {
       this.otp = value
       await this.daftar()
     },
-    end() {
-      this.countdown = !this.countdown
-    },
-    async resend() {
-      await this.otpRequest()
-      this.countdown = !this.countdown
-    },
-    async signupcheck() {
+    async checkAkun(){
       let formData = new FormData()
 
-      formData.append('nomor_hp', this.phone)
+      formData.append('email', this.email)
+      formData.append('password', this.password)
 
       await this.$axios
-        .post('/user/v3/user/signupcheck', formData)
+        .post('/user/v1/user/check', formData)
         .then((response) => {
-          let { data } = response
-          this.setAlert({
-            status: true,
-            color: 'success',
-            text: data.api_message,
-          })
-          this.phoneDisplay = false
-          this.otpDisplay = true
-          this.otpRequest()
-        })
-        .catch((error) => {
-          let responses = error.response.data
+          console.log('respon check', response)
           this.setAlert({
             status: true,
             color: 'error',
-            text: responses.api_message,
+            text: 'Email sudah terdaftar',
           })
         })
-    },
-    async otpRequest() {
-      let formData = new FormData()
-
-      formData.append('nomor_hp', this.phone)
-
-      await this.$axios
-        .post('/user/v3/user/otprequest', formData)
-        .then(() => {})
         .catch((error) => {
           let responses = error.response.data
-          this.setAlert({
-            status: true,
-            color: 'error',
-            text: responses.api_message,
-          })
+          if (responses.api_message == 'Verification Expired') {
+            this.setAlert({
+              status: true,
+              color: 'error',
+              text: 'Email sudah terdaftar',
+            })
+          } else if (responses.api_message != 'Verification Expired'){
+            this.register()
+          }
         })
     },
-    async daftar() {
+    async register() {
       let formData = new FormData()
 
-      formData.append('nama', this.name)
-      formData.append('nomor_hp', this.phone)
-      formData.append('id_token', this.otp)
-      formData.append('id_mst_user_type', 1)
+      formData.append('nama', this.nama)
+      formData.append('no_telp', this.phone)
+      formData.append('email', this.email)
+      formData.append('password', this.password)
 
       await this.$axios
-        .post('/user/v3/user', formData)
+        .post('/user/v1/user/create', formData)
         .then((response) => {
-          let { data } = response.data
-          this.setAuth(data[0])
-          this.$cookies.set('user', JSON.stringify(data[0]))
+          console.log('respon check', response)
           this.setAlert({
             status: true,
             color: 'success',
-            text: 'Selamat Datang ' + this.user.nama,
+            text: 'Pendaftaran berhasil, silahkan verifikasi email',
           })
-          this.phone = ''
-          this.otp = ''
-          this.otpDisplay = false
-          this.phoneDisplay = true
-          this.$router.push('/')
+          this.$router.push('/login')
         })
         .catch((error) => {
           let responses = error.response.data

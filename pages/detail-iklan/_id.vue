@@ -7,42 +7,7 @@
       <iklan-baris
         :id="productid"
         :items="items"
-        v-if="hits.id_mst_iklan_jenis == 1"
       />
-      <iklan-ass
-        :id="productid"
-        :items="items"
-        v-if="hits.id_mst_iklan_jenis == 5"
-      />
-
-      <div v-if="hits.id_mst_iklan_jenis == 2">
-        <tb-satuan-terbuka
-          :id="productid"
-          :items="items"
-          v-if="(hits.id_mst_iklan_type == 1) & (hits.id_mst_type_tb == 1)"
-        />
-        <tb-satuan-tertutup
-          :id="productid"
-          :items="items"
-          v-if="(hits.id_mst_iklan_type == 1) & (hits.id_mst_type_tb == 2)"
-        />
-        <tb-paketan
-          :id="productid"
-          :items="items"
-          v-if="(hits.id_mst_iklan_type == 2) & (hits.id_mst_type_tb == 1)"
-        />
-        <tb-paketan-tertutup
-          :id="productid"
-          :items="items"
-          v-if="(hits.id_mst_iklan_type == 2) & (hits.id_mst_type_tb == 2)"
-        />
-      </div>
-      <!-- <div v-if="hits.id_mst_iklan_jenis == 2">
-        <tb-satuan-terbuka  :items="items" v-if="hits.id_mst_iklan_type == 1 & hits.id_mst_type_tb==1" />
-        <tb-satuan-tertutup  :items="items" v-if="hits.id_mst_iklan_type == 1 & hits.id_mst_type_tb==2" />
-        <tb-paketan  :items="items" v-if="hits.id_mst_iklan_type == 2 & hits.id_mst_type_tb==1" />
-        <tb-paketan-tertutup  :items="items" v-if="hits.id_mst_iklan_type == 2 & hits.id_mst_type_tb==2" />
-      </div> -->
     </div>
     <Footer />
   </div>
@@ -65,24 +30,6 @@ export default {
     IklanBaris: () =>
       import(
         /* webpackChunkName: "iklan-baris" */ '@/components/IklanBaris.vue'
-      ),
-    TbSatuanTerbuka: () =>
-      import(
-        /* webpackChunkName: "tb-satuan" */ '@/components/TbSatuanTerbuka.vue'
-      ),
-    TbSatuanTertutup: () =>
-      import(
-        /* webpackChunkName: "tb-satuan" */ '@/components/TbSatuanTertutup.vue'
-      ),
-    TbPaketan: () =>
-      import(/* webpackChunkName: "tb-paketan" */ '@/components/TbPaketan.vue'),
-    TbPaketanTertutup: () =>
-      import(
-        /* webpackChunkName: "tb-paketan" */ '@/components/TbPaketanTertutup.vue'
-      ),
-    IklanAss: () =>
-      import(
-        /* webpackChunkName: "tb-paketan" */ '@/components/Aksesoris-Sparepart.vue'
       ),
   },
   data: () => ({
@@ -159,43 +106,6 @@ export default {
           console.log('ini iklannya temp', this.hitstemp)
           this.productid = this.hitstemp.id
           this.getDtlIklan()
-        })
-        .catch((error) => {
-          let responses = error.response.data
-          console.log(responses.api_message)
-        })
-    },
-    async getDtlIklan() {
-      await this.$axios
-        .get('/search/v4/search', {
-          params: {
-            id: this.productid,
-            // search: this.$route.params.id,
-            limit: 1,
-          },
-        })
-        .then((response) => {
-          let data = response.data
-          let { hits } = data.hits
-          this.hits = hits[0]._source
-          this.title = this.hits.judul
-          console.log('ini iklannya', this.hits)
-
-          this.items.push(
-            {
-              text: this.hits.mst_iklan_jenis,
-              disabled: false,
-              href:
-                '/search?q=""&category=' +
-                this.hits.id_mst_iklan_jenis +
-                '&order=posting_terbaru&tb=false',
-            },
-            {
-              text: this.hits.judul,
-              disabled: true,
-            }
-          )
-          console.log('ini items', this.items)
         })
         .catch((error) => {
           let responses = error.response.data
@@ -343,71 +253,18 @@ export default {
   },
   async created() {
     // await this.getDtlIklanTemp()
-    this.rute = this.$route.params.id.replace(/-/g, ' ')
-    this.rute = this.rute.split(' ')
-    this.productid = this.rute[this.rute.length - 1]
-    console.log('split woy', this.rute)
-    console.log('dapet idnya', this.productid)
-    await this.getDtlIklan()
-    console.log('ini jenis iklan', this.hits)
-
-    if (!this.guest) {
-      this.$refs.adsComponent.getFavorit()
-    }
+    // this.rute = this.$route.params.id.replace(/-/g, ' ')
+    // this.rute = this.rute.split(' ')
+    // this.productid = this.rute[this.rute.length - 1]
+    // console.log('split woy', this.rute)
+    // console.log('dapet idnya', this.productid)
+    this.rute = this.$route.params.id
+    var id = this.rute.length - 36
+    this.productid = this.rute.substring(id)
+    console.log('ini rute', this.rute)
     console.log('productid', this.productid)
     console.log('router', this.$route)
-  },
-  head() {
-    return {
-      title: this.title,
-      meta: [
-        {
-          hid: 'twitter:title',
-          name: 'twitter:title',
-          content: this.hits.judul,
-        },
-        {
-          hid: 'twitter:description',
-          name: 'twitter:description',
-          content: this.hits.deskripsi,
-        },
-        {
-          hid: 'twitter:image',
-          name: 'twitter:image',
-          content: this.getImage(this.hits.photo),
-        },
-        {
-          hid: 'twitter:image:alt',
-          name: 'twitter:image:alt',
-          content: this.hits.judul,
-        },
-        {
-          hid: 'og:title',
-          property: 'og:title',
-          content: this.hits.judul,
-        },
-        {
-          hid: 'og:description',
-          property: 'og:description',
-          content: this.hits.deskripsi,
-        },
-        {
-          hid: 'og:image',
-          property: 'og:image',
-          content: this.getImage(this.hits.photo),
-        },
-        {
-          hid: 'og:image:secure_url',
-          property: 'og:image:secure_url',
-          content: this.getImage(this.hits.photo),
-        },
-        {
-          hid: 'og:image:alt',
-          property: 'og:image:alt',
-          content: this.hits.judul,
-        },
-      ],
-    }
+    // await this.getDtlIklan()
   },
 }
 </script>

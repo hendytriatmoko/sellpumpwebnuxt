@@ -5,9 +5,15 @@ import moment from 'moment'
 
 const Helper = {
   install(Vue) {
-    Vue.prototype.getImage = function (image) {
+    Vue.prototype.getImageProduk = function (image) {
       if (image != null && image.length > 0) {
-        return this.$config.baseURL + "/service/image/" + image
+        return this.$config.baseURL + "/api/produk/photo" + image
+      }
+      return "/img/unavailable.png"
+    }
+    Vue.prototype.getImageMerk = function (image) {
+      if (image != null && image.length > 0) {
+        return this.$config.baseURL + "/api/merk/photo" + image
       }
       return "/img/unavailable.png"
     }

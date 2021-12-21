@@ -184,7 +184,7 @@
             cols="6"
             sm="3"
             v-for="item in iklanTerbaru"
-            :key="item._source.id"
+            :key="item.id_produk"
           >
             <list-iklan :item="item" />
           </v-col>
@@ -378,26 +378,12 @@ export default {
     },
 
     async getIklanTerbaru() {
-      let offset = (this.page - 1) * this.limit
 
       await this.$axios
-        .get('/search/v4/search_home', {
-          params: {
-            id_mst_iklan_status: 1,
-            sort: 'posting_terbaru',
-            limit: 12,
-            offset: offset,
-          },
-        })
+        .get('/produk/v1/produk/getproduk')
         .then((response) => {
-          let data = response.data
-          let { hits } = data.hits
-          this.iklanTerbaru.push(...hits)
-
-          this.total = data.hits.total.value
-          this.lengthPage = Math.ceil(this.total / this.limit)
-          this.page++
-          console.log('tot', data.hits.total.value)
+          this.iklanTerbaru = response.data.data
+          console.log('produk', this.iklanTerbaru)
         })
         .catch((error) => {
           let responses = error.response.data
@@ -431,12 +417,12 @@ export default {
     },
   },
   async created() {
-    await this.getBanners()
-    await this.getJadwalTB()
-    await this.getArtikel()
-    await this.getIklanTerbaru()
-    await this.getTbBerlangsung()
-    await this.getIklanPromo()
+    // await this.getBanners()
+    // await this.getJadwalTB()
+    // await this.getArtikel()
+    this.getIklanTerbaru()
+    // await this.getTbBerlangsung()
+    // await this.getIklanPromo()
     this.setProductId({})
     console.log('iklan terbaru', this.iklanTerbaru)
     console.log('page', this.page)

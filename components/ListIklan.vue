@@ -2,13 +2,11 @@
   <div>
     <v-card
       rounded="lg"
-      :style=" item._source.highlight ? 'border:2px solid #20929D' : ''"
       @click="
-        go(item._source.id, item._source.judul, item._source.unit_motor_bekas)
-      "
+        go(item.id_produk, item.nama_produk)"
     >
 
-      <v-img :src="getImage('produk/mokas/64/3724/20200820204021.71597930820892.jpg')" style="border-radius:2% 2% 0 0" height="210">
+      <v-img :src="getImageProduk(item.gambar_produk)" style="border-radius:2% 2% 0 0" height="210">
       </v-img>
 
       <v-list dense>
@@ -16,7 +14,7 @@
           <v-list-item-content>
             <v-list-item-subtitle class="teal--text">
               <h5>
-                Kategori - subkategori
+                {{ item.kategori }} - {{ item.sub_kategori }}
               </h5>
               <!-- <h5>
                 {{ item._source.mst_iklan_jenis }}
@@ -26,7 +24,7 @@
               {{ item._source.judul }}
             </h4> -->
             <h4 class="my-4">
-              Nama Produk
+              {{ item.nama_produk }}
             </h4>
 
             <v-divider class="mb-2"> </v-divider>
@@ -43,7 +41,8 @@
                 align="right"
                 class="red--text"
               >
-                Rp 7.200.000
+                Rp
+                {{ Number(item.harga_produk).toLocaleString('id-ID') }}
               </v-list-item-title>
             </div>
           </v-list-item-content>
@@ -75,19 +74,6 @@ export default {
       timezone: 'timezone/region',
       
     }),
-    now: function () {
-      return this.time
-    },
-    start: function () {
-      if (this.item._source.id_mst_iklan_jenis == 2) {
-        return this.moment.utc(this.now).isAfter(this.item._source.tanggal_mulai)        
-      }
-    },
-    end: function () {
-      if (this.item._source.id_mst_iklan_jenis == 2) {        
-        return this.moment.utc(this.now).isAfter(this.item._source.tanggal_selesai)
-      }
-    },
   },
   data: () => ({
     countdown: 0,
@@ -98,15 +84,12 @@ export default {
       setProductId: 'product/setProduct',
       setUnitID: 'product/setUnit',
     }),
-    go(id, name, unit) {
+    go(id, name) {
       this.setProductId(id)
 
       this.$router.push(
         '/detail-iklan/' + name.toLowerCase().replace(/ /g, '-').replace(/[/]/g,'-')+'-'+id
       )
-      if (unit_motor_bekas != null) {
-        this.setUnitID(unit)
-      }
     },
     async getTB() {
       // console.log('ini iklannya', this.item)
@@ -151,8 +134,8 @@ export default {
     },
   },
   async created() {
-    await this.getTB()
-    console.log('ini data iklan', this.item)
+    // await this.getTB()
+    // console.log('ini data iklan', this.item)
   },
 }
 </script>
