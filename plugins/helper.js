@@ -17,6 +17,12 @@ const Helper = {
       }
       return "/img/unavailable.png"
     }
+    Vue.prototype.getImageUser = function (image) {
+      if (image != null && image.length > 0) {
+        return this.$config.baseURL + "/api/user/photo" + image
+      }
+      return "/img/unavailable.png"
+    }
 
     Vue.prototype.getThumb = function (image) {
       if (image != "null" && image != undefined && image.length > 0) {

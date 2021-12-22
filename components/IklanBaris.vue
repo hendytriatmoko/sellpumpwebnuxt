@@ -61,7 +61,7 @@
                   height="47"
                   class="white"
                   v-on="on"
-                  @click="doFavorit"
+                  @click="addKeranjang()"
                 >
                   <v-icon color="red" left>mdi-cart</v-icon>
                   Keranjang
@@ -73,12 +73,23 @@
               bottom
             >
               <template v-slot:activator="{ on }">
-                <v-btn text height="47" class="white" v-on="on" @click="edit">
-                  <v-icon left>mdi-pencil</v-icon> Edit
+                <v-btn text height="47" class="white" v-on="on" @click="goEdit()">
+                  <v-icon color="blue" left>mdi-pencil</v-icon> Edit
                 </v-btn>
               </template>
 
               <span>Edit</span>
+            </v-tooltip>
+            <v-tooltip
+              bottom
+            >
+              <template v-slot:activator="{ on }">
+                <v-btn @click="hapusIklan=true" text height="47" class="white" v-on="on">
+                  <v-icon color="red" left>mdi-delete</v-icon> Hapus
+                </v-btn>
+              </template>
+
+              <span>Hapus</span>
             </v-tooltip>
           </div>
           <v-btn
@@ -105,50 +116,39 @@
     </section>
 
     <hr class="my-3" />
-    <v-dialog v-model="dialog" width="500">
-      <v-card>
-        <v-card-title>
-          <span class="headline">Info Iklan</span>
-        </v-card-title>
+    <v-dialog v-model="hapusIklan" width="300">
+      <v-card class="rounded-lg">
+        <v-toolbar dense flat dark color="primary">
+          <v-toolbar-title>
+            <b>Hapus Iklan</b>
+          </v-toolbar-title>
+
+          <v-spacer></v-spacer>
+
+          <v-btn icon @click="hapusIklan = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+        </v-toolbar>
+
+        <br />
 
         <v-card-text>
-          <v-form ref="form" v-model="valid" lazy-validation>
-            <v-text-field
-              v-model="judul"
-              label="Judul Iklan"
-              outlined
-              dense
-              :rules="formRules"
-            ></v-text-field>
-
-            <v-text-field
-              v-model="deskripsi"
-              label="Deskripsi Iklan"
-              outlined
-              dense
-              :rules="formRules"
-            ></v-text-field>
-            <v-text-field
-              v-model.lazy="harga"
-              outlined
-              solo
-              dense
-              :rules="amountRules"
-              maxlength="11"
-              v-money="money"
-            ></v-text-field>
-          </v-form>
+          Apakah Anda Yakin Ingin Menghapus Iklan <b> {{ hits.nama_produk }} </b>?
         </v-card-text>
+        <v-divider />
 
         <v-card-actions>
-          <v-spacer></v-spacer>
+          <v-spacer />
           <v-btn
-            color="#20929D"
-            :disabled="!valid"
-            class="white--text"
-            @click="updateIklan"
+            class="text-capitalize"
+            color="secondary"
+            @click="hapusIklan = false"
+            text
           >
-            Ubah Info Iklan
+            <b>Cancel</b>
+          </v-btn>
+          <v-btn class="text-capitalize" @click="deleteIklan()" color="error" text>
+            <b>Hapus</b>
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -172,6 +172,7 @@ export default {
   data: () => ({
     tab: 0,
     hits:[],
+    hapusIklan: false,
     favorit: [],
     iklan: [],
     carousel: 0,
@@ -224,6 +225,7 @@ export default {
     pembayaranTerverifikasi: [],
     dibatalkanPenjual: [],
     menungguPembayaran: [],
+    DataToken:'',
   }),
   computed: {
     ...mapGetters({
@@ -239,89 +241,8 @@ export default {
       setSellertId: 'product/setSeller',
       setAuth: 'auth/set',
     }),
-    edit() {
-      this.dialog = true
-      this.judul = this.iklan.judul
-      this.deskripsi = this.iklan.deskripsi
-      this.harga = this.iklan.harga
-    },
-    async updateIklan() {
-      let formData = new FormData()
-      formData.set('judul', this.judul.trim())
-      formData.set('deskripsi', this.deskripsi.trim())
-      formData.set('id', this.id)
-      formData.set('harga', String(this.harga).replaceAll('.', ''))
-      if (this.iklan.id_mst_iklan_jenis == 1) {
-        await this.$axios
-          .put('/iklan/v3/iklan_hp_mokas_satuan', formData, {
-            headers: { Authorization: 'Bearer ' + this.user.token },
-          })
-          .then((response) => {
-            let { data } = response
-            this.setAlert({
-              status: true,
-              color: 'success',
-              text: data.api_message,
-            })
-            location.reload()
-          })
-          .catch((error) => {
-            let responses = error.response.data
-            this.setAlert({
-              status: true,
-              color: 'error',
-              text: responses.api_message,
-            })
-            if (error.response.status == 403) {
-              this.setAuth({})
-              this.$cookies.set('user', null)
-              this.$cookies.set('prevUrl', this.$route.path)
-              this.setAlert({
-                status: true,
-                color: 'error',
-                text: responses.api_message,
-              })
-              this.$router.push('/login')
-            }
-          })
-      } else {
-        await this.$axios
-          .put('/iklan/v3/iklan_tb_mokas_satuan', formData, {
-            headers: { Authorization: 'Bearer ' + this.user.token },
-          })
-          .then((response) => {
-            let { data } = response
-            this.setAlert({
-              status: true,
-              color: 'success',
-              text: data.api_message,
-            })
-            location.reload()
-          })
-          .catch((error) => {
-            let responses = error.response.data
-            this.setAlert({
-              status: true,
-              color: 'error',
-              text: responses.api_message,
-            })
-            if (error.response.status == 403) {
-              this.setAuth({})
-              this.$cookies.set('user', null)
-              this.$cookies.set('prevUrl', this.$route.path)
-              this.setAlert({
-                status: true,
-                color: 'error',
-                text: responses.api_message,
-              })
-              this.$router.push('/login')
-            }
-          })
-      }
-    },
     async getDtlIklan() {
       await this.$axios
-        await this.$axios
         .get('/produk/v1/produk/getproduk',{
           params: {
               id_produk: this.id,
@@ -336,15 +257,66 @@ export default {
           console.log(responses.api_message)
         })
     },
-    go(id, name) {
-      this.setSellertId(id)
+    goEdit() {
       this.$router.push(
-        '/seller/' + name.toLowerCase().replace(/ /g, '-') + '-' + id
+        '/seller/add-iklan?id='+this.id
       )
     },
+    async deleteIklan(){
+      let formData = new FormData()
+      formData.append('id_produk', this.hits.id_produk)
+      await this.$axios
+        .delete('/produk/v1/produk/delete', formData, {
+          headers: { Authorization: this.DataToken }
+        })
+        .then((response) => {
+            console.log(response)
+            this.setAlert({
+                status: true,
+                color: 'success',
+                text: 'Produk berhasil diHapus',
+            })
+            this.$router.push('/')
+        })
+        .catch((error) => {
+          let responses = error.response.data
+          this.setAlert({
+            status: true,
+            color: 'error',
+            text: responses.api_message,
+          })
+        })
+    },
+    async addKeranjang(){
+      let formData = new FormData()
+      formData.append('id_produk', this.hits.id_produk)
+      formData.append('id_user', this.user.id_user)
+
+      await this.$axios
+        .post('/keranjang/v1/keranjang/create', formData, {
+          headers: { Authorization: this.DataToken }
+        })
+        .then((response) => {
+            console.log(response)
+            this.setAlert({
+                status: true,
+                color: 'success',
+                text: 'Produk ditambahkan ke Keranjang',
+            })
+        })
+        .catch((error) => {
+          let responses = error.response.data
+          this.setAlert({
+            status: true,
+            color: 'error',
+            text: responses.api_message,
+          })
+        })
+    }
   },
   async created() {
     await this.getDtlIklan()
+    this.DataToken = this.$cookies.get("token");
   },
 }
 </script>

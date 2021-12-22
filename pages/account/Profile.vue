@@ -9,42 +9,18 @@
     </v-app-bar>
 
     <div style="max-width: 1240px; margin: 0 auto !important">
-      <v-alert
-        type="error"
-        outlined
-        prominent
-        dense
-        v-if="user.id_verifikasi_ktp == 4"
-      >
-        Anda belum melakukan Verifikasi KTP, lakukan verifikasi pada aplikasi
-        android SiMotor,
-        <a
-          href="https://play.google.com/store/apps/details?id=com.digitalnetworkasia.simotorbeta"
-        >
-          Download disini
-        </a>
-      </v-alert>
-      <v-alert
-        type="success"
-        outlined
-        prominent
-        dense
-        v-if="user.id_verifikasi_ktp == 3"
-      >
-        Akun Anda sudah terverifikasi
-      </v-alert>
       <v-row>
         <v-col cols="12" sm="3">
           <v-card rounded="lg" elevation="6" raised>
             <v-img
               src="/img/icons/people.webp"
               contain
-              v-if="user.photo == null"
+              v-if="user.foto == ''"
               width="300"
               height="200"
             ></v-img>
 
-            <v-img :src="getImage(user.photo)" alt="Avatar" v-else width="300"  height="200"></v-img>
+            <v-img :src="getImageUser(user.foto)" alt="Avatar" v-else width="300"  height="200"></v-img>
 
             <v-form ref="form" v-model="valid">
               <v-file-input
@@ -74,16 +50,6 @@
               </v-list-item-title>
             </v-list-item>
 
-            <v-list-item to="/ticket">
-              <v-list-item-title>
-                Tiket tersedia: {{ ticket.tersedia }}
-              </v-list-item-title>
-
-              <v-list-item-action>
-                <v-icon>mdi-chevron-right</v-icon>
-              </v-list-item-action>
-            </v-list-item>
-
             <v-list-item-group v-model="menu" color="primary" class="mt-2">
               <template v-for="(item, index) in menus">
                 <v-list-item :key="item.text" :to="item.route">
@@ -96,7 +62,6 @@
 
             <v-list-item
               to="/account/profile/report"
-              v-if="user.id_mst_user_type == 2"
             >
               <v-list-item-title>Report</v-list-item-title>
             </v-list-item>
@@ -127,8 +92,8 @@ export default {
     menu: 0,
     menus: [
       { text: 'Profil', route: '/account/profile/umum' },
-      // { text: 'Transaksi TB', route: '/account/profile/transaksitb' },
-      // { text: 'Daftar Aktivitas', route: '/account/profile/aktivitas' },
+      { text: 'Keranjang', route: '/account/profile/cart' },
+      { text: 'Pesanan', route: '/account/profile/aktivitas' },
       // { text: 'Rekening Bank', route: '/account/profile/rekening' },
       // { text: 'Iklan & Garasi', route: '/account/profile/iklan-garasi' },
       // { text: 'Tambah Unit', route: '/garage/add-unit' },
@@ -144,8 +109,8 @@ export default {
   }),
   computed: {
     ...mapGetters({
+      guest: 'auth/guest',
       user: 'auth/user',
-      ticket: 'ticket/ticket',
     }),
   },
   methods: {
@@ -157,22 +122,21 @@ export default {
       document.getElementById('fileid').click()
     },
     async saveData(param, value) {
-      if (this.valid) {
         let formData = new FormData()
 
         formData.set(param, value)
-        formData.set('id', this.user.id)
+        formData.set('id_user', this.user.id_user)
+        formData.set('nama', this.user.nama)
+        formData.set('no_telp', this.user.no_telp)
 
         await this.$axios
-          .put('/user/v3/user', formData, {
-            headers: { Authorization: 'Bearer ' + this.user.token },
-          })
+          .put('/user/v1/user/update', formData)
           .then((response) => {
             let { data } = response
             this.setAlert({
               status: true,
               color: 'success',
-              text: data.api_message,
+              text: 'Foto berhasil diupdate',
             })
             this.setAuth(data.data[0])
             this.$cookies.set('user', JSON.stringify(data.data[0]))
@@ -197,14 +161,10 @@ export default {
               this.$router.push('/login')
             }
           })
-      } else {
-        this.setAlert({
-          status: true,
-          color: 'error',
-          text: 'Terdapat kesalahan pengisian',
-        })
-      }
     },
+  },
+  async created() {
+    this.DataToken = this.$cookies.get("token");
   },
 }
 </script>

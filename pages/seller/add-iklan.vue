@@ -30,10 +30,7 @@
               <v-list>
                 <v-list-item>
                   <v-list-item-title>
-                    <b> Pilih Foto Motor Anda </b>
-                    <v-list-item-subtitle style="color:red">
-                      Masukkan minimal 2(dua) foto
-                    </v-list-item-subtitle>
+                    <b> Pilih Foto Produk Anda </b>
                   </v-list-item-title>
                 </v-list-item>
                 <center>
@@ -62,7 +59,9 @@
                       <v-tooltip bottom>
                           <template v-slot:activator="{ on }">
                           <v-img
-                              :src="item.previewUrl"
+                              :src="item.previewUrl.includes('/produk/')
+                                ? getImageMerk(item.previewUrl)
+                                : item.previewUrl"
                               contain
                               :width="$vuetify.breakpoint.xsOnly ? 130 :150"
                               :height="$vuetify.breakpoint.xsOnly ? 130 : 150"
@@ -185,8 +184,17 @@
                     color="#20929D"
                     class="white--text"
                     @click="storeIklan()"
+                    v-if="$route.query.id == undefined"
                   >
                     Iklankan
+                  </v-btn>
+                  <v-btn
+                    v-else
+                    color="#20929D"
+                    class="white--text"
+                    @click="storeIklan()"
+                  >
+                    Update
                   </v-btn>
                 </v-card-actions>
                 <br />
@@ -399,9 +407,12 @@ export default {
       formData.append('deskripsi_produk', this.produk[0].deskripsi_produk)
       formData.append('stok_produk', parseInt(this.produk[0].stok_produk))
       formData.append('id_kategori_produk', parseInt(this.produk[0].id_kategori_produk))
-      formData.append('gambar_produk', this.list[0].foto)
+      if (this.list[0].foto != null) {
+        formData.append('gambar_produk', this.list[0].foto)
+      }
 
-      await this.$axios
+      if (this.$route.query.id == undefined) {
+        await this.$axios
         .post('/produk/v1/produk/create', formData, {
           headers: { Authorization: this.DataToken }
         })
@@ -422,6 +433,35 @@ export default {
             text: responses.api_message,
           })
         })
+      }else if (this.$route.query.id != undefined) {
+
+      formData.append('id_produk', this.produk[0].id_produk)
+
+        await this.$axios
+        .put('/produk/v1/produk/update', formData, {
+          headers: { Authorization: this.DataToken }
+        })
+        .then((response) => {
+            console.log(response)
+            this.setAlert({
+                status: true,
+                color: 'success',
+                text: 'Produk berhasil diUpdate',
+            })
+            this.$router.push(
+              '/detail-iklan/' + this.produk[0].nama_produk.toLowerCase().replace(/ /g, '-').replace(/[/]/g,'-')+'-'+this.produk[0].id_produk
+            )
+        })
+        .catch((error) => {
+          let responses = error.response.data
+          this.setAlert({
+            status: true,
+            color: 'error',
+            text: responses.api_message,
+          })
+        })
+      }
+      
     },
     async xProduk(){
       this.produk = [
@@ -445,14 +485,38 @@ export default {
           updated_at: "",
         }
       ]
-    }
+    },
+    async getDtlIklan(id) {
+      await this.$axios
+        await this.$axios
+        .get('/produk/v1/produk/getproduk',{
+          params: {
+              id_produk: id,
+            },
+        })
+        .then((response) => {
+          this.produk = []
+          let hits = response.data.data[0]
+          this.produk = [hits]
+          this.list[0].previewUrl = this.produk[0].gambar_produk
+          console.log('produk', this.produk)
+        })
+        .catch((error) => {
+          let responses = error.response.data
+          console.log(responses.api_message)
+        })
+    },
     
   },
   async created() {
     console.log('data produk pra', this.produk[0])
     await this.getKategori()
     await this.getMerk()
+    console.log('rote', this.$route.query.id)
     this.DataToken = this.$cookies.get("token");
+    if (this.$route.query.id != undefined) {
+      await this.getDtlIklan(this.$route.query.id)
+    }
     if (this.produk[0].kategori != '') {
       this.listSubkategori = []
         for (let i = 0; i < this.listKategori.length; i++) {
