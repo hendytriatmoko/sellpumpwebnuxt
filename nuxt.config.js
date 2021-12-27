@@ -47,6 +47,7 @@ export default {
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     { src: '~plugins/helper' },
+    { src: "~plugins/rajaongkir" },
     { src: '~/plugins/vuex-persist', ssr: false },
     { src: '~/plugins/vue-image-upload.js', mode: 'client' },
     { src: '~/plugins/date-time-picker.js', mode: 'client' },

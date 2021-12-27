@@ -2,7 +2,7 @@
   <div class="d-flex align-center">
     <v-tooltip bottom>
       <template v-slot:activator="{ on, attrs }">
-        <v-btn icon to="/account/profile/notifikasi">
+        <v-btn icon to="/account/profile/cart">
             <v-icon v-bind="attrs" v-on="on" color="#000000">mdi-cart-variant</v-icon>
         </v-btn>
       </template>
