@@ -49,6 +49,7 @@
                 </div>
             </v-card>
         <br />
+        <v-btn @click="inv()">cek</v-btn>
         <v-card
           rounded="lg"
           elevation="6"
@@ -341,6 +342,8 @@ export default {
     profil:[],
     ppn:false,
     pesanPembeli:'',
+    dataInv:[],
+    distinctInv:[],
   }),
   computed: {
     ...mapGetters({
@@ -585,7 +588,49 @@ export default {
       } else {
         console.log('jadi')
       }
-    }
+    },
+    async cekInv(){
+      var params = new URLSearchParams();
+      let bulan = new Date().getMonth()+1;
+      let tahun = new Date().getFullYear();
+
+      if (bulan == 11 || bulan == 12) {
+        params.append("created_at", tahun+"-"+bulan);
+      }else{
+        params.append("created_at", tahun+"-"+"0"+bulan);
+      }      
+
+      var request = {
+        params: params,
+        headers: { Authorization: this.DataToken }
+      };
+      this.$axios
+        .get("/keranjang/v1/pesanan/getpesanan", request)
+        .then(response => {
+          this.dataInv = response.data.data
+          console.log('dataInv nih', this.dataInv)
+          this.distinctInv = [
+              ...new Map(this.dataInv.map((item) => [item["no_inv"], item])).values(),
+          ];
+          
+          console.log("distinctInv nih", this.distinctInv);
+        })
+        .catch(error => {
+          console.log(error.response.data.api_message);
+        });
+    },
+    async inv(){
+      let gsp = 'INV-GSP'
+      let bulan = new Date().getMonth()+1;
+      let tahun = new Date().getFullYear();
+      let intPesanan = this.distinctInv.length+1
+      let date = new Date()
+      console.log('bulan', bulan)
+      console.log('tahun', tahun)
+      console.log('date', date)
+      console.log('date search', tahun+'-'+bulan)
+      console.log('inv', bulan+'/'+intPesanan+'/'+gsp+'/'+tahun)
+    },
     
   },
   async created() {
@@ -594,6 +639,7 @@ export default {
     await this.getKeranjang()
     this.getProvinsi()
     this.getProfil()
+    await this.cekInv()
   },
 }
 </script>
