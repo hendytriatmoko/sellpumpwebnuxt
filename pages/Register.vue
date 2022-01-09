@@ -56,11 +56,14 @@
               v-model="password"
               dense
               :rules="passwordRules"
+              :append-icon="show ? 'mdi-eye-off' : 'mdi-eye'"
+              :type="show ? 'password' : 'text'"
               placeholder="Password"
               prepend-inner-icon="mdi-lock"
               outlined
               counter="35"
               :maxlength="35"
+              @click:append="show = !show"
             ></v-text-field>
           </v-col>
 
@@ -208,6 +211,7 @@ export default {
     phone: '',
     email: '',
     password: '',
+    show: 'mdi-eye-off',
     nameRules: [
       (v) => !!v || 'Nama Lengkap wajib diisi',
       (v) => v.length >= 2 || 'Min 2 karakter',
@@ -218,7 +222,7 @@ export default {
       (v) => v && v.length >= 10,
     ],
     emailRules: [
-      (v) => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'E-mail harus aktif'
+      (v) => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'E-mail harus valid'
     ],
     passwordRules: [
       (v) => v && v.length >= 8 || 'Password minimal 8 karakter'

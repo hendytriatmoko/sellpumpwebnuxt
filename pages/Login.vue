@@ -32,12 +32,15 @@
             ></v-text-field>
             <v-text-field
               v-model="password"
-              dense
+              :append-icon="show ? 'mdi-eye-off': 'mdi-eye'"
+              :type="show ? 'password' : 'text'"
               :rules="passwordRules"
+              dense
               placeholder="Password"
               prepend-inner-icon="mdi-lock"
               outlined
               autofocus
+              @click:append="show = !show"
             ></v-text-field>
           </v-col>
 
@@ -185,11 +188,12 @@ export default {
     password: '',
     expired: false,
     lupa_password: false,
+    show: 'false',
     emailRules: [
-      (v) => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'E-mail must be valid'
+      (v) => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'E-mail harus valid'
     ],
     passwordRules: [
-      (v) => v && v.length >= 3 || 'Password must be valid'
+      (v) => v && v.length >= 3 || 'Kata sandi harus valid',
     ],
     valid: true,
   }),

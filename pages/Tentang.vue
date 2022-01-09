@@ -35,13 +35,10 @@
           <v-card flat>
             <v-card-text class="black--text">
               <p>
-                SiMotor adalah platform atau sarana bertemunya penjual dan
-                pembeli untuk proses penjualan motor, baik motor baru maupun
-                motor bekas. Di SiMotor pembeli bisa mendapatkan motor dengan
-                iklan baris ataupun dapat melakukan penawaran melalui layanan
-                tawar bersama.
+                Griya Sell Pump adalah Perusahaan yang menjual berbagai macam pompa air yang
+                berkualitas dan memiliki daya saing yang tinggi. 
               </p>
-              <p>Versi Aplikasi Anda saat ini adalah 1.13.0</p>
+              <p>Versi Aplikasi Anda saat ini adalah 1.1.0</p>
             </v-card-text>
           </v-card>
         </v-tab-item>
