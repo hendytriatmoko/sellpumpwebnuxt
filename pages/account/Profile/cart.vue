@@ -49,7 +49,6 @@
                 </div>
             </v-card>
         <br />
-        <v-btn @click="inv()">cek</v-btn>
         <v-card
           rounded="lg"
           elevation="6"
@@ -161,7 +160,7 @@
                     item-value="subdistrict_id"
                     dense
                     label="Kecamatan"
-                    @change="getCost()"
+                    @change="getCost(),getSubdistrictDetail()"
                 ></v-autocomplete>
               </v-col>
             </v-row>
@@ -265,6 +264,9 @@
                   <v-btn
                     @click="checkCart = false,xCheckout()"
                   >
+                  <!-- <v-btn
+                    @click="inv()"
+                  > -->
                     Cancel
                   </v-btn>
                   <v-btn
@@ -335,6 +337,7 @@ export default {
     idCity:'',
     kecamatan:[],
     idKecamatan:'',
+    detailKecamatan:[],
     cost:[],
     pickCost:[],
     indexs:99,
@@ -344,6 +347,7 @@ export default {
     pesanPembeli:'',
     dataInv:[],
     distinctInv:[],
+    nomorInvoice:'',
   }),
   computed: {
     ...mapGetters({
@@ -454,6 +458,21 @@ export default {
           let kecamatan = JSON.parse(data_kecamatan)
           this.kecamatan = kecamatan.rajaongkir.results
           console.log('kecamatan nih', this.kecamatan)
+        })      
+    },
+    async getSubdistrictDetail(){
+      var params = new URLSearchParams();
+      params.append("id_city", this.idCity);
+      params.append("id_kecamatan", this.idKecamatan);
+      var request = {
+        params: params,
+      };
+      this.$axios('http://sellpump.xyz:2299/sellpump/api/keranjang/v1/rajaongkir/getsubdistrict',request
+      ).then( ({ data }) => {
+          let data_kecamatan = data.data
+          let kecamatan = JSON.parse(data_kecamatan)
+          this.detailKecamatan = kecamatan.rajaongkir.results
+          console.log('kecamatan detail', this.detailKecamatan)
         })      
     },
     async getCost(){
@@ -583,10 +602,10 @@ export default {
         if (this.profil == undefined) {
           this.akunProfile = true
         } else {
-          console.log('jadi')
+          this.cekInv()
         }
       } else {
-        console.log('jadi')
+        this.cekInv()
       }
     },
     async cekInv(){
@@ -594,7 +613,7 @@ export default {
       let bulan = new Date().getMonth()+1;
       let tahun = new Date().getFullYear();
 
-      if (bulan == 11 || bulan == 12) {
+      if (bulan == 11 || bulan == 12 || bulan == 10) {
         params.append("created_at", tahun+"-"+bulan);
       }else{
         params.append("created_at", tahun+"-"+"0"+bulan);
@@ -614,6 +633,7 @@ export default {
           ];
           
           console.log("distinctInv nih", this.distinctInv);
+          this.inv()
         })
         .catch(error => {
           console.log(error.response.data.api_message);
@@ -629,17 +649,118 @@ export default {
       console.log('tahun', tahun)
       console.log('date', date)
       console.log('date search', tahun+'-'+bulan)
-      console.log('inv', bulan+'/'+intPesanan+'/'+gsp+'/'+tahun)
+      // console.log('inv', bulan+'/'+intPesanan+'/'+gsp+'/'+tahun)
+      this.nomorInvoice = bulan+'/'+intPesanan+'/'+gsp+'/'+tahun
+      console.log('inv', this.nomorInvoice)
+      this.postPesanan()
     },
+    async postPesanan(){
+      for (let i = 0; i < this.checkout.length; i++) {
+        let formData = new FormData()
+  
+        formData.append('no_inv', this.nomorInvoice)
+        formData.append('id_produk', this.checkout[i].data.id_produk)
+        formData.append('kuantitas', this.checkout[i].unit)
+        formData.append('harga', this.checkout[i].jumlah)
+        formData.append('berat', this.checkout[i].weight)
+        formData.append('id_user', this.user.id_user)
+  
+        await this.$axios
+          .post('/keranjang/v1/pesanan/create', formData, {
+            headers: { Authorization: this.DataToken }
+          })
+          .then((response) => {
+              console.log(response)
+              
+          })
+          .catch((error) => {
+            let responses = error.response.data
+            this.setAlert({
+              status: true,
+              color: 'error',
+              text: responses.api_message,
+            })
+          })
+      }
+      this.postInvoice()
+    },
+    async postInvoice(){
+      // console.log('no_inv', this.nomorInvoice)
+      // console.log('id_user', this.user.id_user)
+      // console.log('total', this.total)
+      // if (this.ppn == true) {
+      //   console.log('ppn', 'Y')
+      //   console.log('nilai_ppn', this.biayaPPN)
+      // } else {
+      //   console.log('ppn', 'N')
+      //   console.log('nilai_ppn', '0')
+      // }
+      
+      // console.log('ongkos kirim', this.biayaPengiriman)
+      // console.log('jumlah pembayaran', this.totalPembayaran)
+      // console.log('id_status_pembayaran', '1')
+      // console.log('nama eks', this.pickCost.name)
+      // console.log('layanan eks', this.pickCost.service)
+      // console.log('etd', this.pickCost.etd)
+      // console.log('id_status_pengiriman', '1')
+      // console.log('detail_alamat', this.detailKecamatan.province+','+this.detailKecamatan.city+','+this.detailKecamatan.subdistrict_name+' - '+this.detailAlamat)
+      // console.log('pesan_pembeli', this.pesanPembeli)
+
+      let formData = new FormData()
+  
+        formData.append('no_inv', this.nomorInvoice)
+        formData.append('id_user', this.user.id_user)
+        formData.append('total', this.total)
+        if (this.ppn == true) {
+          formData.append('ppn', 'Y')
+          formData.append('nilai_ppn', this.biayaPPN)
+        } else {
+          formData.append('ppn', 'N')
+          formData.append('nilai_ppn', 0)
+        }
+
+        formData.append('ongkos_kirim', this.biayaPengiriman)
+        formData.append('jumlah_pembayaran', this.totalPembayaran)
+        formData.append('id_status_pembayaran', '1')
+        formData.append('nama_ekspedisi', this.pickCost.name)
+        formData.append('layanan_ekspedisi', this.pickCost.service)
+        formData.append('etd', this.pickCost.etd)
+        formData.append('id_status_pengiriman', '1')
+        formData.append('detail_alamat', this.detailKecamatan.province+','+this.detailKecamatan.city+','+this.detailKecamatan.subdistrict_name+' - '+this.detailAlamat)
+        formData.append('pesan_pembeli', this.pesanPembeli)
+  
+        await this.$axios
+          .post('/keranjang/v1/invoice/create', formData, {
+            headers: { Authorization: this.DataToken }
+          })
+          .then((response) => {
+              console.log(response)
+              this.setAlert({
+                status: true,
+                color: 'success',
+                text: 'Pesanan berhasil dibuat',
+              })
+            this.checkCart = false
+            this.xCheckout()
+            this.$router.push('/account/profile/pesanan')
+          })
+          .catch((error) => {
+            let responses = error.response.data
+            this.setAlert({
+              status: true,
+              color: 'error',
+              text: responses.api_message,
+            })
+          })
+    }
     
   },
   async created() {
     this.DataToken = this.$cookies.get("token");
-    console.log('user', this.user)
+    console.log('user lll', this.user)
     await this.getKeranjang()
     this.getProvinsi()
     this.getProfil()
-    await this.cekInv()
   },
 }
 </script>

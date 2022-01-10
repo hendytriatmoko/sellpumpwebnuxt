@@ -93,7 +93,7 @@ export default {
     menus: [
       { text: 'Profil', route: '/account/profile/umum' },
       { text: 'Keranjang', route: '/account/profile/cart' },
-      { text: 'Pesanan', route: '/account/profile/aktivitas' },
+      { text: 'Pesanan', route: '/account/profile/pesanan' },
       // { text: 'Rekening Bank', route: '/account/profile/rekening' },
       // { text: 'Iklan & Garasi', route: '/account/profile/iklan-garasi' },
       // { text: 'Tambah Unit', route: '/garage/add-unit' },
