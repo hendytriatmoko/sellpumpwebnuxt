@@ -8,17 +8,14 @@
         show-arrows
         hide-delimiter-background
         :show-arrows-on-hover="$vuetify.breakpoint.xs ? false : true"
-        height="250"
+        height="400"
         align="center"
       >
         <v-carousel-item
           v-for="(item, index) in banners"
           :key="index"
-          :src="getImage(item.foto_web)"
-          reverse-transition="fade-transition"
-          transition="fade-transition"
-          :to="'/banner/' + item.id"
-          max-height="250"
+          :src="item.foto"
+          max-height="400"
           max-width="1920"
         ></v-carousel-item>
       </v-carousel>
@@ -33,13 +30,11 @@
             <v-container>
               <div class="d-flex align-center justify-space-between ml-4 my-2">
                 <h2>Produk Terlaris</h2>
-
-                <nuxt-link to="/jadwal"  style="color: #20929D"> Lihat Semua </nuxt-link>
               </div>
 
-              <div v-if="jadwal.length > 0">
+              <div v-if="hitsTerlaris.length > 0">
                 <div class="ml-4">
-                  Rekomendasi produk produk terlaris dari Griya Seller Pump
+                  Rekomendasi produk produk terlaris dari Griya Saller Pump
                 </div>
 
                 <div class="scrolling-wrapper-flexbox text-center">
@@ -47,33 +42,23 @@
                   <v-card
                     class="ma-2 ml-4"
                     rounded="xl"
-                    v-for="(item, index) in jadwal"
+                    v-for="(item, index) in hitsTerlaris"
                     contain
                     :key="index"
                     @click="
-                      go(
-                        item.id_app_user,
-                        item.nama,
-                        moment(item.date).format('YYYY-MM-DD')
-                       
-                      )
-                    "
-                  >
+                      go(item.id_produk, item.nama_produk)"
+                    >
                     <v-list>
                       <v-list-item>
                         <v-list-item-avatar size="70">
-                          <v-img
-                            src="/img/icons/people.webp"
-                            contain
-                            v-if="item.photo == 'null'"
-                          ></v-img>
 
-                          <v-img :src="getImage(item.photo)" v-else></v-img>
+                          <v-img :src="getImageProduk(item.gambar_produk)"></v-img>
                         </v-list-item-avatar>
 
                         <v-list-item-title class="d-flex">
                           <div class="teal white--text pa-2 rounded-xl" >
-                            {{ moment(item.date).add(utc, 'h').format('DD MMM, YYYY') }}
+                            Rp
+                            {{ Number(item.harga_produk).toLocaleString('id-ID') }}
                           </div>
                         </v-list-item-title>
                       </v-list-item>
@@ -82,18 +67,10 @@
                     <v-divider></v-divider>
 
                     <div class="d-flex align-center justify-center">
-                      <v-icon
-                        color="#20929D"
-                        small
-                        class="mr-1"
-                        v-if="item.id_mst_user_type == 2"
-                      >
-                        mdi-check-decagram
-                      </v-icon>
-                      <b>{{ item.nama }}</b>
+                      <b>{{ item.kategori }} - {{ item.sub_kategori }}</b>
                     </div>
 
-                    <div>{{ item.total_iklan }} Iklan Tayang</div>
+                    <div>{{ item.nama_produk }}</div>
                   </v-card>
                 </div>
               </div>
@@ -107,16 +84,15 @@
 
                     <v-list-item-content>
                       <v-list-item-title>
-                        Tidak ada jadwal Tawar Bersama
+                        Belum ada Produk terlaris
                       </v-list-item-title>
 
                       <v-list-item-subtitle>
-                        Maaf, saat ini belum ada jadwal Tawar Bersama.
+                        Maaf, saat ini belum ada Produk terlaris.
                       </v-list-item-subtitle>
 
                       <v-list-item-subtitle>
-                        Selalu cek jadwal disini untuk mengikuti iklan Tawar
-                        Bersama
+                        Selalu cek Produk terlaris disini untuk mengetahui daftar Produk terlaris
                       </v-list-item-subtitle>
                     </v-list-item-content>
                   </v-list-item>
@@ -132,9 +108,9 @@
               <v-list-item-title><b>Artikel Terbaru</b></v-list-item-title>
 
               <v-list-item-action>
-                <a href="https://blog.simotor.id" target="_blank">
+                <nuxt-link to="/list-artikel">
                   <b  style="color: #20929D">Semua</b>
-                </a>
+                </nuxt-link>
               </v-list-item-action>
             </v-list-item>
 
@@ -144,19 +120,19 @@
               class="mb-2 mx-2"
               v-for="item in artikel"
               :key="item.id"
-              :href="'https://blog.simotor.id/blog?id=' + item.id"
+              :to="'/artikel/'+item.id_artikel"
             >
               <v-list-item dense>
                 <v-list-item-avatar tile>
-                  <v-img :src="getThumb(item.cover_image)"></v-img>
+                  <v-img :src="getImageProduk(item.gambar_artikel)"></v-img>
                 </v-list-item-avatar>
 
                 <v-list-item-content>
                   <v-list-item-title>
-                    {{ item.title }}
+                    {{ item.judul_artikel }}
                   </v-list-item-title>
 
-                  <v-list-item-subtitle>by SiMotor</v-list-item-subtitle>
+                  <v-list-item-subtitle>by Admin</v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>
             </v-card>
@@ -172,7 +148,7 @@
         <div class="d-flex flex-wrap align-center">
           <h2 class="mr-4">Rekomendasi Baru</h2>
 
-          <nuxt-link to="/search?q=&category=1&order=posting_terbaru&tb=false">
+          <nuxt-link to="/katalog">
             <b  style="color: #20929D">Lihat semua</b>
           </nuxt-link>
         </div>
@@ -257,7 +233,32 @@ export default {
     
   },
   data: () => ({
-    banners: [],
+    banners: [
+      {
+        id:1,
+        foto:'/img/banner1.PNG'
+      },
+      {
+        id:2,
+        foto:'/img/banner2.PNG'
+      },
+      {
+        id:3,
+        foto:'/img/banner3.PNG'
+      },
+      {
+        id:4,
+        foto:'/img/banner4.PNG'
+      },
+      {
+        id:5,
+        foto:'/img/banner5.PNG'
+      },
+      {
+        id:6,
+        foto:'/img/banner6.PNG'
+      },
+    ],
     categories: [
       {
         title: 'Tawar Bersama',
@@ -293,6 +294,9 @@ export default {
     total: 0,
     lengthPage: 0,
     time: '',
+    listPesanan:[],
+    unikTerlaris:[],
+    hitsTerlaris:[],
   }),
   computed: {
     ...mapGetters({
@@ -342,7 +346,7 @@ export default {
     },
     async getArtikel() {
       await this.$axios
-        .get('/produk/v3/berita/umum', {
+        .get('/produk/v1/artikel/getartikel', {
           params: {
             limit: 4,
           },
@@ -350,6 +354,7 @@ export default {
         .then((response) => {
           let { data } = response.data
           this.artikel = data
+          console.log('artikel', this.artikel)
         })
         .catch((error) => {
           let responses = error.response.data
@@ -409,18 +414,84 @@ export default {
           console.log(responses.api_message)
         })
     },
-    go(id, name, date) {
-      this.setSellertId(id)
+    go(id, name) {
+      this.setProductId(id)
+
       this.$router.push(
-        '/seller/' + name.toLowerCase().replace(/ /g, '-') +'-'+id+ '?tgl=' + date
+        '/detail-iklan/' + name.toLowerCase().replace(/ /g, '-').replace(/[/]/g,'-')+'-'+id
       )
+    },
+    async getPesanan(){
+      var params = new URLSearchParams();    
+
+      var request = {
+        params: params,
+        headers: { Authorization: this.DataToken }
+      };
+      this.$axios
+        .get("/keranjang/v1/pesanan/getpesanan", request)
+        .then(response => {
+          this.listPesanan = response.data.data
+          let distinctPesanan = [
+              ...new Map(this.listPesanan.map((item) => [item["id_produk"], item])).values(),
+          ];
+          let terlaris = []
+          for (let k = 0; k < distinctPesanan.length; k++) {
+            terlaris.push(
+              {
+                id_produk:distinctPesanan[k].id_produk,
+                count:0
+              }
+            )
+          }
+          for (let x = 0; x < this.listPesanan.length; x++) {
+            for (let y = 0; y < terlaris.length; y++) {
+              if (terlaris[y].id_produk == this.listPesanan[x].id_produk) {
+                terlaris[y].count += 1
+              }
+            }
+          }
+          this.unikTerlaris = terlaris.sort((a,b) =>  b.count-a.count )
+          this.getDataTerlaris()
+          console.log("distinctInv nih", distinctPesanan);
+          console.log("terlaris", this.unikTerlaris);
+          console.log('pesanan', this.listPesanan)
+        })
+        .catch(error => {
+          console.log(error.response.data.api_message);
+        });
+    },
+    async getDataTerlaris(){
+      this.hitsTerlaris = []
+      for (let i = 0; i < this.unikTerlaris.length; i++) {
+        if (i < 5) {
+          var params = new URLSearchParams();
+
+          params.append("id_produk", this.unikTerlaris[i].id_produk);
+
+          var request = {
+            params: params,
+          };
+          await this.$axios
+            .get('/produk/v1/produk/getproduk', request)
+            .then((response) => {
+                // this.listIklan = response.data.data[0]
+                this.hitsTerlaris.push(response.data.data[0])
+            })
+            .catch((error) => {
+                let responses = error.response.data
+                console.log(responses.api_message)
+            })
+        }
+      }
+      console.log('hits terlari', this.hitsTerlaris)
     },
   },
   async created() {
-    // await this.getBanners()
-    // await this.getJadwalTB()
-    // await this.getArtikel()
+    this.DataToken = this.$cookies.get("token");
+    await this.getArtikel()
     this.getIklanTerbaru()
+    await this.getPesanan()
     // await this.getTbBerlangsung()
     // await this.getIklanPromo()
     this.setProductId({})

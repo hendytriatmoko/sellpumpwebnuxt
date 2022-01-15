@@ -619,6 +619,7 @@ export default {
                 if (this.listKategori[j].kategori == distincKategori[i].name) {
                     let ind = j
                     distincKategori[i].children.push({
+                        id: j,
                         name:this.listKategori[ind].sub_kategori
                     })
                 }

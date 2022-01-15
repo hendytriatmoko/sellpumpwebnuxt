@@ -302,7 +302,7 @@
             </v-alert>
             <br>
           </v-card>
-      </v-dialog>
+        </v-dialog>
   </div>
 </template>
 

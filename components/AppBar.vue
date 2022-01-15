@@ -95,7 +95,6 @@
             v-bind="attrs"
             v-on="on"
             @keyup="doSearch"
-            @keyup.enter="go"
           ></v-text-field>
           </label>          
         </template>
@@ -138,13 +137,13 @@ export default {
     categories: [
       {
         id: 1,
-        title: 'Produk Terlaris',
-        route: '/iklantb',
+        title: 'Katalog Produk',
+        route: '/katalog',
       },
       {
         id: 2,
-        title: 'Katalog',
-        route: '/kategori-ib',
+        title: 'List Artikel',
+        route: '/list-artikel',
       },
     ],
     jual: [
@@ -178,9 +177,6 @@ export default {
   methods: {
     doSearch() {
       this.$refs.childComponent.doSearch()
-    },
-    go() {
-      this.$refs.childComponent.hasilPencarian()
     },
   },
 }

@@ -20,16 +20,16 @@
             <v-img
               src="/img/icons/people.webp"
               contain
-              v-if="user.photo == null"
+              v-if="user.photo == ''"
             ></v-img>
-            <v-img :src="getImage(user.photo)" alt="Avatar" v-else></v-img>
+            <v-img :src="getImageUser(user.foto)" alt="Avatar" v-else></v-img>
           </v-avatar>
         </v-btn>
       </template>
 
-      <v-card rounded="lg" raised width="400">
+      <v-card rounded="lg" raised width="200">
         <v-row no-gutters>
-          <v-col cols="6">
+          <v-col cols="12">
             <v-card to="/account/profile/umum" color="#ffffff" outlined >
             <v-list dense>
               <v-list-item >
@@ -37,11 +37,11 @@
                   <v-img
                     src="/img/icons/people.webp"
                     contain
-                    v-if="user.photo == null"
+                    v-if="user.photo == ''"
                   ></v-img>
 
                   <v-img
-                    :src="getImage(user.photo)"
+                    :src="getImageUser(user.foto)"
                     alt="Avatar"
                     v-else
                   ></v-img>
@@ -50,29 +50,8 @@
                 <v-list-item-content>
                   <v-list-item-title
                     class="d-flex align-center"
-                    v-if="user.nama.length < 10"
                   >
-                    <v-icon
-                      color="#20929D"
-                      small
-                      class="mr-1"
-                      v-if="user.id_mst_user_type == 2"
-                    >
-                      mdi-check-decagram
-                    </v-icon>
                     {{ user.nama }}
-                  </v-list-item-title>
-                  
-                  <v-list-item-title class="d-flex align-center" v-else>
-                    <v-icon
-                      color="#20929D"
-                      small
-                      class="mr-1"
-                      v-if="user.id_mst_user_type == 2"
-                    >
-                      mdi-check-decagram
-                    </v-icon>
-                    {{ user.nama.substring(0, 10) + '..' }}
                   </v-list-item-title>
                   <!-- <v-list-item-subtitle
                     class="red--text"
@@ -87,221 +66,6 @@
               </v-list-item>
             </v-list>
             </v-card>
-          </v-col>
-
-          <v-col cols="6">
-            <v-card color="#20929D" outlined class="mr-2" to="/ticket">
-              <v-list dense>
-                <v-list-item>
-                  <v-list-item-avatar tile size="30">
-                    <v-img src="/img/icons/ic_tiket.webp"></v-img>
-                  </v-list-item-avatar>
-
-                  <v-list-item-title>
-                    Tiket Saya: {{ ticket.tersedia }}
-                  </v-list-item-title>
-                </v-list-item>
-              </v-list>
-            </v-card>
-          </v-col>
-        </v-row>
-        <!-- <v-col cols="12">
-            <v-card color="#FFFFFF;" outlined class="mr-2">
-              <v-list dense>
-                <v-list-item to="/account/profile/umum" replace>
-                  <v-list-item-avatar tile size="30">
-                    <v-img src="/img/verifikasi_akun.png"></v-img>
-                  </v-list-item-avatar>
-                  <v-list-item-title>
-                    <v-list-item-subtitle style="color:#EB5757;">
-                      Akun kamu belum ter-verifikasi
-                    </v-list-item-subtitle>
-                    <v-list-item-subtitle style="font-size:12px">
-                      Verifikasi untuk kemudahan mendapatkan tiket
-                    </v-list-item-subtitle>                  
-                  </v-list-item-title>
-                  <v-icon> mdi-chevron-right </v-icon>
-                </v-list-item>
-              </v-list>
-            </v-card>
-        </v-col> -->
-        <!-- <v-col cols="12"  v-if="user.id_verifikasi_ktp == 4">
-            <v-card color="#FFFFFF;" outlined class="mr-2" >
-              <v-list dense>
-                <v-list-item to="/account/profile/umum" replace>
-                  <v-list-item-avatar tile size="30">
-                    <v-icon color="red"> mdi-account-alert </v-icon>
-                  </v-list-item-avatar>
-                  <v-list-item-title>
-                    <v-list-item-subtitle style="color:#EB5757;">
-                      Akun Anda belum ter-verifikasi
-                    </v-list-item-subtitle>
-                    <v-list-item-subtitle style="font-size:12px">
-                      Verifikasi untuk kemudahan mendapatkan tiket
-                    </v-list-item-subtitle>                  
-                  </v-list-item-title>
-                  <v-icon> mdi-chevron-right </v-icon>
-                </v-list-item>
-              </v-list>
-            </v-card>
-        </v-col> -->
-
-         <!-- <v-col cols="12"   v-if="user.id_verifikasi_ktp == 3">
-            <v-card color="#FFFFFF;" outlined class="mr-2" >
-              <v-list dense>
-                <v-list-item to="/account/profile/umum" replace>
-                  <v-list-item-avatar tile size="30">
-                    <v-icon style="color:#20929D;"> mdi-account-check </v-icon>
-                  </v-list-item-avatar>
-                  <v-list-item-title>
-                    <v-list-item-subtitle style="color:#20929D;">
-                      Akun Anda sudah ter-verifikasi
-                    </v-list-item-subtitle>
-                               
-                  </v-list-item-title>
-                  <v-icon> mdi-chevron-right </v-icon>
-                </v-list-item>
-              </v-list>
-            </v-card>
-        </v-col> -->
-
-        <v-row no-gutters>
-          <v-col cols="6">
-            <v-list dense>
-              <v-list-item to="/account/profile/iklan-garasi" replace>
-                <v-list-item-avatar tile size="30">
-                  <v-img src="/img/icons/iklangarasi.webp"></v-img>
-                </v-list-item-avatar>
-                <v-list-item-subtitle>Iklan & Garasi</v-list-item-subtitle>
-                <v-icon> mdi-chevron-right </v-icon>
-              </v-list-item>
-
-              <v-divider> </v-divider>
-
-              <v-list-item to="/seller/add">
-                <v-list-item-avatar tile size="30">
-                  <v-img src="/img/icons/ic_tmbhikln.webp"></v-img>
-                </v-list-item-avatar>
-                <v-list-item-subtitle>Tambah Iklan</v-list-item-subtitle>
-                <v-icon> mdi-chevron-right </v-icon>
-              </v-list-item>
-
-              <v-divider> </v-divider>
-
-              <v-list-item to="/garage/add-unit">
-                <v-list-item-subtitle
-                  ><v-list-item-avatar tile size="30">
-                    <v-img
-                      src="/img/icons/ic_tmbhunit.webp"
-                    ></v-img> </v-list-item-avatar
-                  >Tambah Unit</v-list-item-subtitle
-                >
-                <v-icon> mdi-chevron-right </v-icon>
-              </v-list-item>
-
-              <v-divider> </v-divider>
-              <!-- <v-list-item to="/account/profile/report">
-                <v-list-item-subtitle
-                  ><v-list-item-avatar tile size="30">
-                    <v-img src="/img/icons/iklan diikuti.webp"></v-img>
-                  </v-list-item-avatar>
-                  Report</v-list-item-subtitle
-                >
-                <v-icon> mdi-chevron-right </v-icon>
-              </v-list-item>
-              <v-divider> </v-divider> -->
-              <v-list-item to="/account/profile/add-subscription">
-                <v-list-item-avatar tile size="30">
-                  <v-img src="/img/icons/belilangganan.webp"></v-img>
-                </v-list-item-avatar>
-                <v-list-item-subtitle>Beli Langganan</v-list-item-subtitle>
-                <v-icon> mdi-chevron-right </v-icon>
-              </v-list-item>
-
-              <v-divider> </v-divider>
-
-              <v-list-item to="/account/profile/list-subs">
-                <v-list-item-avatar tile size="30">
-                  <v-img src="/img/icons/langganansaya.webp"></v-img>
-                </v-list-item-avatar>
-                <v-list-item-subtitle>Langganan Saya</v-list-item-subtitle>
-                <v-icon> mdi-chevron-right </v-icon>
-              </v-list-item>
-
-              <v-divider> </v-divider>
-
-              <!-- <v-btn
-                color="#4AB7C3"
-                dark
-                class="mt-2 ml-3 mr-3"
-                to="/account/profile/aktivitas"
-              >
-                <v-icon center> mdi-pulse </v-icon> Aktivitas
-              </v-btn> -->
-            </v-list>
-          </v-col>
-
-          <v-col cols="6" class="d-flex">
-            <v-list dense class="flex-grow-1">
-              <v-list-item to="/account/profile/favorit" replace>
-                <v-list-item-avatar tile size="30">
-                  <v-img src="/img/icons/fav.webp"></v-img>
-                </v-list-item-avatar>
-                <v-list-item-subtitle>Favorit</v-list-item-subtitle>
-                <v-icon> mdi-chevron-right </v-icon>
-              </v-list-item>
-
-              <v-divider> </v-divider>
-
-              <v-list-item to="/account/profile/aktivitas">
-                <v-list-item-avatar tile size="30">
-                  <v-img src="/img/icons/iklan diikuti.webp"></v-img>
-                </v-list-item-avatar>
-                <v-list-item-subtitle>Iklan Diikuti</v-list-item-subtitle>
-                <v-icon> mdi-chevron-right </v-icon>
-              </v-list-item>
-
-              <v-divider> </v-divider>
-
-              <v-list-item to="/account/profile/ulasan">
-                <v-list-item-avatar tile size="30">
-                  <v-img src="/img/icons/Ulasan.webp"></v-img>
-                </v-list-item-avatar>
-                <v-list-item-subtitle>Ulasan Saya</v-list-item-subtitle>
-                <v-icon> mdi-chevron-right </v-icon>
-              </v-list-item>
-
-              <v-divider> </v-divider>
-
-              <v-list-item to="/account/profile/bantuan">
-                <v-list-item-avatar tile size="30">
-                  <v-img src="/img/icons/bantuan.webp"></v-img>
-                </v-list-item-avatar>
-                <v-list-item-subtitle>Bantuan</v-list-item-subtitle>
-                <v-icon> mdi-chevron-right </v-icon>
-              </v-list-item>
-
-              <v-divider> </v-divider>
-
-              <v-list-item to="/account/profile/report">
-                <v-list-item-subtitle
-                  ><v-list-item-avatar tile size="30">
-                    <v-img src="/img/icons/iklan diikuti.webp"></v-img>
-                  </v-list-item-avatar>
-                  Report</v-list-item-subtitle
-                >
-                <v-icon> mdi-chevron-right </v-icon>
-              </v-list-item>
-              <v-divider> </v-divider>
-              <!-- <v-btn
-                color="#348AC7"
-                dark
-                class="mt-2 ml-2 mr-3"
-                to="/account/profile/transaksitb"
-              >
-                <v-icon left> mdi-format-list-bulleted </v-icon> Transaksi
-              </v-btn> -->
-            </v-list>
           </v-col>
         </v-row>
 
@@ -348,6 +112,7 @@ export default {
     },
   },
   async created() {
+    console.log('user bar', this.user)
   },
 }
 </script>

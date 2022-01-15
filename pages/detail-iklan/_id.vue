@@ -1,6 +1,20 @@
 <template>
   <div>
-    <app-bar-iklan :items="items" :hits="hits" ref="adsComponent" />
+    <app-bar />
+
+        <v-app-bar app color="#20929D" dark v-if="$vuetify.breakpoint.xs">
+        <v-btn icon @click.stop="$router.go(-1)">
+            <v-icon>mdi-arrow-left-circle</v-icon>
+        </v-btn>
+        </v-app-bar>
+        <!-- <v-app-bar app color="#20929D" dark>
+        <v-btn icon @click.stop="$router.go(-1)">
+            <v-icon>mdi-arrow-left-circle</v-icon>
+        </v-btn>
+        </v-app-bar> -->
+        <br />
+
+    <h2 class="text-center">Produk Iklan</h2>
 
     <div style="max-width: 1240px; margin: 0 auto !important">
       <v-divider></v-divider>
@@ -20,13 +34,10 @@ export default {
   name: 'iklan',
   // props: ['items', 'hits'],
   components: {
-    AppBarIklan: () =>
-      import(
-        /* webpackChunkName: "app-bar-iklan" */ '@/components/AppBarIklan.vue'
-      ),
-    Footer: () =>
-      import(/* webpackChunkName: "footer" */ '@/components/Footer.vue'),
-      
+    AppBar: () =>
+        import(/* webpackChunkName: "app-bar" */ '@/components/AppBar.vue'),
+        Footer: () =>
+        import(/* webpackChunkName: "footer" */ '@/components/Footer.vue'),
     IklanBaris: () =>
       import(
         /* webpackChunkName: "iklan-baris" */ '@/components/IklanBaris.vue'

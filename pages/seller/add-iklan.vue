@@ -178,6 +178,26 @@
                     ></v-autocomplete>
                     </v-col>
                 </v-row>
+                <v-row class="mx-1">
+                    <v-col cols="6" style="margin-top: -3%">
+                    <div class="pb-2"><b> Link Tokopedia </b></div>
+                      <v-text-field
+                        outlined
+                        dense
+                        label="Link Tokopedia"
+                        v-model="produk[0].link_tokopedia"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="6" style="margin-top: -3%">
+                    <div class="pb-2"><b> Link Bukalapak </b></div>
+                      <v-text-field
+                        outlined
+                        dense
+                        label="Link Bukalapak"
+                        v-model="produk[0].link_bukalapak"
+                      ></v-text-field>
+                    </v-col>
+                </v-row>
                 <v-card-actions style="margin-right: 2%">
                   <v-spacer></v-spacer>
                   <v-btn
@@ -301,6 +321,8 @@ export default {
         stok_produk: "",
         sub_kategori: "",
         tayangan: "",
+        link_tokopedia:"",
+        link_bukalapak:"",
         tipe_produk: "",
         updated_at: "",
       }
@@ -407,6 +429,8 @@ export default {
       formData.append('deskripsi_produk', this.produk[0].deskripsi_produk)
       formData.append('stok_produk', parseInt(this.produk[0].stok_produk))
       formData.append('id_kategori_produk', parseInt(this.produk[0].id_kategori_produk))
+      formData.append('link_tokopedia', this.produk[0].link_tokopedia)
+      formData.append('link_bukalapak', this.produk[0].link_bukalapak)
       if (this.list[0].foto != null) {
         formData.append('gambar_produk', this.list[0].foto)
       }
