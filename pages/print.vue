@@ -3,7 +3,7 @@
       <div ref="testHtml">
           <v-container style="height:1350px;width:90%" v-if="listInv.length > 0">
               <center>
-              <img style="width:100%"  :src="listInv[0].ppn == 'Y' ? '/img/gspppn.png' : '/img/gspnoppn.png'" alt=""></center>
+              <img style="width:100%"  :src="listInv[0].ppn == 'Y' ? '/img/gspppn.PNG' : '/img/gspnoppn.PNG'" alt=""></center>
               <h2 v-if="listInv[0].ppn == 'Y'" style="color:red;text-align:right;margin-right:10px">INVOICE</h2>
               <v-row :style="listInv[0].ppn == 'Y' ? '' : 'margin-top:10px'">
                   <v-col cols="12" sm="8">

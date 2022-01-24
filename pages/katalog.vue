@@ -18,7 +18,7 @@
         <br>
         <v-row>
             <v-col cols="12" sm="3">
-                <h3 >Produk</h3>
+                <h3 >Filter</h3>
                 <v-divider class="mb-2"></v-divider>
                     <v-list-item
                         :style="pickSubKategori == 'Semua' ? ';background:#20929D;border:2px solid black' : 'border:1px solid black'"

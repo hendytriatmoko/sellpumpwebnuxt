@@ -448,6 +448,7 @@ export default {
                 text: 'Produk berhasil diIklankan',
             })
             this.xProduk()
+            this.$router.push('/')
         })
         .catch((error) => {
           let responses = error.response.data
