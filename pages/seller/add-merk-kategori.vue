@@ -788,7 +788,7 @@ export default {
       formData.append('id_merk', this.idMerk)
 
       await this.$axios
-        .delete('/merk/v1/delete', formData)
+        .put('/merk/v1/delete', formData)
         .then((response) => {
             console.log(response)
             this.setAlert({
@@ -865,7 +865,7 @@ export default {
       formData.append('id_kategori', this.idKategori)
 
       await this.$axios
-        .delete('/kategori/v1/delete', formData)
+        .put('/kategori/v1/delete', formData)
         .then((response) => {
             console.log(response)
             this.setAlert({

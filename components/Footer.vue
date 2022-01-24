@@ -34,28 +34,6 @@
 
           <v-col cols="12" sm="2">
             <div>
-              <h2>Ikuti Kami</h2>
-              <br />
-              <v-row justify="space-around">
-                <a
-                  href="https://www.facebook.com/OfficialSiMotor/"
-                  target="_blank"
-                >
-                  <v-icon large color="blue">mdi-facebook</v-icon>
-                </a>
-                <a href="https://www.instagram.com/simotor.id/" target="_blank">
-                  <v-icon large color="purple">mdi-instagram</v-icon>
-                </a>
-                <a
-                  href="https://www.youtube.com/channel/UCBExlB0xnMoTDT8LwVKg9oA"
-                  target="_blank"
-                >
-                  <v-icon large color="red">mdi-youtube</v-icon>
-                </a>
-              </v-row>
-            </div>
-            <br>
-            <div>
               <h2>Marketplace</h2>
               <br />
               <v-row justify="space-around">

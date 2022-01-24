@@ -31,7 +31,7 @@
                 outlined
                 dense
                 class="d-none"
-                @change="saveData('foto', photo)"
+                @change="saveData()"
               ></v-file-input>
             </v-form>
 
@@ -59,12 +59,6 @@
                 <v-divider :key="index"></v-divider>
               </template>
             </v-list-item-group>
-
-            <v-list-item
-              to="/account/profile/report"
-            >
-              <v-list-item-title>Report</v-list-item-title>
-            </v-list-item>
           </v-list>
         </v-col>
 
@@ -121,13 +115,13 @@ export default {
     uploadAvatar() {
       document.getElementById('fileid').click()
     },
-    async saveData(param, value) {
+    async saveData() {
         let formData = new FormData()
 
-        formData.set(param, value)
+        if (this.photo != null) {
+          formData.set('foto', this.photo)          
+        }
         formData.set('id_user', this.user.id_user)
-        formData.set('nama', this.user.nama)
-        formData.set('no_telp', this.user.no_telp)
 
         await this.$axios
           .put('/user/v1/user/update', formData)

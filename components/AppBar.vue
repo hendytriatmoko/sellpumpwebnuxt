@@ -1,23 +1,5 @@
 <template>
   <div>
-    
-    <v-system-bar app height="30" window  class="d-none d-sm-flex white--text"
-       >
-      <v-icon class="ml-6">mdi-cellphone</v-icon>
-      <a
-        href="https://play.google.com/store/apps/details?id=com.digitalnetworkasia.simotorbeta"
-        class="black--text" target="_blank"
-      >
-        <span> Griya Seller Pump </span>
-      </a>
-      <v-spacer></v-spacer>
-      <a href="/tentang?tab=about" class="black--text">
-        <span>Tentang GSP</span>
-      </a>
-      <a href="/tentang?tab=bantuan" class="black--text">
-        <span class="mx-2">Bantuan GSP</span>
-      </a>
-    </v-system-bar>
  
 
     <v-app-bar
@@ -31,7 +13,7 @@
         <v-img src="/img/gsp1.png" width="50"></v-img>
         <div class="ml-3">
           <h3>Griya</h3>
-          <h5>Seller Pump</h5>
+          <h5>Saller Pump</h5>
         </div>
       </nuxt-link>
 
@@ -58,24 +40,26 @@
         </v-list>
       </v-menu>
 
-      <v-menu open-on-hover offset-y v-if="$vuetify.breakpoint.smAndUp">
-        <template v-slot:activator="{ on, attrs }" v-if="!guest">
-          <v-btn text v-bind="attrs" v-on="on" class="mx-2" color="#000000">
-            Jual
-            <v-icon right>mdi-plus</v-icon>
-          </v-btn>
-        </template>
+      <div v-if="user.status != 'pembeli'">
+        <v-menu open-on-hover offset-y v-if="$vuetify.breakpoint.smAndUp">
+          <template v-slot:activator="{ on, attrs }" v-if="!guest">
+            <v-btn text v-bind="attrs" v-on="on" class="mx-2" color="#000000">
+              Jual
+              <v-icon right>mdi-plus</v-icon>
+            </v-btn>
+          </template>
 
-        <v-list>
-          <v-list-item v-for="item in jual" :key="item.id" :to="item.route">
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
+          <v-list >
+            <v-list-item v-for="item in jual" :key="item.id" :to="item.route">
+              <v-list-item-title>{{ item.title }}</v-list-item-title>
 
-            <v-list-item-action>
-              <v-icon>mdi-chevron-right</v-icon>
-            </v-list-item-action>
-          </v-list-item>
-        </v-list>
-      </v-menu>
+              <v-list-item-action>
+                <v-icon>mdi-chevron-right</v-icon>
+              </v-list-item-action>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </div>
 
       <v-spacer></v-spacer>
 
@@ -179,5 +163,8 @@ export default {
       this.$refs.childComponent.doSearch()
     },
   },
+  async created(){
+    console.log('juallllllllllllllll', this.user)
+  }
 }
 </script>

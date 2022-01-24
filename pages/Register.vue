@@ -7,7 +7,7 @@
   </v-app-bar> -->
     <v-row align="center">
       <v-col cols="12" sm="6">
-        <v-img src="/img/login1.webp" width="1100" height="600"> </v-img>
+        <v-img src="/img/banner2.PNG" width="1100" height="600"> </v-img>
       </v-col>
 
       <v-col cols="12" sm="6">
@@ -105,7 +105,7 @@
                 </a>
                 dan
                 <a href="/tentang?tab=kebijakan" target="_blank" style="color: #20929D">
-                  kebijakan privasi SiMotor
+                  kebijakan privasi Griya Saller Pump
                 </a>
               </h5>
             </center>

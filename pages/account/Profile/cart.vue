@@ -44,7 +44,7 @@
                     </div>
                   </div>
                   <div class="mt-6 ml-6">
-                    <v-icon class="pt-2" large color="red">mdi-delete</v-icon>
+                    <v-icon class="pt-2" large color="red" @click="hapusKeranjang(item)">mdi-delete</v-icon>
                   </div>
                 </div>
             </v-card>
@@ -364,10 +364,16 @@ export default {
       setAuth: 'auth/set',
     }),
     async getKeranjang() {
-      await this.$axios
-        .get('/keranjang/v1/keranjang/getkeranjang', {
+      var params = new URLSearchParams();
+            
+      params.append("id_user", this.user.id_user);
+
+      var request = {
+          params: params,
           headers: { Authorization: this.DataToken }
-        })
+      };
+      await this.$axios
+        .get('/keranjang/v1/keranjang/getkeranjang', request)
         .then((response) => {
           this.keranjang = response.data.data
           let dataKeranjang = []
@@ -752,6 +758,32 @@ export default {
               text: responses.api_message,
             })
           })
+    },
+    async hapusKeranjang(item){
+      // console.log('hapus',item)
+      let formData = new FormData()
+      formData.append('id_keranjang', item.data.id_keranjang)
+      await this.$axios
+        .put('/keranjang/v1/keranjang/delete', formData, {
+          headers: { Authorization: this.DataToken }
+        })
+        .then((response) => {
+            console.log(response)
+            this.setAlert({
+                status: true,
+                color: 'success',
+                text: 'Keranjang berhasil diHapus',
+            })
+            this.getKeranjang()
+        })
+        .catch((error) => {
+          let responses = error.response.data
+          this.setAlert({
+            status: true,
+            color: 'error',
+            text: responses.api_message,
+          })
+        })
     }
     
   },

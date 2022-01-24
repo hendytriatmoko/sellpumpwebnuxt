@@ -18,25 +18,24 @@
             <v-divider></v-divider>
             <br>
             <v-row
-                v-for="item in artikel"
-                :key="item.id_artikel"
+                v-if="artikel.length > 0"
             >
                 <v-col cols="12" sm="4">
                         <div>Diposting : 
                             {{
                                 moment
-                                    .utc(item.created_at)
+                                    .utc(artikel[0].created_at)
                                     .add(utc, 'h')
                                     .format('DD MMM YYYY, HH:mm')
                             }}
                         </div>
                     <center>
-                        <v-img :src="getImageProduk(item.gambar_artikel)"></v-img>
+                        <v-img :src="getImageProduk(artikel[0].gambar_artikel)"></v-img>
                     </center>
                 </v-col>
                 <v-col cols="12" sm="8">
-                    <h3 class="text-center">{{ item.judul_artikel }}</h3>
-                    <div style="white-space: pre-wrap" v-html="item.deskripsi_artikel"></div>
+                    <h3 class="text-center">{{ artikel[0].judul_artikel }}</h3>
+                    <div style="white-space: pre-wrap" v-html="artikel[0].deskripsi_artikel"></div>
                 </v-col>
             </v-row>
             <br>
@@ -101,10 +100,10 @@ export default {
         async hapus(){
             let formData = new FormData()
   
-            formData.append('id_artikel', this.artikel.id_artikel)
+            formData.append('id_artikel', this.artikel[0].id_artikel)
     
             await this.$axios
-                .delete('/produk/v1/artikel/delete', formData, {
+                .put('/produk/v1/artikel/delete', formData, {
                     headers: { Authorization: this.DataToken }
                 })
                 .then((response) => {

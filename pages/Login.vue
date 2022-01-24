@@ -8,7 +8,7 @@
 
     <v-row align="center">
       <v-col cols="12" sm="6 " align="center">
-        <v-img src="/img/login1.webp" width="1000" height="600"> </v-img>
+        <v-img src="/img/belum_login.webp" width="1000" height="600"> </v-img>
       </v-col>
 
       <v-col cols="12" sm="6" >
@@ -39,6 +39,7 @@
               placeholder="Password"
               prepend-inner-icon="mdi-lock"
               outlined
+              @keyup.enter="checkAkun()"
               autofocus
               @click:append="show = !show"
             ></v-text-field>

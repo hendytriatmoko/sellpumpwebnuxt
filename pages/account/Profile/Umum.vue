@@ -126,7 +126,7 @@
             append-icon="mdi-content-save"
             append-outer-icon="mdi-close"
             @click:append-outer="ubahPerusahaan = false,getProfil()"
-            @click:append="saveDataPerusahaan('nama', profil.nama)"
+            @click:append="saveDataPerusahaan('nama')"
             :rules="namaRules"
             v-else
           ></v-text-field>
@@ -159,7 +159,7 @@
             append-icon="mdi-content-save"
             append-outer-icon="mdi-close"
             @click:append-outer="ubahAlamat = false,getProfil()"
-            @click:append="saveDataPerusahaan('no_telp', profil.alamat)"
+            @click:append="saveDataPerusahaan('alamat')"
             :rules="namaRules"
             v-else
           ></v-text-field>
@@ -175,14 +175,26 @@
             <td class="text-center"><b>TDP</b></td>
           </tr>
           <tr>
-            <td><center><img :src="getImageUser(profil.npwp)"></center></td>
-            <td><center><img :src="getImageUser(profil.siup)"></center></td>
-            <td><center><img :src="getImageUser(profil.tdp)"></center></td>
+            <td><center><img style="width:200px" :src="getImageUser(profil.npwp)"></center></td>
+            <td><center><img style="width:200px" :src="getImageUser(profil.siup)"></center></td>
+            <td><center><img style="width:200px" :src="getImageUser(profil.tdp)"></center></td>
           </tr>
           <tr>
-            <td class="text-center"><v-btn color="#20929D">Ubah</v-btn></td>
-            <td class="text-center"><v-btn color="#20929D">Ubah</v-btn></td>
-            <td class="text-center"><v-btn color="#20929D">Ubah</v-btn></td>
+            <td class="text-center">
+              <v-btn id="buttonid" color="#20929D" @click="updateNpwp">
+                Ubah
+              </v-btn>
+            </td>
+            <td class="text-center">
+              <v-btn id="buttonid" color="#20929D" @click="updateSiup">
+                Ubah
+              </v-btn>
+            </td>
+            <td class="text-center">
+              <v-btn id="buttonid" color="#20929D" @click="updateTdp">
+                Ubah
+              </v-btn>
+            </td>
           </tr>
         </table>
         <br>
@@ -268,6 +280,42 @@
         </v-card-actions>
       </v-card>
     </v-form>
+    <v-form ref="form" v-model="validNpwp">
+      <v-file-input
+        id="filenpwp"
+        label="File input"
+        v-model="fotoNpwp"
+        accept="image/*"
+        outlined
+        dense
+        class="d-none"
+        @change="saveDataPerusahaan('npwp')"
+      ></v-file-input>
+    </v-form>
+    <v-form ref="form" v-model="validSiup">
+      <v-file-input
+        id="filesiup"
+        label="File input"
+        v-model="fotoSiup"
+        accept="image/*"
+        outlined
+        dense
+        class="d-none"
+        @change="saveDataPerusahaan('siup')"
+      ></v-file-input>
+    </v-form>
+    <v-form ref="form" v-model="validTdp">
+      <v-file-input
+        id="filetdp"
+        label="File input"
+        v-model="fotoTdp"
+        accept="image/*"
+        outlined
+        dense
+        class="d-none"
+        @change="saveDataPerusahaan('tdp')"
+      ></v-file-input>
+    </v-form>
   </div>
 </template>
 
@@ -330,6 +378,12 @@ export default {
     ],
     countRules: [],
     hasImage: false,
+    fotoNpwp:null,
+    fotoSiup:null,
+    fotoTdp:null,
+    validNpwp: true,
+    validSiup: true,
+    validTdp: true,
   }),
   computed: {
     ...mapGetters({
@@ -482,6 +536,100 @@ export default {
             this.$router.push('/login')
           }
         })
+    },
+    async saveDataPerusahaan(param){
+      let formData = new FormData()
+      formData.set('id_user', this.user.id_user)
+      formData.set('nama', this.profil.nama)
+      formData.set('alamat', this.profil.alamat)
+      if (this.fotoNpwp != null) {
+        formData.set('npwp', this.fotoNpwp)
+      }
+      if (this.fotoSiup != null) {
+        formData.set('siup', this.fotoSiup)
+      }
+      if (this.fotoTdp != null) {
+        formData.set('tdp', this.fotoTdp)
+      }
+
+      await this.$axios
+          .put('/user/v1/profil/update', formData,{
+            headers: { Authorization: this.DataToken }
+          })
+          .then((response) => {
+            let { data } = response
+            if (param === 'nama') {
+              this.ubahNama = false
+              this.setAlert({
+                status: true,
+                color: 'success',
+                text: 'Nama berhasil diupdate',
+              })
+              this.ubahPerusahaan = false
+            }
+            if (param === 'npwp') {
+              this.setAlert({
+                status: true,
+                color: 'success',
+                text: 'NPWP berhasil diupdate',
+              })
+            }
+            if (param === 'siup') {
+              this.setAlert({
+                status: true,
+                color: 'success',
+                text: 'SIUP berhasil diupdate',
+              })
+              this.ubahPerusahaan = false
+            }
+            if (param === 'tdp') {
+              this.setAlert({
+                status: true,
+                color: 'success',
+                text: 'TDP berhasil diupdate',
+              })
+              this.ubahPerusahaan = false
+            }
+            if (param === 'alamat') {
+              this.setAlert({
+                status: true,
+                color: 'success',
+                text: 'Alamat berhasil diupdate',
+              })
+              this.ubahAlamat = false
+            }
+            this.getProfil()
+          })
+          .catch((error) => {
+            let responses = error.response.data
+            this.setAlert({
+              status: true,
+              color: 'error',
+              text: responses.api_message,
+            })
+
+            if (error.response.status == 403) {
+              this.setAuth({})
+              this.$cookies.set('user', null)
+              this.$cookies.set('prevUrl', this.$route.path)
+              this.setAlert({
+                status: true,
+                color: 'error',
+                text: responses.api_message,
+              })
+              this.$router.push('/login')
+            }
+          })
+
+    },
+    updateNpwp() {
+      document.getElementById('filenpwp').click()
+    },
+    updateSiup() {
+      document.getElementById('filesiup').click()
+    },
+    updateTdp() {
+      document.getElementById('filetdp').click()
     },
   },
   async created() {

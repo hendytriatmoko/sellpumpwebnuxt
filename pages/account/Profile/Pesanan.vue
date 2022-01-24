@@ -27,8 +27,9 @@
         </v-tab>
       </v-tabs>
       <v-tabs-items v-model="tab">
+          <!-- waitingpayment -->
           <v-tab-item>
-            <v-container>
+            <v-container v-if="user.status == 'pembeli'">
                 <div
                     v-for="item in listInv"
                     :key="item.no_inv"
@@ -103,12 +104,14 @@
                                     <td class="pl-3">
                                         <h4 v-if="item.pesan_pembeli != ''">Pesan Pembeli</h4>
                                         <h4>Detail Pengiriman</h4>
+                                        <h4>Detail Invoice</h4>
                                     </td>
                                     <td class="text-right pr-6">
                                         <h4 v-if="item.pesan_pembeli != ''">
                                             {{ item.pesan_pembeli }}
                                         </h4>
-                                        <v-btn x-small @click="bayarInv(item,'detail_pengiriman')">Lihat</v-btn>
+                                        <v-btn x-small @click="bayarInv(item,'detail_pengiriman')">Lihat</v-btn><br>
+                                        <v-btn x-small @click="toPrint(item)">Print</v-btn>
                                     </td>
                                 </tr>
                             </table>
@@ -121,9 +124,100 @@
                     </v-card>
                 </div>
             </v-container>
+            <v-container v-else>
+                <div
+                    v-for="item in listInv"
+                    :key="item.no_inv"
+                    class="mb-2"
+                >                
+                    <v-card
+                        elevation="6"
+                        v-if="item.id_status_pembayaran == 1"
+                    >
+                        <div class="mx-2 pt-3">
+                            <h4>No Invoice : {{ item.no_inv }}</h4>
+                            <v-divider></v-divider>
+                            <div
+                                v-for="(data,index) in item.pesanan"
+                                :key="index"
+                            >
+                                <table style="width:100%">
+                                    <tr>
+                                        <td>
+                                            <center>
+                                            <v-img :src="getImageProduk(data.gambar_produk)" class="my-2" width="80px" height="80px"></v-img>
+                                            </center>
+                                        </td>
+                                        <td>
+                                            <h3>{{data.nama_produk}}</h3>
+                                            <h5 v-if="data.deskripsi_produk.length < 80">{{data.deskripsi_produk}}</h5>
+                                            <h5 v-else>{{data.deskripsi_produk.substring(0, 80) + '....' }}</h5>
+                                            <h3>
+                                                Rp
+                                                {{ Number(data.harga_produk).toLocaleString('id-ID') }}
+                                            </h3>
+                                        </td>
+                                        <td class="text-right pr-4" style="width:50px">
+                                            <div>X {{data.kuantitas}}</div>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <v-divider></v-divider>
+                                
+                            </div>
+                            <table style="width:100%" class="pt-2">
+                                <tr>
+                                    <td class="pl-3">
+                                    <h4>Subtotal untuk Produk</h4>
+                                    <h4 v-if="item.ppn=='Y'">PPN 10%</h4>
+                                    <h4>Subtotal untuk Pengiriman</h4>
+                                    <h2 class="red--text">Total Pembayaran</h2>
+                                    </td>
+                                    <td class="text-right pr-6">
+                                    <div>
+                                        Rp
+                                        {{ Number(item.total).toLocaleString('id-ID') }}
+                                    </div>
+                                    <div v-if="item.ppn=='Y'">
+                                        Rp
+                                        {{ Number(item.nilai_ppn).toLocaleString('id-ID') }}
+                                    </div>
+                                    <div>
+                                        Rp
+                                        {{ Number(item.ongkos_kirim).toLocaleString('id-ID') }}
+                                    </div>
+                                    <h3 class="red--text">
+                                        Rp
+                                        {{ Number(item.jumlah_pembayaran).toLocaleString('id-ID') }}
+                                    </h3>
+                                    </td>
+                                </tr>
+                            </table>
+                            <v-divider></v-divider>
+                            <table style="width:100%" >
+                                <tr>
+                                    <td class="pl-3">
+                                        <h4 v-if="item.pesan_pembeli != ''">Pesan Pembeli</h4>
+                                        <h4>Detail Pengiriman</h4>
+                                        <h4>Detail Invoice</h4>
+                                    </td>
+                                    <td class="text-right pr-6">
+                                        <h4 v-if="item.pesan_pembeli != ''">
+                                            {{ item.pesan_pembeli }}
+                                        </h4>
+                                        <v-btn x-small @click="bayarInv(item,'detail_pengiriman')">Lihat</v-btn><br>
+                                        <v-btn x-small @click="toPrint(item)">Print</v-btn>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </v-card>
+                </div>
+            </v-container>
           </v-tab-item>
-          <v-tab-item>
-            <v-container>
+          <!-- waitingverification -->
+          <v-tab-item >
+            <v-container v-if="user.status == 'pembeli'">
                 <div
                     v-for="item in listInv"
                     :key="item.no_inv"
@@ -132,6 +226,118 @@
                     <v-card
                         elevation="6"
                         v-if="item.id_status_pembayaran == 4 && item.id_user == user.id_user"
+                    >
+                        <div class="mx-2 pt-3">
+                            <table style="width:100%">
+                                <tr>
+                                    <td class="pl-3">
+                                        <h4>No Invoice : {{ item.no_inv }}</h4>
+                                    </td>
+                                    <td class="text-right pr-6">
+                                        <h4>Tanggal Pembayaran : 
+                                            {{
+                                            moment
+                                                .utc(item.tgl_pembayaran)
+                                                .add(utc, 'h')
+                                                .format('DD MMM YYYY, HH:mm')
+                                            }}
+                                        </h4>
+                                    </td>
+                                </tr>
+                            </table>
+                            <v-divider></v-divider>
+                            <div
+                                v-for="(data,index) in item.pesanan"
+                                :key="index"
+                            >
+                                <table style="width:100%">
+                                    <tr>
+                                        <td>
+                                            <center>
+                                            <v-img :src="getImageProduk(data.gambar_produk)" class="my-2" width="80px" height="80px"></v-img>
+                                            </center>
+                                        </td>
+                                        <td>
+                                            <h3>{{data.nama_produk}}</h3>
+                                            <h5 v-if="data.deskripsi_produk.length < 80">{{data.deskripsi_produk}}</h5>
+                                            <h5 v-else>{{data.deskripsi_produk.substring(0, 80) + '....' }}</h5>
+                                            <h3>
+                                                Rp
+                                                {{ Number(data.harga_produk).toLocaleString('id-ID') }}
+                                            </h3>
+                                        </td>
+                                        <td class="text-right pr-4" style="width:50px">
+                                            <div>X {{data.kuantitas}}</div>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <v-divider></v-divider>
+                                
+                            </div>
+                            <table style="width:100%" class="pt-2">
+                                <tr>
+                                    <td class="pl-3">
+                                    <h4>Subtotal untuk Produk</h4>
+                                    <h4 v-if="item.ppn=='Y'">PPN 10%</h4>
+                                    <h4>Subtotal untuk Pengiriman</h4>
+                                    <h2 class="red--text">Total Pembayaran</h2>
+                                    </td>
+                                    <td class="text-right pr-6">
+                                    <div>
+                                        Rp
+                                        {{ Number(item.total).toLocaleString('id-ID') }}
+                                    </div>
+                                    <div v-if="item.ppn=='Y'">
+                                        Rp
+                                        {{ Number(item.nilai_ppn).toLocaleString('id-ID') }}
+                                    </div>
+                                    <div>
+                                        Rp
+                                        {{ Number(item.ongkos_kirim).toLocaleString('id-ID') }}
+                                    </div>
+                                    <h3 class="red--text">
+                                        Rp
+                                        {{ Number(item.jumlah_pembayaran).toLocaleString('id-ID') }}
+                                    </h3>
+                                    
+                                    </td>
+                                </tr>
+                            </table>
+                            <v-divider></v-divider>
+                            <table style="width:100%" class="pt-2">
+                                <tr>
+                                    <td class="pl-3">
+                                        <h4>Bukti Pembayaran</h4>
+                                        <h4 v-if="item.pesan_pembeli != ''">Pesan Pembeli</h4>
+                                        <h4>Detail Pengiriman</h4>
+                                    </td>
+                                    <td class="text-right pr-6">
+                                        <div v-viewer="{ movable: false }">
+                                            <img
+                                                :src="getImageProduk(item.bukti_bayar)"
+                                                contain
+                                                class="mx-2"
+                                                width="50px"
+                                            />
+                                        </div>
+                                        <h4 v-if="item.pesan_pembeli != ''">{{item.pesan_pembeli}}</h4>
+                                        <v-btn x-small @click="bayarInv(item,'detail_pengiriman')">Lihat</v-btn>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </v-card>
+                </div>
+            </v-container>
+            <v-container v-else>
+                <div
+                    v-for="item in listInv"
+                    :key="item.no_inv"
+                    class="mb-2"
+                >                
+                    <v-card
+                        elevation="6"
+                        v-if="item.id_status_pembayaran == 4"
                     >
                         <div class="mx-2 pt-3">
                             <table style="width:100%">
@@ -240,7 +446,8 @@
                 </div>
             </v-container>
           </v-tab-item>
-          <v-tab-item>
+          <!-- cancelpembeli -->
+          <v-tab-item >
             <v-container>
                 <div
                     v-for="item in listInv"
@@ -326,7 +533,8 @@
                 </div>
             </v-container>
           </v-tab-item>
-          <v-tab-item>
+          <!-- cancelpenjual -->
+          <v-tab-item >
             <v-container>
                 <div
                     v-for="item in listInv"
@@ -428,8 +636,9 @@
                 </div>
             </v-container>
           </v-tab-item>
-          <v-tab-item>
-            <v-container>
+          <!-- tolakpembayaran -->
+          <v-tab-item >
+            <v-container v-if="user.status =='pembeli'">
                 <div
                     v-for="item in listInv"
                     :key="item.no_inv"
@@ -539,7 +748,114 @@
                     </v-card>
                 </div>
             </v-container>
+            <v-container v-else>
+                <div
+                    v-for="item in listInv"
+                    :key="item.no_inv"
+                    class="mb-2"
+                >                
+                    <v-card
+                        elevation="6"
+                        v-if="item.id_status_pembayaran == 6"
+                    >
+                        <div class="mx-2 pt-3">
+                            <table style="width:100%">
+                                <tr>
+                                    <td class="pl-3">
+                                        <h4>No Invoice : {{ item.no_inv }}</h4>
+                                    </td>
+                                    <td class="text-right pr-6">
+                                        <h4>Tanggal Pembayaran : 
+                                            {{
+                                            moment
+                                                .utc(item.tgl_pembayaran)
+                                                .add(utc, 'h')
+                                                .format('DD MMM YYYY, HH:mm')
+                                            }}
+                                        </h4>
+                                    </td>
+                                </tr>
+                            </table>
+                            <v-divider></v-divider>
+                            <div
+                                v-for="(data,index) in item.pesanan"
+                                :key="index"
+                            >
+                                <table style="width:100%">
+                                    <tr>
+                                        <td>
+                                            <center>
+                                            <v-img :src="getImageProduk(data.gambar_produk)" class="my-2" width="80px" height="80px"></v-img>
+                                            </center>
+                                        </td>
+                                        <td>
+                                            <h3>{{data.nama_produk}}</h3>
+                                            <h5 v-if="data.deskripsi_produk.length < 80">{{data.deskripsi_produk}}</h5>
+                                            <h5 v-else>{{data.deskripsi_produk.substring(0, 80) + '....' }}</h5>
+                                            <h3>
+                                                Rp
+                                                {{ Number(data.harga_produk).toLocaleString('id-ID') }}
+                                            </h3>
+                                        </td>
+                                        <td class="text-right pr-4" style="width:50px">
+                                            <div>X {{data.kuantitas}}</div>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <v-divider></v-divider>
+                                
+                            </div>
+                            <table style="width:100%" class="pt-2">
+                                <tr>
+                                    <td class="pl-3">
+                                    <h4>Subtotal untuk Produk</h4>
+                                    <h4 v-if="item.ppn=='Y'">PPN 10%</h4>
+                                    <h4>Subtotal untuk Pengiriman</h4>
+                                    <h2 class="red--text">Total Pembayaran</h2>
+                                    </td>
+                                    <td class="text-right pr-6">
+                                    <div>
+                                        Rp
+                                        {{ Number(item.total).toLocaleString('id-ID') }}
+                                    </div>
+                                    <div v-if="item.ppn=='Y'">
+                                        Rp
+                                        {{ Number(item.nilai_ppn).toLocaleString('id-ID') }}
+                                    </div>
+                                    <div>
+                                        Rp
+                                        {{ Number(item.ongkos_kirim).toLocaleString('id-ID') }}
+                                    </div>
+                                    <h3 class="red--text">
+                                        Rp
+                                        {{ Number(item.jumlah_pembayaran).toLocaleString('id-ID') }}
+                                    </h3>
+                                    </td>
+                                </tr>
+                            </table>
+                            <v-divider></v-divider>
+                            <table style="width:100%" class="pt-2">
+                                <tr>
+                                    <td class="pl-3">
+                                        <h4>Alasan Ditolak</h4>
+                                        <h4 v-if="item.pesan_pembeli != ''">Pesan Pembeli</h4>
+                                        <h4>Detail Pengiriman</h4>
+                                    </td>
+                                    <td class="text-right pr-6">
+                                        <h4>{{item.alasan_ditolak}}</h4>
+                                        <h4 v-if="item.pesan_pembeli != ''">
+                                            {{ item.pesan_pembeli }}
+                                        </h4>
+                                        <v-btn x-small @click="bayarInv(item,'detail_pengiriman')">Lihat</v-btn>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </v-card>
+                </div>
+            </v-container>
           </v-tab-item>
+          <!-- lunas -->
           <v-tab-item>
               <br>
               <v-tabs align-with-title v-model="tabLunas">
@@ -559,8 +875,9 @@
                     </v-tab>
               </v-tabs>
               <v-tabs-items v-model="tabLunas">
+                  <!-- dikemas -->
                   <v-tab-item>
-                    <v-container>
+                    <v-container v-if="user.status == 'pembeli'">
                         <div
                             v-for="item in listInv"
                             :key="item.no_inv"
@@ -651,26 +968,136 @@
                                             <td class="pl-3">
                                                 <h4 v-if="item.pesan_pembeli != ''">Pesan Pembeli</h4>
                                                 <h4>Detail Pengiriman</h4>
+                                                <h4>Detail Invoice</h4>
                                             </td>
                                             <td class="text-right pr-6">
                                                 <h4 v-if="item.pesan_pembeli != ''">
                                                     {{ item.pesan_pembeli }}
                                                 </h4>
-                                                <v-btn x-small @click="bayarInv(item,'detail_pengiriman')">Lihat</v-btn>
+                                                <v-btn x-small @click="bayarInv(item,'detail_pengiriman')">Lihat</v-btn><br>
+                                                <v-btn x-small @click="toPrint(item)">Print</v-btn>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </v-card>
+                        </div>
+                    </v-container>
+                    <v-container v-else>
+                        <div
+                            v-for="item in listInv"
+                            :key="item.no_inv"
+                            class="mb-2"
+                        >                
+                            <v-card
+                                elevation="6"
+                                v-if="item.id_status_pembayaran == 2 && item.id_status_pengiriman == 1"
+                            >
+                                <div class="mx-2 pt-3">
+                                    <table style="width:100%">
+                                        <tr>
+                                            <td class="pl-3">
+                                                <h4>No Invoice : {{ item.no_inv }}</h4>
+                                            </td>
+                                            <td class="text-right pr-6">
+                                                <h4>Tanggal Pembayaran : 
+                                                    {{
+                                                    moment
+                                                        .utc(item.tgl_pembayaran)
+                                                        .add(utc, 'h')
+                                                        .format('DD MMM YYYY, HH:mm')
+                                                    }}
+                                                </h4>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <v-divider></v-divider>
+                                    <div
+                                        v-for="(data,index) in item.pesanan"
+                                        :key="index"
+                                    >
+                                        <table style="width:100%">
+                                            <tr>
+                                                <td>
+                                                    <center>
+                                                    <v-img :src="getImageProduk(data.gambar_produk)" class="my-2" width="80px" height="80px"></v-img>
+                                                    </center>
+                                                </td>
+                                                <td>
+                                                    <h3>{{data.nama_produk}}</h3>
+                                                    <h5 v-if="data.deskripsi_produk.length < 80">{{data.deskripsi_produk}}</h5>
+                                                    <h5 v-else>{{data.deskripsi_produk.substring(0, 80) + '....' }}</h5>
+                                                    <h3>
+                                                        Rp
+                                                        {{ Number(data.harga_produk).toLocaleString('id-ID') }}
+                                                    </h3>
+                                                </td>
+                                                <td class="text-right pr-4" style="width:50px">
+                                                    <div>X {{data.kuantitas}}</div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <v-divider></v-divider>
+                                        
+                                    </div>
+                                    <table style="width:100%" class="pt-2">
+                                        <tr>
+                                            <td class="pl-3">
+                                            <h4>Subtotal untuk Produk</h4>
+                                            <h4 v-if="item.ppn=='Y'">PPN 10%</h4>
+                                            <h4>Subtotal untuk Pengiriman</h4>
+                                            <h2 class="red--text">Total Pembayaran</h2>
+                                            </td>
+                                            <td class="text-right pr-6">
+                                            <div>
+                                                Rp
+                                                {{ Number(item.total).toLocaleString('id-ID') }}
+                                            </div>
+                                            <div v-if="item.ppn=='Y'">
+                                                Rp
+                                                {{ Number(item.nilai_ppn).toLocaleString('id-ID') }}
+                                            </div>
+                                            <div>
+                                                Rp
+                                                {{ Number(item.ongkos_kirim).toLocaleString('id-ID') }}
+                                            </div>
+                                            <h3 class="red--text">
+                                                Rp
+                                                {{ Number(item.jumlah_pembayaran).toLocaleString('id-ID') }}
+                                            </h3>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <v-divider></v-divider>
+                                    <table style="width:100%" >
+                                        <tr>
+                                            <td class="pl-3">
+                                                <h4 v-if="item.pesan_pembeli != ''">Pesan Pembeli</h4>
+                                                <h4>Detail Pengiriman</h4>
+                                                <h4>Detail Invoice</h4>
+                                            </td>
+                                            <td class="text-right pr-6">
+                                                <h4 v-if="item.pesan_pembeli != ''">
+                                                    {{ item.pesan_pembeli }}
+                                                </h4>
+                                                <v-btn x-small @click="bayarInv(item,'detail_pengiriman')">Lihat</v-btn><br>
+                                                <v-btn x-small @click="toPrint(item)">Print</v-btn>
                                             </td>
                                         </tr>
                                     </table>
                                     <v-card-actions>
                                         <v-spacer></v-spacer>
                                         <v-btn color="#20929D" class="white--text" @click="bayarInv(item,'resi')">Input Resi</v-btn>
+                                        
                                     </v-card-actions>
                                 </div>
                             </v-card>
                         </div>
                     </v-container>
                   </v-tab-item>
-                  <v-tab-item>
-                    <v-container>
+                  <!-- dikirim -->
+                  <v-tab-item >
+                    <v-container v-if="user.status == 'pembeli'">
                         <div
                             v-for="item in listInv"
                             :key="item.no_inv"
@@ -761,6 +1188,7 @@
                                             <td class="pl-3">
                                                 <h4 v-if="item.pesan_pembeli != ''">Pesan Pembeli</h4>
                                                 <h4>Detail Pengiriman</h4>
+                                                <h4>Detail Invoice</h4>
                                                 <h4>No Resi</h4>
                                             </td>
                                             <td class="text-right pr-6">
@@ -768,6 +1196,119 @@
                                                     {{ item.pesan_pembeli }}
                                                 </h4>
                                                 <v-btn x-small @click="bayarInv(item,'detail_pengiriman')">Lihat</v-btn>
+                                                <br><v-btn x-small @click="toPrint(item)">Print</v-btn>
+                                                <h4>{{item.no_resi}}</h4>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <v-card-actions>
+                                        <v-spacer></v-spacer>
+                                        <v-btn color="#20929D" class="white--text" @click="bayarInv(item,'sampai')">Verifikasi sampai</v-btn>
+                                    </v-card-actions>
+                                </div>
+                            </v-card>
+                        </div>
+                    </v-container>
+                    <v-container v-else>
+                        <div
+                            v-for="item in listInv"
+                            :key="item.no_inv"
+                            class="mb-2"
+                        >                
+                            <v-card
+                                elevation="6"
+                                v-if="item.id_status_pembayaran == 2 && item.id_status_pengiriman == 2"
+                            >
+                                <div class="mx-2 pt-3">
+                                    <table style="width:100%">
+                                        <tr>
+                                            <td class="pl-3">
+                                                <h4>No Invoice : {{ item.no_inv }}</h4>
+                                            </td>
+                                            <td class="text-right pr-6">
+                                                <h4>Tanggal Pembayaran : 
+                                                    {{
+                                                    moment
+                                                        .utc(item.tgl_pembayaran)
+                                                        .add(utc, 'h')
+                                                        .format('DD MMM YYYY, HH:mm')
+                                                    }}
+                                                </h4>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <v-divider></v-divider>
+                                    <div
+                                        v-for="(data,index) in item.pesanan"
+                                        :key="index"
+                                    >
+                                        <table style="width:100%">
+                                            <tr>
+                                                <td>
+                                                    <center>
+                                                    <v-img :src="getImageProduk(data.gambar_produk)" class="my-2" width="80px" height="80px"></v-img>
+                                                    </center>
+                                                </td>
+                                                <td>
+                                                    <h3>{{data.nama_produk}}</h3>
+                                                    <h5 v-if="data.deskripsi_produk.length < 80">{{data.deskripsi_produk}}</h5>
+                                                    <h5 v-else>{{data.deskripsi_produk.substring(0, 80) + '....' }}</h5>
+                                                    <h3>
+                                                        Rp
+                                                        {{ Number(data.harga_produk).toLocaleString('id-ID') }}
+                                                    </h3>
+                                                </td>
+                                                <td class="text-right pr-4" style="width:50px">
+                                                    <div>X {{data.kuantitas}}</div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <v-divider></v-divider>
+                                        
+                                    </div>
+                                    <table style="width:100%" class="pt-2">
+                                        <tr>
+                                            <td class="pl-3">
+                                            <h4>Subtotal untuk Produk</h4>
+                                            <h4 v-if="item.ppn=='Y'">PPN 10%</h4>
+                                            <h4>Subtotal untuk Pengiriman</h4>
+                                            <h2 class="red--text">Total Pembayaran</h2>
+                                            </td>
+                                            <td class="text-right pr-6">
+                                            <div>
+                                                Rp
+                                                {{ Number(item.total).toLocaleString('id-ID') }}
+                                            </div>
+                                            <div v-if="item.ppn=='Y'">
+                                                Rp
+                                                {{ Number(item.nilai_ppn).toLocaleString('id-ID') }}
+                                            </div>
+                                            <div>
+                                                Rp
+                                                {{ Number(item.ongkos_kirim).toLocaleString('id-ID') }}
+                                            </div>
+                                            <h3 class="red--text">
+                                                Rp
+                                                {{ Number(item.jumlah_pembayaran).toLocaleString('id-ID') }}
+                                            </h3>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <v-divider></v-divider>
+                                    <table style="width:100%" >
+                                        <tr>
+                                            <td class="pl-3">
+                                                <h4 v-if="item.pesan_pembeli != ''">Pesan Pembeli</h4>
+                                                <h4>Detail Pengiriman</h4>
+                                                <h4>Detail Invoice</h4>
+                                                <h4>No Resi</h4>
+                                            </td>
+                                            <td class="text-right pr-6">
+                                                <h4 v-if="item.pesan_pembeli != ''">
+                                                    {{ item.pesan_pembeli }}
+                                                </h4>
+                                                <v-btn x-small @click="bayarInv(item,'detail_pengiriman')">Lihat</v-btn>
+                                                <br><v-btn x-small @click="toPrint(item)">Print</v-btn>
                                                 <h4>{{item.no_resi}}</h4>
                                             </td>
                                         </tr>
@@ -781,8 +1322,224 @@
                         </div>
                     </v-container>
                   </v-tab-item>
+                  <!-- selesai -->
                   <v-tab-item>
-                      Selesai
+                      <v-container v-if="user.status == 'pembeli'">
+                        <div
+                            v-for="item in listInv"
+                            :key="item.no_inv"
+                            class="mb-2"
+                        >                
+                            <v-card
+                                elevation="6"
+                                v-if="item.id_status_pembayaran == 2 && item.id_status_pengiriman == 3 && item.id_user == user.id_user"
+                            >
+                                <div class="mx-2 pt-3">
+                                    <table style="width:100%">
+                                        <tr>
+                                            <td class="pl-3">
+                                                <h4>No Invoice : {{ item.no_inv }}</h4>
+                                            </td>
+                                            <td class="text-right pr-6">
+                                                <h4>Tanggal Pembayaran : 
+                                                    {{
+                                                    moment
+                                                        .utc(item.tgl_pembayaran)
+                                                        .add(utc, 'h')
+                                                        .format('DD MMM YYYY, HH:mm')
+                                                    }}
+                                                </h4>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <v-divider></v-divider>
+                                    <div
+                                        v-for="(data,index) in item.pesanan"
+                                        :key="index"
+                                    >
+                                        <table style="width:100%">
+                                            <tr>
+                                                <td>
+                                                    <center>
+                                                    <v-img :src="getImageProduk(data.gambar_produk)" class="my-2" width="80px" height="80px"></v-img>
+                                                    </center>
+                                                </td>
+                                                <td>
+                                                    <h3>{{data.nama_produk}}</h3>
+                                                    <h5 v-if="data.deskripsi_produk.length < 80">{{data.deskripsi_produk}}</h5>
+                                                    <h5 v-else>{{data.deskripsi_produk.substring(0, 80) + '....' }}</h5>
+                                                    <h3>
+                                                        Rp
+                                                        {{ Number(data.harga_produk).toLocaleString('id-ID') }}
+                                                    </h3>
+                                                </td>
+                                                <td class="text-right pr-4" style="width:50px">
+                                                    <div>X {{data.kuantitas}}</div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <v-divider></v-divider>
+                                        
+                                    </div>
+                                    <table style="width:100%" class="pt-2">
+                                        <tr>
+                                            <td class="pl-3">
+                                            <h4>Subtotal untuk Produk</h4>
+                                            <h4 v-if="item.ppn=='Y'">PPN 10%</h4>
+                                            <h4>Subtotal untuk Pengiriman</h4>
+                                            <h2 class="red--text">Total Pembayaran</h2>
+                                            </td>
+                                            <td class="text-right pr-6">
+                                            <div>
+                                                Rp
+                                                {{ Number(item.total).toLocaleString('id-ID') }}
+                                            </div>
+                                            <div v-if="item.ppn=='Y'">
+                                                Rp
+                                                {{ Number(item.nilai_ppn).toLocaleString('id-ID') }}
+                                            </div>
+                                            <div>
+                                                Rp
+                                                {{ Number(item.ongkos_kirim).toLocaleString('id-ID') }}
+                                            </div>
+                                            <h3 class="red--text">
+                                                Rp
+                                                {{ Number(item.jumlah_pembayaran).toLocaleString('id-ID') }}
+                                            </h3>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <v-divider></v-divider>
+                                    <table style="width:100%" >
+                                        <tr>
+                                            <td class="pl-3">
+                                                <h4 v-if="item.pesan_pembeli != ''">Pesan Pembeli</h4>
+                                                <h4>Detail Pengiriman</h4>
+                                                <h4>Detail Invoice</h4>
+                                                <h4>No Resi</h4>
+                                            </td>
+                                            <td class="text-right pr-6">
+                                                <h4 v-if="item.pesan_pembeli != ''">
+                                                    {{ item.pesan_pembeli }}
+                                                </h4>
+                                                <v-btn x-small @click="bayarInv(item,'detail_pengiriman')">Lihat</v-btn>
+                                                <br><v-btn x-small @click="toPrint(item)">Print</v-btn>
+                                                <h4>{{item.no_resi}}</h4>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </v-card>
+                        </div>
+                      </v-container>
+                      <v-container v-else>
+                        <div
+                            v-for="item in listInv"
+                            :key="item.no_inv"
+                            class="mb-2"
+                        >                
+                            <v-card
+                                elevation="6"
+                                v-if="item.id_status_pembayaran == 2 && item.id_status_pengiriman == 3"
+                            >
+                                <div class="mx-2 pt-3">
+                                    <table style="width:100%">
+                                        <tr>
+                                            <td class="pl-3">
+                                                <h4>No Invoice : {{ item.no_inv }}</h4>
+                                            </td>
+                                            <td class="text-right pr-6">
+                                                <h4>Tanggal Pembayaran : 
+                                                    {{
+                                                    moment
+                                                        .utc(item.tgl_pembayaran)
+                                                        .add(utc, 'h')
+                                                        .format('DD MMM YYYY, HH:mm')
+                                                    }}
+                                                </h4>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <v-divider></v-divider>
+                                    <div
+                                        v-for="(data,index) in item.pesanan"
+                                        :key="index"
+                                    >
+                                        <table style="width:100%">
+                                            <tr>
+                                                <td>
+                                                    <center>
+                                                    <v-img :src="getImageProduk(data.gambar_produk)" class="my-2" width="80px" height="80px"></v-img>
+                                                    </center>
+                                                </td>
+                                                <td>
+                                                    <h3>{{data.nama_produk}}</h3>
+                                                    <h5 v-if="data.deskripsi_produk.length < 80">{{data.deskripsi_produk}}</h5>
+                                                    <h5 v-else>{{data.deskripsi_produk.substring(0, 80) + '....' }}</h5>
+                                                    <h3>
+                                                        Rp
+                                                        {{ Number(data.harga_produk).toLocaleString('id-ID') }}
+                                                    </h3>
+                                                </td>
+                                                <td class="text-right pr-4" style="width:50px">
+                                                    <div>X {{data.kuantitas}}</div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <v-divider></v-divider>
+                                        
+                                    </div>
+                                    <table style="width:100%" class="pt-2">
+                                        <tr>
+                                            <td class="pl-3">
+                                            <h4>Subtotal untuk Produk</h4>
+                                            <h4 v-if="item.ppn=='Y'">PPN 10%</h4>
+                                            <h4>Subtotal untuk Pengiriman</h4>
+                                            <h2 class="red--text">Total Pembayaran</h2>
+                                            </td>
+                                            <td class="text-right pr-6">
+                                            <div>
+                                                Rp
+                                                {{ Number(item.total).toLocaleString('id-ID') }}
+                                            </div>
+                                            <div v-if="item.ppn=='Y'">
+                                                Rp
+                                                {{ Number(item.nilai_ppn).toLocaleString('id-ID') }}
+                                            </div>
+                                            <div>
+                                                Rp
+                                                {{ Number(item.ongkos_kirim).toLocaleString('id-ID') }}
+                                            </div>
+                                            <h3 class="red--text">
+                                                Rp
+                                                {{ Number(item.jumlah_pembayaran).toLocaleString('id-ID') }}
+                                            </h3>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <v-divider></v-divider>
+                                    <table style="width:100%" >
+                                        <tr>
+                                            <td class="pl-3">
+                                                <h4 v-if="item.pesan_pembeli != ''">Pesan Pembeli</h4>
+                                                <h4>Detail Pengiriman</h4>
+                                                <h4>Detail Invoice</h4>
+                                                <h4>No Resi</h4>
+                                            </td>
+                                            <td class="text-right pr-6">
+                                                <h4 v-if="item.pesan_pembeli != ''">
+                                                    {{ item.pesan_pembeli }}
+                                                </h4>
+                                                <v-btn x-small @click="bayarInv(item,'detail_pengiriman')">Lihat</v-btn>
+                                                <br><v-btn x-small @click="toPrint(item)">Print</v-btn>
+                                                <h4>{{item.no_resi}}</h4>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </v-card>
+                        </div>
+                      </v-container>
                   </v-tab-item>
               </v-tabs-items>
           </v-tab-item>
@@ -1011,6 +1768,24 @@
             </v-card-actions>
         </v-card>
     </v-dialog>
+    <v-dialog v-model="dialogSampai" max-width="400px">
+        <v-card>
+            <v-toolbar flat dense color="#20929D">
+            <v-toolbar-title><b>Verifikasi barang telah sampai</b></v-toolbar-title>
+            <v-spacer></v-spacer>
+            <v-btn icon @click="dialogSampai = false">
+                <v-icon>mdi-close</v-icon>
+            </v-btn>
+            </v-toolbar>
+            <br>
+            <div class="mx-3">Anda yakin untuk memverifikasi bahwa barang telah sampai?</div>
+            <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn @click="dialogSampai = false">Cancel</v-btn>
+                <v-btn color="#20929D" class="white--text" @click="sampaiTujuan()">Ya</v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -1053,6 +1828,7 @@ Vue.use(Viewer)
         buktiBayar:false,
         verifikasiPembayaran:false,
         dialogResi:false,
+        dialogSampai : false,
         noResi:'',
         detailPengiriman: false,
         alasanTolakBatalkan:'',
@@ -1222,7 +1998,7 @@ Vue.use(Viewer)
             }else if (action == 'resi') {
                 this.dialogResi = true
             }else if (action == 'sampai') {
-                console.log('sampai')
+                this.dialogSampai = true
             }
         },
         async uploadBuktiBayar(){
@@ -1303,6 +2079,7 @@ Vue.use(Viewer)
             .then((response) => {
                 console.log(response)
                 this.getInv()
+                this.dialogSampai = false
                 this.setAlert({
                     status: true,
                     color: 'success',
@@ -1317,6 +2094,10 @@ Vue.use(Viewer)
                     text: responses.api_message,
                 })
             })
+        },
+        async toPrint(data){
+            let routeData = this.$router.resolve({name: 'print', query: {id: data.no_inv}});
+            window.open(routeData.href, '_blank');
         },
     },
     created(){

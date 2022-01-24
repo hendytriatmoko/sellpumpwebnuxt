@@ -20,7 +20,7 @@
             <v-img
               src="/img/icons/people.webp"
               contain
-              v-if="user.photo == ''"
+              v-if="user.foto == ''"
             ></v-img>
             <v-img :src="getImageUser(user.foto)" alt="Avatar" v-else></v-img>
           </v-avatar>
@@ -37,7 +37,7 @@
                   <v-img
                     src="/img/icons/people.webp"
                     contain
-                    v-if="user.photo == ''"
+                    v-if="user.foto == ''"
                   ></v-img>
 
                   <v-img

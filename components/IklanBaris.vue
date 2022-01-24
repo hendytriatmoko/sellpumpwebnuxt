@@ -71,8 +71,8 @@
         </v-col>
 
         <v-col cols="12" sm="2">
-          <div class="d-flex mx-4 my-2">
-            <v-tooltip bottom >
+          <div class="d-flex my-2">
+            <v-tooltip bottom v-if="!guest && user.status == 'pembeli'">
               <template v-slot:activator="{ on }">
                 <v-btn
                   text
@@ -85,10 +85,11 @@
                   Keranjang
                 </v-btn>
               </template>
-              <span>Favorit</span>
+              <span>Keranjang</span>
             </v-tooltip>
             <v-tooltip
               bottom
+              v-if="!guest && user.status != 'pembeli'"
             >
               <template v-slot:activator="{ on }">
                 <v-btn text height="47" class="white" v-on="on" @click="goEdit()">
@@ -100,6 +101,7 @@
             </v-tooltip>
             <v-tooltip
               bottom
+              v-if="!guest && user.status != 'pembeli'"
             >
               <template v-slot:activator="{ on }">
                 <v-btn @click="hapusIklan=true" text height="47" class="white" v-on="on">
@@ -114,7 +116,17 @@
             color="#20929D"
             dark
             block
+            v-if="!guest"
             @click="dialogPembelian=true,beratProduk=hits.berat_produk,total=hits.harga_produk"
+          >
+            Pesan
+          </v-btn>
+          <v-btn
+            color="#20929D"
+            dark
+            v-else
+            block
+            to="/login"
           >
             Pesan
           </v-btn>
@@ -554,7 +566,7 @@ export default {
       let formData = new FormData()
       formData.append('id_produk', this.hits.id_produk)
       await this.$axios
-        .delete('/produk/v1/produk/delete', formData, {
+        .put('/produk/v1/produk/delete', formData, {
           headers: { Authorization: this.DataToken }
         })
         .then((response) => {

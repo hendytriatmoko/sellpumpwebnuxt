@@ -288,7 +288,7 @@ export default {
     iklanPromo: [],
     iklanTerbaru: [],
     page: 1,
-    limit: 12,
+    limit: 4,
     offset: 0,
     id_type_banner: [],
     total: 0,
@@ -383,12 +383,26 @@ export default {
     },
 
     async getIklanTerbaru() {
+      let offset = (this.page - 1) * this.limit
 
       await this.$axios
-        .get('/produk/v1/produk/getproduk')
+        .get('/produk/v1/produk/getproduk',{
+          // params: {
+          //   limit: 4,
+          //   offset: offset,
+          // },
+        })
         .then((response) => {
           this.iklanTerbaru = response.data.data
           console.log('produk', this.iklanTerbaru)
+          // let data = response.data
+          // let { hits } = response.data.data
+          // this.iklanTerbaru.push(...hits)
+
+          // this.total = data.hits.total.value
+          // this.lengthPage = Math.ceil(this.total / this.limit)
+          // this.page++
+          // console.log('tot', data.hits.total.value)
         })
         .catch((error) => {
           let responses = error.response.data

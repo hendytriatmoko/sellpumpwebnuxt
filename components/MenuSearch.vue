@@ -28,7 +28,7 @@
         </v-list-item>
       </div>
 
-      <v-subheader>Motor Bekas</v-subheader>
+      <v-subheader>Produk</v-subheader>
 
       <v-virtual-scroll
         :items="hits"
@@ -61,7 +61,7 @@
         </template>
       </v-virtual-scroll>
 
-      <v-subheader>Penjual</v-subheader>
+      <v-subheader>Artikel</v-subheader>
 
       <v-virtual-scroll
         :items="artikel"
