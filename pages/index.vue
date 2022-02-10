@@ -142,6 +142,90 @@
         </v-col>
       </v-row>
 
+      <v-row align="start" v-if="!guest">
+        <v-col cols="12" sm="12">
+          <v-card v-if="produkKhusus.length > 0"  rounded="lg" elevation="6" height="330px">
+            <v-container>
+              <div class="d-flex align-center justify-space-between ml-4 my-2">
+                <h2>Produk Khusus {{DataUser.nama}}</h2>
+              </div>
+              <div >
+                <div class="ml-4">
+                  produk khusus untuk {{ DataUser.nama }} dari Griya Saller Pump
+                </div>
+
+                <div class="scrolling-wrapper-flexbox text-center">
+                  <!-- moment(item.date).add(utc, 'h').format('DD MMM, YYYY') -->
+                  <v-card
+                    class="ma-2 ml-4"
+                    rounded="xl"
+                    v-for="(item, index) in produkKhusus"
+                    contain
+                    :key="index"
+                    @click="goKhusus(item.id_khusus)"
+                    >
+                    <div class="red white--text py-2"><center>Diskon 30%</center></div>
+                    <v-divider></v-divider>
+                    <v-list>
+                      <v-list-item>
+                        <v-list-item-avatar size="70">
+
+                          <v-img :src="getImageProduk(item.produk_khusus[0].produk[0].gambar_produk)"></v-img>
+                        </v-list-item-avatar>
+
+                        <v-list-item-title>
+                          <div class="red--text">
+                            <s>
+                            Rp
+                            {{ Number(item.harga_asli).toLocaleString('id-ID') }}
+                            </s>
+                          </div>
+                          <div class="teal white--text pa-2 rounded-xl" >
+                            Rp
+                            {{ Number(item.harga_khusus).toLocaleString('id-ID') }}
+                          </div>
+                        </v-list-item-title>
+                      </v-list-item>
+                    </v-list>
+
+                    <v-divider></v-divider>
+                    <div>{{ item.nama_khusus }}</div>
+                    <div>{{ item.produk_khusus.length }} Produk</div>
+                  </v-card>
+                </div>
+              </div>
+            </v-container>
+          </v-card>
+          <v-card rounded="lg" elevation="6" v-else>
+            <v-container>
+              <div >
+                <v-list three-line>
+                  <v-list-item>
+                    <v-list-item-icon>
+                      <v-icon x-large>mdi-clipboard</v-icon>
+                    </v-list-item-icon>
+
+                    <v-list-item-content>
+                      <v-list-item-title>
+                        Belum ada Produk khusus
+                      </v-list-item-title>
+
+                      <v-list-item-subtitle>
+                        Maaf, saat ini belum ada Produk khusus.
+                      </v-list-item-subtitle>
+
+                      <v-list-item-subtitle>
+                        Hubungi Griya Saller Pump untuk mendapatkan harga khusus pada suatu produk
+                      </v-list-item-subtitle>
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-list>
+              </div>
+            </v-container>
+          </v-card>
+        </v-col>
+      </v-row>
+
       <div v-if="iklanTerbaru.length > 0">
         <v-divider class="mt-6 mb-4"></v-divider>
 
@@ -297,9 +381,12 @@ export default {
     listPesanan:[],
     unikTerlaris:[],
     hitsTerlaris:[],
+    DataUser:[],
+    produkKhusus:[],
   }),
   computed: {
     ...mapGetters({
+      guest: 'auth/guest',
       utc: 'timezone/utc',
       timezone: 'timezone/region',
     }),
@@ -435,6 +522,11 @@ export default {
         '/detail-iklan/' + name.toLowerCase().replace(/ /g, '-').replace(/[/]/g,'-')+'-'+id
       )
     },
+    async goKhusus(id){
+      this.$router.push(
+        '/produk-khusus?id='+id
+      )
+    },
     async getPesanan(){
       var params = new URLSearchParams();    
 
@@ -500,12 +592,35 @@ export default {
       }
       console.log('hits terlari', this.hitsTerlaris)
     },
+    async getDataProdukKhusus(){
+      var params = new URLSearchParams();
+
+      params.append("id_user", this.DataUser.id_user);
+
+      var request = {
+        params: params,
+        headers: { Authorization: this.DataToken }
+      };
+      await this.$axios
+        .get('/produk/v1/khusus/getkhusus', request)
+        .then((response) => {
+            // this.listIklan = response.data.data[0]
+            this.produkKhusus = response.data.data
+            console.log('produk khusus', this.produkKhusus)
+        })
+        .catch((error) => {
+            let responses = error.response.data
+            console.log(responses.api_message)
+        })
+    },
   },
   async created() {
     this.DataToken = this.$cookies.get("token");
+    this.DataUser = this.$cookies.get("user");
     await this.getArtikel()
     this.getIklanTerbaru()
     await this.getPesanan()
+    this.getDataProdukKhusus()
     // await this.getTbBerlangsung()
     // await this.getIklanPromo()
     this.setProductId({})
@@ -515,6 +630,7 @@ export default {
     console.log('total', this.total)
     console.log('jadwal', this.jadwal)
     console.log('promo', this.iklanPromo)
+    console.log('DataUser', this.DataUser)
 
     // let app = this
     // let now = setInterval(() => {

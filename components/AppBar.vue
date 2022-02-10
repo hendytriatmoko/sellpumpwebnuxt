@@ -146,6 +146,11 @@ export default {
         title: 'Tambah Merk & Kategori',
         route: '/seller/add-merk-kategori',
       },
+      {
+        id: 4,
+        title: 'Tambah Iklan Khusus',
+        route: '/seller/add-iklan-khusus',
+      },
     ],
     keyword: '',
   }),
