@@ -203,6 +203,7 @@ export default {
                         color: 'success',
                         text: 'Artikel berhasil di posting',
                     })
+                    this.$router.push('/')
                 })
                 .catch((error) => {
                     let responses = error.response.data
