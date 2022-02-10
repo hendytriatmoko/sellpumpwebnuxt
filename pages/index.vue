@@ -23,6 +23,88 @@
 
     <br />
 
+    <div class="text-center">
+      <h2>SELAMAT DATANG DI GRIYA SALLER PUMP</h2>
+      <p>
+        <b>Griya Saller Pump (GSP)</b> merupakan situs penjualan online maupun off line, 
+        dengan harga yang mampu bersaing dan kualitas terjamin 100% Ori. <br> Kini anda 
+        tidak lagi perlu bingung dan beranjak dari tempat anda untuk mencari pompa 
+        serta sparepart dan aksesoris pompa yang dibutuhkan. <br> Karena kini kita hadir 
+        untuk membantu mengatasi kendala perairan anda. 
+      </p>
+      <br>
+      <v-row>
+        <v-col cols="12" sm="6">
+          <v-card>
+            <div class="d-flex mx-6 pt-6 pb-2">
+              <v-icon>mdi-check-underline-circle</v-icon>
+              <div class="ml-3"><b>POMPA</b></div>
+            </div>
+            <div class="text-justify mx-6">
+              <p>
+                Terdapat berbagai macam pompa seperti :<br>
+                Pompa Industri ( pompa sewage, pompa sumurbor, pompa satelit, pompa dorong, 
+                pompa transfer, pompa booster), Pompa Domestik/ pompa rumah tangga ( pompa air 
+                kolam renang,pompa pompa air sumur dalam, pompa air sumur dangkal), Sparepart pompa, 
+                Electro Motor, Pressure Tank,Pressure Switch,Blower . 
+              </p>
+            </div>
+            <div class="d-flex mx-6 pt-2 pb-2">
+              <v-icon>mdi-check-underline-circle</v-icon>
+              <div class="ml-3"><b>MERK</b></div>
+            </div>
+            <div class="text-justify mx-6 pb-6">
+              <p>
+                Tersedia berbagai macam merk pompa dengan merk pompa Ebara, Pompa App, Pompa Grundfos,
+                Pompa DAB, Pompa Hayward, Pompa Koshin, Pompa Torishima, Pompa Tsurumi,Pompa Sanso, 
+                Pompa Southern Cross, Pompa Stairs.
+              </p>
+            </div>
+          </v-card>
+        </v-col>
+        <v-col cols="12" sm="6">
+          <v-card>
+            <div class="d-flex mx-6 pt-6 pb-2">
+              <v-icon>mdi-check-underline-circle</v-icon>
+              <div class="ml-3"><b>AKSESORIS</b></div>
+            </div>
+            <div class="text-justify mx-6">
+              <p>
+                Griya Saller Pump juga menyediakan aksesoris yang dibutuhkan untuk pertukangannya 
+                dengan berbagai merk ternama Electro Motor Mek Siemens.Merk CMG, Merk Teco,Merk 
+                Bologna, Merk Frenklin. Dan untuk aksoris tambahan lainnya kami menjual produk Tival, 
+                Aquafil, CIMM,Evak, Dll.
+              </p>
+            </div>
+            <div class="d-flex mx-6 pt-2 pb-2">
+              <v-icon>mdi-check-underline-circle</v-icon>
+              <div class="ml-3"><b>SERVICE</b></div>
+            </div>
+            <div class="text-justify mx-6">
+              <p>
+                Griya Saller Pump tidak hanya menjual produk saja, kami juga menyedikan jas 
+                Service dan juga pemasangan dilapangan. 
+              </p>
+            </div>
+            <div class="d-flex mx-6">
+              <v-icon>mdi-check-underline-circle</v-icon>
+              <div class="ml-3"><b>POMPA BAHAN KIMIA</b></div>
+            </div>
+            <div class="text-justify mx-6 pb-3">
+              <p>
+                Selain Menyedikan pompa air adapun pompa untuk 
+                bahan kimia, attau air asin seperti pompa milano, pompa sanso,pompa trundean,pompa
+                southern cross, pompa app kenji.
+              </p>
+            </div>
+            
+          </v-card>
+        </v-col>
+      </v-row>
+    </div>
+
+    <br />
+
     <div style="max-width: 1240px; margin: 0 auto !important">
       <v-row align="start">
         <v-col cols="12" sm="9">
@@ -164,7 +246,7 @@
                     :key="index"
                     @click="goKhusus(item.id_khusus)"
                     >
-                    <div class="red white--text py-2"><center>Diskon 30%</center></div>
+                    <div class="red white--text py-2"><center>Diskon {{item.diskon}}%</center></div>
                     <v-divider></v-divider>
                     <v-list>
                       <v-list-item>

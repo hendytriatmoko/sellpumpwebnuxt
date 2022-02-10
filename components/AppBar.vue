@@ -12,8 +12,14 @@
       <nuxt-link to="/" class="d-flex ml-5 mr-5">
         <v-img src="/img/gsp1.png" width="50"></v-img>
         <div class="ml-3">
-          <h3>Griya</h3>
-          <h5>Saller Pump</h5>
+          <div style="width:80px">
+            <h3>G R I Y A</h3>
+          </div>
+          <div style="width:80px">
+            <h5>Saller Pump</h5>
+          </div>
+          <!-- <h3 >Griya</h3>
+          <h5>Saller Pump</h5> -->
         </div>
       </nuxt-link>
 

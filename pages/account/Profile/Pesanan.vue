@@ -200,13 +200,15 @@
                                         <h4 v-if="item.pesan_pembeli != ''">Pesan Pembeli</h4>
                                         <h4>Detail Pengiriman</h4>
                                         <h4>Detail Invoice</h4>
+                                        <h4>Detail Pembeli</h4>
                                     </td>
                                     <td class="text-right pr-6">
                                         <h4 v-if="item.pesan_pembeli != ''">
                                             {{ item.pesan_pembeli }}
                                         </h4>
                                         <v-btn x-small @click="bayarInv(item,'detail_pengiriman')">Lihat</v-btn><br>
-                                        <v-btn x-small @click="toPrint(item)">Print</v-btn>
+                                        <v-btn x-small @click="toPrint(item)">Print</v-btn><br>
+                                        <v-btn x-small @click="goDetailUser(item.id_user)">Lihat</v-btn>
                                     </td>
                                 </tr>
                             </table>
@@ -422,6 +424,7 @@
                                         <h4>Bukti Pembayaran</h4>
                                         <h4 v-if="item.pesan_pembeli != ''">Pesan Pembeli</h4>
                                         <h4>Detail Pengiriman</h4>
+                                        <h4>Detail Pembeli</h4>
                                     </td>
                                     <td class="text-right pr-6">
                                         <div v-viewer="{ movable: false }">
@@ -433,7 +436,8 @@
                                             />
                                         </div>
                                         <h4 v-if="item.pesan_pembeli != ''">{{item.pesan_pembeli}}</h4>
-                                        <v-btn x-small @click="bayarInv(item,'detail_pengiriman')">Lihat</v-btn>
+                                        <v-btn x-small @click="bayarInv(item,'detail_pengiriman')">Lihat</v-btn><br>
+                                        <v-btn x-small @click="goDetailUser(item.id_user)">Lihat</v-btn>
                                     </td>
                                 </tr>
                             </table>
@@ -840,13 +844,15 @@
                                         <h4>Alasan Ditolak</h4>
                                         <h4 v-if="item.pesan_pembeli != ''">Pesan Pembeli</h4>
                                         <h4>Detail Pengiriman</h4>
+                                        <h4>Detail Pembeli</h4>
                                     </td>
                                     <td class="text-right pr-6">
                                         <h4>{{item.alasan_ditolak}}</h4>
                                         <h4 v-if="item.pesan_pembeli != ''">
                                             {{ item.pesan_pembeli }}
                                         </h4>
-                                        <v-btn x-small @click="bayarInv(item,'detail_pengiriman')">Lihat</v-btn>
+                                        <v-btn x-small @click="bayarInv(item,'detail_pengiriman')">Lihat</v-btn><br>
+                                        <v-btn x-small @click="goDetailUser(item.id_user)">Lihat</v-btn>
                                     </td>
                                 </tr>
                             </table>
@@ -1075,13 +1081,15 @@
                                                 <h4 v-if="item.pesan_pembeli != ''">Pesan Pembeli</h4>
                                                 <h4>Detail Pengiriman</h4>
                                                 <h4>Detail Invoice</h4>
+                                                <h4>Detail Pembeli</h4>
                                             </td>
                                             <td class="text-right pr-6">
                                                 <h4 v-if="item.pesan_pembeli != ''">
                                                     {{ item.pesan_pembeli }}
                                                 </h4>
                                                 <v-btn x-small @click="bayarInv(item,'detail_pengiriman')">Lihat</v-btn><br>
-                                                <v-btn x-small @click="toPrint(item)">Print</v-btn>
+                                                <v-btn x-small @click="toPrint(item)">Print</v-btn><br>
+                                                <v-btn x-small @click="goDetailUser(item.id_user)">Lihat</v-btn>
                                             </td>
                                         </tr>
                                     </table>
@@ -1301,6 +1309,7 @@
                                                 <h4 v-if="item.pesan_pembeli != ''">Pesan Pembeli</h4>
                                                 <h4>Detail Pengiriman</h4>
                                                 <h4>Detail Invoice</h4>
+                                                <h4>Detail Pembeli</h4>
                                                 <h4>No Resi</h4>
                                             </td>
                                             <td class="text-right pr-6">
@@ -1308,7 +1317,8 @@
                                                     {{ item.pesan_pembeli }}
                                                 </h4>
                                                 <v-btn x-small @click="bayarInv(item,'detail_pengiriman')">Lihat</v-btn>
-                                                <br><v-btn x-small @click="toPrint(item)">Print</v-btn>
+                                                <br><v-btn x-small @click="toPrint(item)">Print</v-btn><br>
+                                                <v-btn x-small @click="goDetailUser(item.id_user)">Lihat</v-btn>
                                                 <h4>{{item.no_resi}}</h4>
                                             </td>
                                         </tr>
@@ -1524,6 +1534,7 @@
                                                 <h4 v-if="item.pesan_pembeli != ''">Pesan Pembeli</h4>
                                                 <h4>Detail Pengiriman</h4>
                                                 <h4>Detail Invoice</h4>
+                                                <h4>Detail Pembeli</h4>
                                                 <h4>No Resi</h4>
                                             </td>
                                             <td class="text-right pr-6">
@@ -1531,7 +1542,8 @@
                                                     {{ item.pesan_pembeli }}
                                                 </h4>
                                                 <v-btn x-small @click="bayarInv(item,'detail_pengiriman')">Lihat</v-btn>
-                                                <br><v-btn x-small @click="toPrint(item)">Print</v-btn>
+                                                <br><v-btn x-small @click="toPrint(item)">Print</v-btn><br>
+                                                <v-btn x-small @click="goDetailUser(item.id_user)">Lihat</v-btn>
                                                 <h4>{{item.no_resi}}</h4>
                                             </td>
                                         </tr>
@@ -2099,6 +2111,9 @@ Vue.use(Viewer)
             let routeData = this.$router.resolve({name: 'print', query: {id: data.no_inv}});
             window.open(routeData.href, '_blank');
         },
+        async goDetailUser(id){
+            this.$router.push('/DetailUser?id='+id)
+        }
     },
     created(){
         this.DataToken = this.$cookies.get("token");

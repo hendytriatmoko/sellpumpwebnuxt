@@ -448,6 +448,7 @@ export default {
     async postIklan(){
         console.log('produk', this.produk)
         this.produk.diskon = (this.produk.hargaKhusus*100)/this.produk.hargaAsli
+        this.produk.diskon = 100 - Math.round(this.produk.diskon)
         console.log('diskon', Math.round(this.produk.diskon))
 
         let formData = new FormData()
@@ -466,7 +467,7 @@ export default {
             })
             .then((response) => {
                 console.log(response)
-                this.postProdukKhusus()
+                this.postProdukKhusus(response.data.data.id_khusus)
             })
             .catch((error) => {
                 let responses = error.response.data
@@ -477,33 +478,56 @@ export default {
                 })
             })
     },
-    async postProdukKhusus(){
-        let formData = new FormData()
+    async postProdukKhusus(id_khusus){
+        console.log('id_khusus', id_khusus)
+        for (let i = 0; i < this.produkTerpilih.length; i++) {
+            let formData = new FormData()
 
-        formData.append('id_user', this.userTerpilih.id_user)
-        formData.append('nama_khusus', this.produk.namaProduk)
-        formData.append('harga_khusus', this.produk.hargaKhusus)
-        formData.append('berat_khusus', this.produk.beratKhusus)
-        formData.append('deskripsi_khusus', this.produk.deskripsiProduk)
-        formData.append('harga_asli', this.produk.hargaAsli)
-        formData.append('diskon', this.produk.diskon)
+            formData.append('id_khusus', id_khusus)
+            formData.append('id_produk', this.produkTerpilih[i].data.id_produk)
+            formData.append('harga', this.produkTerpilih[i].jumlah)
+            formData.append('kuantitas', this.produkTerpilih[i].unit)
 
-        await this.$axios
-            .post('/produk/v1/khusus/create', formData, {
-                headers: { Authorization: this.DataToken }
-            })
-            .then((response) => {
-                console.log(response)
-                this.postProdukKhusus()
-            })
-            .catch((error) => {
-                let responses = error.response.data
-                this.setAlert({
-                    status: true,
-                    color: 'error',
-                    text: responses.api_message,
-                })
-            })
+            if (i == this.produkTerpilih.length - 1) {
+                await this.$axios
+                    .post('/produk/v1/produk_khusus/create', formData, {
+                        headers: { Authorization: this.DataToken }
+                    })
+                    .then((response) => {
+                        console.log(response)
+                        this.setAlert({
+                            status: true,
+                            color: 'success',
+                            text: 'Produk Khusus berhasil diIklankan',
+                        })
+                        this.$router.push('/')
+                    })
+                    .catch((error) => {
+                        let responses = error.response.data
+                        this.setAlert({
+                            status: true,
+                            color: 'error',
+                            text: responses.api_message,
+                        })
+                    })
+            }else{
+                await this.$axios
+                    .post('/produk/v1/produk_khusus/create', formData, {
+                        headers: { Authorization: this.DataToken }
+                    })
+                    .then((response) => {
+                        console.log(response)
+                    })
+                    .catch((error) => {
+                        let responses = error.response.data
+                        this.setAlert({
+                            status: true,
+                            color: 'error',
+                            text: responses.api_message,
+                        })
+                    })
+            }
+        }
     },
   },
   async created() {
