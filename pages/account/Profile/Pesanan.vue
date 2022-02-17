@@ -1798,6 +1798,35 @@
             </v-card-actions>
         </v-card>
     </v-dialog>
+    <v-dialog v-model="dialogRating" max-width="500px" persistent>
+        <v-card>
+            <v-toolbar flat dense color="#20929D">
+            <v-toolbar-title><b class="white--text">Berikan penilaian anda</b></v-toolbar-title>
+            </v-toolbar>
+            <br>
+            <center>
+            <v-rating
+                v-model="rating"
+                :length="length"
+                color="yellow"
+                background-color="grey lighten-1"
+                large
+            ></v-rating>
+            </center>
+            <v-textarea
+                name="input-7-4"
+                label="Masukkan Komentar Anda"
+                class="mx-3"
+                dense
+                outlined
+                v-model="komentarRating"
+            ></v-textarea>
+            <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="#20929D" :disabled="rating == 0" @click="beriRating()" class="white--text">Kirim</v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -1841,6 +1870,10 @@ Vue.use(Viewer)
         verifikasiPembayaran:false,
         dialogResi:false,
         dialogSampai : false,
+        dialogRating: false,
+        produkRating:[],
+        rating: 0,
+        komentarRating:'',
         noResi:'',
         detailPengiriman: false,
         alasanTolakBatalkan:'',
@@ -2010,6 +2043,7 @@ Vue.use(Viewer)
             }else if (action == 'resi') {
                 this.dialogResi = true
             }else if (action == 'sampai') {
+                this.produkRating = item.pesanan
                 this.dialogSampai = true
             }
         },
@@ -2078,6 +2112,15 @@ Vue.use(Viewer)
             })
         },
         async sampaiTujuan(){
+            // console.log('user', this.user)
+            //     this.dialogSampai = false
+            //     console.log('item produk', this.produkRating)
+            //     this.setAlert({
+            //         status: true,
+            //         color: 'success',
+            //         text: 'Status Pengiriman di update',
+            //     })
+            //     this.dialogRating = true
             let formData = new FormData()
   
             formData.append('no_inv', this.itemInv.no_inv)
@@ -2090,13 +2133,13 @@ Vue.use(Viewer)
             })
             .then((response) => {
                 console.log(response)
-                this.getInv()
                 this.dialogSampai = false
                 this.setAlert({
                     status: true,
                     color: 'success',
                     text: 'Status Pengiriman di update',
                 })
+                this.dialogRating = true
             })
             .catch((error) => {
                 let responses = error.response.data
@@ -2106,6 +2149,41 @@ Vue.use(Viewer)
                     text: responses.api_message,
                 })
             })
+        },
+        async beriRating(){
+            for (let i = 0; i < this.produkRating.length; i++) {
+                let formData = new FormData()
+        
+                formData.append('id_produk', this.produkRating[i].id_produk)
+                formData.append('nama', this.user.nama)
+                formData.append('komentar', this.komentarRating)
+                formData.append('rating', this.rating)
+                formData.append('id_user', this.user.id_user)
+        
+                await this.$axios
+                .post('/produk/v1/rating/create', formData, {
+                    headers: { Authorization: this.DataToken }
+                })
+                .then((response) => {
+                    console.log(response)
+                    
+                })
+                .catch((error) => {
+                    let responses = error.response.data
+                    this.setAlert({
+                    status: true,
+                    color: 'error',
+                    text: responses.api_message,
+                    })
+                })
+            }
+            this.setAlert({
+                status: true,
+                color: 'success',
+                text: 'Verifikasi berhasil',
+            })
+            this.dialogRating = false
+            this.getInv()
         },
         async toPrint(data){
             let routeData = this.$router.resolve({name: 'print', query: {id: data.no_inv}});

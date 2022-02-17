@@ -147,6 +147,96 @@
     </section>
 
     <hr class="my-3" />
+    <v-row>
+      <v-col cols="12" sm="4">
+        <h2>Rating Produk</h2>
+        <div class="ml-3">
+          <div v-if="rating.length > 0">
+            Rata-rata penilaian produk ( <b>{{ rateRating }}</b> )
+            <v-rating
+              v-model="rateRating"
+              color="yellow darken-3"
+              background-color="grey lighten-1"
+              empty-icon="$ratingFull"
+              half-increments
+              readonly
+              large
+            ></v-rating>
+          </div>
+          <div v-else>Maaf Belum ada penilaian produk</div>
+        </div>
+      </v-col>
+      <v-col cols="12" sm="8">
+        <h2>Detail Ulasan</h2>
+        <div class="ml-3">
+          <div v-if="rating.length > 0">
+            <div  v-for="(item,index) in rating" :key="index">
+              <div class="d-flex">
+                <h3>{{ item.nama }}</h3>
+                <v-rating
+                  :value="item.rating"
+                  color="yellow darken-3"
+                  background-color="grey lighten-1"
+                  empty-icon="$ratingFull"
+                  half-increments
+                  readonly
+                  small
+                ></v-rating>
+              </div>
+              <div>
+                {{ item.komentar }}
+              </div>
+            </div>
+          </div>
+          <div v-else>Maaf Belum ada ulasan produk</div>
+        </div>
+      </v-col>
+    </v-row>
+    <div id="create">
+      <v-speed-dial
+      v-model="fab"
+      :top="top"
+      :bottom="bottom"
+      :right="right"
+      :left="left"
+      :direction="direction"
+      :open-on-hover="hover"
+      :transition="transition"
+    >
+      <template v-slot:activator>
+        <v-btn
+          v-model="fab"
+          color="blue darken-2"
+          dark
+          fab
+        >
+          <v-icon v-if="fab">
+            mdi-close
+          </v-icon>
+          <v-icon v-else>
+            mdi-share-variant
+          </v-icon>
+        </v-btn>
+      </template>
+      <v-btn
+        fab
+        dark
+        small
+        color="indigo"
+      >
+        <a href="whatsapp://send?text=Hello saya ingin pesan&phone=+6285893157871" _blank><img style="width:30px" src="/img/wa.png"></a>
+      </v-btn>
+      <v-btn
+        fab
+        dark
+        small
+        color="red"
+        @click="clipboard()"
+      >
+        <v-icon>mdi-clipboard-outline</v-icon>
+      </v-btn>
+    </v-speed-dial>
+    </div>
     <v-dialog v-model="hapusIklan" width="300">
       <v-card class="rounded-lg">
         <v-toolbar dense flat dark color="primary">
@@ -440,7 +530,32 @@ export default {
       ),
   },
   directives: { money: VMoney },
+  watch: {
+    top (val) {
+      this.bottom = !val
+    },
+    right (val) {
+      this.left = !val
+    },
+    bottom (val) {
+      this.top = !val
+    },
+    left (val) {
+      this.right = !val
+    },
+  },
   data: () => ({
+    direction: 'top',
+    fab: false,
+    fling: false,
+    hover: false,
+    tabs: null,
+    top: false,
+    right: true,
+    bottom: true,
+    left: false,
+    transition: 'slide-y-reverse-transition',
+    
     tab: 0,
     hits:[],
     hapusIklan: false,
@@ -498,6 +613,8 @@ export default {
     pembayaranTerverifikasi: [],
     dibatalkanPenjual: [],
     menungguPembayaran: [],
+    rating:[],
+    rateRating:0,
     DataToken:'',
     descLength:0,
     unitProduk:1,
@@ -943,18 +1060,57 @@ export default {
               text: responses.api_message,
             })
           })
-    }
+    },
+    async getRating(){
+      var params = new URLSearchParams();
+      params.append("id_produk", this.hits.id_produk);
+      var request = {
+        params: params,
+      };
+      this.$axios
+        .get("/produk/v1/rating/getrating", request)
+        .then(response => {
+          this.rating = response.data.data
+          console.log('rating nih', this.rating)
+          let rate = 0
+          for (let i = 0; i < this.rating.length; i++) {
+            rate = rate + parseInt(this.rating[i].rating)
+          }
+          this.rateRating = rate/this.rating.length
+          console.log('rate rating nih', this.rateRating)
+        })
+        .catch(error => {
+          console.log(error.response.data.api_message);
+        });
+    },
+    async clipboard(){
+      navigator.clipboard.writeText('http://sellpump.xyz:70'+this.$route.path);
+      this.setAlert({
+        status: true,
+        color: 'success',
+        text: 'Link berhasil disalin',
+      })
+    },
   },
   async created() {
     this.DataToken = this.$cookies.get("token");
     await this.getDtlIklan()
     this.getProvinsi()
     this.getProfil()
+    this.getRating()
+    console.log('ff',this.$route.path)
   },
 }
 </script>
 
 <style>
+#create .v-speed-dial {
+  position: fixed;
+}
+
+#create .v-btn--floating {
+  position: relative;
+}
 div.sticky {
   overflow: hidden;
   position: sticky;
