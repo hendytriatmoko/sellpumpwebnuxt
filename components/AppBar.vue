@@ -157,6 +157,11 @@ export default {
         title: 'Tambah Iklan Khusus',
         route: '/seller/add-iklan-khusus',
       },
+      {
+        id: 5,
+        title: 'Tambah File',
+        route: '/files',
+      },
     ],
     keyword: '',
   }),

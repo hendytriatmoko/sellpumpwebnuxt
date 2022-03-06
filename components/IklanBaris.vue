@@ -26,8 +26,18 @@
           </v-row>
           <v-row dense align="center">
             <v-col cols="6">
-              <h2 class="#20929D--text">
+              <h2 v-if="hits.bool_diskon == 'N'">
                 Rp {{ Number(hits.harga_produk).toLocaleString('id-ID') }}
+              </h2>
+              <h2 v-else>
+                Rp
+                {{ Number(hits.harga_diskon).toLocaleString('id-ID') }} 
+                <sup class="red--text">
+                    <s>
+                    Rp
+                    {{ Number(hits.harga_produk).toLocaleString('id-ID') }}
+                    </s>
+                </sup>
               </h2>
             </v-col>
           </v-row>
@@ -117,7 +127,7 @@
             dark
             block
             v-if="!guest"
-            @click="dialogPembelian=true,beratProduk=hits.berat_produk,total=hits.harga_produk"
+            @click="pesanProduk()"
           >
             Pesan
           </v-btn>
@@ -307,9 +317,18 @@
                   <!-- <h5>{{hits.deskripsi_produk.length}}</h5> -->
                   <h5 v-if="descLength < 80">{{hits.deskripsi_produk}}</h5>
                   <h5 v-else>{{hits.deskripsi_produk.substring(0, 80) + '....' }}</h5>
-                  <h3>
+                  <h3 v-if="hits.bool_diskon == 'N'">
+                    Rp {{ Number(hits.harga_produk).toLocaleString('id-ID') }}
+                  </h3>
+                  <h3 v-else>
                     Rp
-                    {{ Number(hits.harga_produk).toLocaleString('id-ID') }}
+                    {{ Number(hits.harga_diskon).toLocaleString('id-ID') }} 
+                    <sup class="red--text">
+                        <s>
+                        Rp
+                        {{ Number(hits.harga_produk).toLocaleString('id-ID') }}
+                        </s>
+                    </sup>
                   </h3>
                 </td>
                 <td class="text-right pr-4" style="width:50px">
@@ -756,7 +775,11 @@ export default {
         }
       }
       this.beratProduk = this.hits.berat_produk*this.unitProduk
-      this.total = this.hits.harga_produk*this.unitProduk
+      if (this.hits.bool_diskon == 'N') {
+        this.total = this.hits.harga_produk*this.unitProduk        
+      }else{
+        this.total = this.hits.harga_diskon*this.unitProduk 
+      }
       this.xUbah()
     },
     async getProvinsi(){
@@ -863,6 +886,15 @@ export default {
         this.biayaPPN = 0
         this.checkHargaJadi()
       }
+    },
+    async pesanProduk(){
+      this.beratProduk = this.hits.berat_produk
+      if (this.hits.bool_diskon == 'N') {
+        this.total = this.hits.harga_produk
+      }else{
+        this.total = this.hits.harga_diskon
+      }
+      this.dialogPembelian=true
     },
     async checkHargaJadi(){
       this.totalPembayaran = parseInt(this.total)+parseInt(this.biayaPengiriman)+parseInt(this.biayaPPN)

@@ -53,13 +53,26 @@
                                             <v-img :src="getImageProduk(data.gambar_produk)" class="my-2" width="80px" height="80px"></v-img>
                                             </center>
                                         </td>
-                                        <td>
+                                        <td style="width:80%">
                                             <h3>{{data.nama_produk}}</h3>
                                             <h5 v-if="data.deskripsi_produk.length < 80">{{data.deskripsi_produk}}</h5>
                                             <h5 v-else>{{data.deskripsi_produk.substring(0, 80) + '....' }}</h5>
-                                            <h3>
+                                            <!-- <h3>
                                                 Rp
                                                 {{ Number(data.harga_produk).toLocaleString('id-ID') }}
+                                            </h3> -->
+                                            <h3 v-if="data.bool_diskon == 'N'">
+                                                Rp {{ Number(data.harga_produk).toLocaleString('id-ID') }}
+                                            </h3>
+                                            <h3 v-else>
+                                                Rp
+                                                {{ Number(data.harga_diskon).toLocaleString('id-ID') }} 
+                                                <sup class="red--text">
+                                                    <s>
+                                                    Rp
+                                                    {{ Number(data.harga_produk).toLocaleString('id-ID') }}
+                                                    </s>
+                                                </sup>
                                             </h3>
                                         </td>
                                         <td class="text-right pr-4" style="width:50px">
@@ -148,13 +161,26 @@
                                             <v-img :src="getImageProduk(data.gambar_produk)" class="my-2" width="80px" height="80px"></v-img>
                                             </center>
                                         </td>
-                                        <td>
+                                        <td style="width:80%">
                                             <h3>{{data.nama_produk}}</h3>
                                             <h5 v-if="data.deskripsi_produk.length < 80">{{data.deskripsi_produk}}</h5>
                                             <h5 v-else>{{data.deskripsi_produk.substring(0, 80) + '....' }}</h5>
-                                            <h3>
+                                            <!-- <h3>
                                                 Rp
                                                 {{ Number(data.harga_produk).toLocaleString('id-ID') }}
+                                            </h3> -->
+                                            <h3 v-if="data.bool_diskon == 'N'">
+                                                Rp {{ Number(data.harga_produk).toLocaleString('id-ID') }}
+                                            </h3>
+                                            <h3 v-else>
+                                                Rp
+                                                {{ Number(data.harga_diskon).toLocaleString('id-ID') }} 
+                                                <sup class="red--text">
+                                                    <s>
+                                                    Rp
+                                                    {{ Number(data.harga_produk).toLocaleString('id-ID') }}
+                                                    </s>
+                                                </sup>
                                             </h3>
                                         </td>
                                         <td class="text-right pr-4" style="width:50px">
@@ -259,13 +285,26 @@
                                             <v-img :src="getImageProduk(data.gambar_produk)" class="my-2" width="80px" height="80px"></v-img>
                                             </center>
                                         </td>
-                                        <td>
+                                        <td style="width:80%">
                                             <h3>{{data.nama_produk}}</h3>
                                             <h5 v-if="data.deskripsi_produk.length < 80">{{data.deskripsi_produk}}</h5>
                                             <h5 v-else>{{data.deskripsi_produk.substring(0, 80) + '....' }}</h5>
-                                            <h3>
+                                            <!-- <h3>
                                                 Rp
                                                 {{ Number(data.harga_produk).toLocaleString('id-ID') }}
+                                            </h3> -->
+                                            <h3 v-if="data.bool_diskon == 'N'">
+                                                Rp {{ Number(data.harga_produk).toLocaleString('id-ID') }}
+                                            </h3>
+                                            <h3 v-else>
+                                                Rp
+                                                {{ Number(data.harga_diskon).toLocaleString('id-ID') }} 
+                                                <sup class="red--text">
+                                                    <s>
+                                                    Rp
+                                                    {{ Number(data.harga_produk).toLocaleString('id-ID') }}
+                                                    </s>
+                                                </sup>
                                             </h3>
                                         </td>
                                         <td class="text-right pr-4" style="width:50px">
@@ -371,13 +410,26 @@
                                             <v-img :src="getImageProduk(data.gambar_produk)" class="my-2" width="80px" height="80px"></v-img>
                                             </center>
                                         </td>
-                                        <td>
+                                        <td style="width:80%">
                                             <h3>{{data.nama_produk}}</h3>
                                             <h5 v-if="data.deskripsi_produk.length < 80">{{data.deskripsi_produk}}</h5>
                                             <h5 v-else>{{data.deskripsi_produk.substring(0, 80) + '....' }}</h5>
-                                            <h3>
+                                            <!-- <h3>
                                                 Rp
                                                 {{ Number(data.harga_produk).toLocaleString('id-ID') }}
+                                            </h3> -->
+                                            <h3 v-if="data.bool_diskon == 'N'">
+                                                Rp {{ Number(data.harga_produk).toLocaleString('id-ID') }}
+                                            </h3>
+                                            <h3 v-else>
+                                                Rp
+                                                {{ Number(data.harga_diskon).toLocaleString('id-ID') }} 
+                                                <sup class="red--text">
+                                                    <s>
+                                                    Rp
+                                                    {{ Number(data.harga_produk).toLocaleString('id-ID') }}
+                                                    </s>
+                                                </sup>
                                             </h3>
                                         </td>
                                         <td class="text-right pr-4" style="width:50px">
@@ -476,13 +528,26 @@
                                             <v-img :src="getImageProduk(data.gambar_produk)" class="my-2" width="80px" height="80px"></v-img>
                                             </center>
                                         </td>
-                                        <td>
+                                        <td style="width:80%">
                                             <h3>{{data.nama_produk}}</h3>
                                             <h5 v-if="data.deskripsi_produk.length < 80">{{data.deskripsi_produk}}</h5>
                                             <h5 v-else>{{data.deskripsi_produk.substring(0, 80) + '....' }}</h5>
-                                            <h3>
+                                            <!-- <h3>
                                                 Rp
                                                 {{ Number(data.harga_produk).toLocaleString('id-ID') }}
+                                            </h3> -->
+                                            <h3 v-if="data.bool_diskon == 'N'">
+                                                Rp {{ Number(data.harga_produk).toLocaleString('id-ID') }}
+                                            </h3>
+                                            <h3 v-else>
+                                                Rp
+                                                {{ Number(data.harga_diskon).toLocaleString('id-ID') }} 
+                                                <sup class="red--text">
+                                                    <s>
+                                                    Rp
+                                                    {{ Number(data.harga_produk).toLocaleString('id-ID') }}
+                                                    </s>
+                                                </sup>
                                             </h3>
                                         </td>
                                         <td class="text-right pr-4" style="width:50px">
@@ -579,13 +644,26 @@
                                             <v-img :src="getImageProduk(data.gambar_produk)" class="my-2" width="80px" height="80px"></v-img>
                                             </center>
                                         </td>
-                                        <td>
+                                        <td style="width:80%">
                                             <h3>{{data.nama_produk}}</h3>
                                             <h5 v-if="data.deskripsi_produk.length < 80">{{data.deskripsi_produk}}</h5>
                                             <h5 v-else>{{data.deskripsi_produk.substring(0, 80) + '....' }}</h5>
-                                            <h3>
+                                            <!-- <h3>
                                                 Rp
                                                 {{ Number(data.harga_produk).toLocaleString('id-ID') }}
+                                            </h3> -->
+                                            <h3 v-if="data.bool_diskon == 'N'">
+                                                Rp {{ Number(data.harga_produk).toLocaleString('id-ID') }}
+                                            </h3>
+                                            <h3 v-else>
+                                                Rp
+                                                {{ Number(data.harga_diskon).toLocaleString('id-ID') }} 
+                                                <sup class="red--text">
+                                                    <s>
+                                                    Rp
+                                                    {{ Number(data.harga_produk).toLocaleString('id-ID') }}
+                                                    </s>
+                                                </sup>
                                             </h3>
                                         </td>
                                         <td class="text-right pr-4" style="width:50px">
@@ -682,13 +760,26 @@
                                             <v-img :src="getImageProduk(data.gambar_produk)" class="my-2" width="80px" height="80px"></v-img>
                                             </center>
                                         </td>
-                                        <td>
+                                        <td style="width:80%">
                                             <h3>{{data.nama_produk}}</h3>
                                             <h5 v-if="data.deskripsi_produk.length < 80">{{data.deskripsi_produk}}</h5>
                                             <h5 v-else>{{data.deskripsi_produk.substring(0, 80) + '....' }}</h5>
-                                            <h3>
+                                            <!-- <h3>
                                                 Rp
                                                 {{ Number(data.harga_produk).toLocaleString('id-ID') }}
+                                            </h3> -->
+                                            <h3 v-if="data.bool_diskon == 'N'">
+                                                Rp {{ Number(data.harga_produk).toLocaleString('id-ID') }}
+                                            </h3>
+                                            <h3 v-else>
+                                                Rp
+                                                {{ Number(data.harga_diskon).toLocaleString('id-ID') }} 
+                                                <sup class="red--text">
+                                                    <s>
+                                                    Rp
+                                                    {{ Number(data.harga_produk).toLocaleString('id-ID') }}
+                                                    </s>
+                                                </sup>
                                             </h3>
                                         </td>
                                         <td class="text-right pr-4" style="width:50px">
@@ -792,13 +883,26 @@
                                             <v-img :src="getImageProduk(data.gambar_produk)" class="my-2" width="80px" height="80px"></v-img>
                                             </center>
                                         </td>
-                                        <td>
+                                        <td style="width:80%">
                                             <h3>{{data.nama_produk}}</h3>
                                             <h5 v-if="data.deskripsi_produk.length < 80">{{data.deskripsi_produk}}</h5>
                                             <h5 v-else>{{data.deskripsi_produk.substring(0, 80) + '....' }}</h5>
-                                            <h3>
+                                            <!-- <h3>
                                                 Rp
                                                 {{ Number(data.harga_produk).toLocaleString('id-ID') }}
+                                            </h3> -->
+                                            <h3 v-if="data.bool_diskon == 'N'">
+                                                Rp {{ Number(data.harga_produk).toLocaleString('id-ID') }}
+                                            </h3>
+                                            <h3 v-else>
+                                                Rp
+                                                {{ Number(data.harga_diskon).toLocaleString('id-ID') }} 
+                                                <sup class="red--text">
+                                                    <s>
+                                                    Rp
+                                                    {{ Number(data.harga_produk).toLocaleString('id-ID') }}
+                                                    </s>
+                                                </sup>
                                             </h3>
                                         </td>
                                         <td class="text-right pr-4" style="width:50px">
@@ -923,13 +1027,26 @@
                                                     <v-img :src="getImageProduk(data.gambar_produk)" class="my-2" width="80px" height="80px"></v-img>
                                                     </center>
                                                 </td>
-                                                <td>
+                                                <td style="width:80%">
                                                     <h3>{{data.nama_produk}}</h3>
                                                     <h5 v-if="data.deskripsi_produk.length < 80">{{data.deskripsi_produk}}</h5>
                                                     <h5 v-else>{{data.deskripsi_produk.substring(0, 80) + '....' }}</h5>
-                                                    <h3>
+                                                    <!-- <h3>
                                                         Rp
                                                         {{ Number(data.harga_produk).toLocaleString('id-ID') }}
+                                                    </h3> -->
+                                                    <h3 v-if="data.bool_diskon == 'N'">
+                                                        Rp {{ Number(data.harga_produk).toLocaleString('id-ID') }}
+                                                    </h3>
+                                                    <h3 v-else>
+                                                        Rp
+                                                        {{ Number(data.harga_diskon).toLocaleString('id-ID') }} 
+                                                        <sup class="red--text">
+                                                            <s>
+                                                            Rp
+                                                            {{ Number(data.harga_produk).toLocaleString('id-ID') }}
+                                                            </s>
+                                                        </sup>
                                                     </h3>
                                                 </td>
                                                 <td class="text-right pr-4" style="width:50px">
@@ -1029,13 +1146,26 @@
                                                     <v-img :src="getImageProduk(data.gambar_produk)" class="my-2" width="80px" height="80px"></v-img>
                                                     </center>
                                                 </td>
-                                                <td>
+                                                <td style="width:80%">
                                                     <h3>{{data.nama_produk}}</h3>
                                                     <h5 v-if="data.deskripsi_produk.length < 80">{{data.deskripsi_produk}}</h5>
                                                     <h5 v-else>{{data.deskripsi_produk.substring(0, 80) + '....' }}</h5>
-                                                    <h3>
+                                                    <!-- <h3>
                                                         Rp
                                                         {{ Number(data.harga_produk).toLocaleString('id-ID') }}
+                                                    </h3> -->
+                                                    <h3 v-if="data.bool_diskon == 'N'">
+                                                        Rp {{ Number(data.harga_produk).toLocaleString('id-ID') }}
+                                                    </h3>
+                                                    <h3 v-else>
+                                                        Rp
+                                                        {{ Number(data.harga_diskon).toLocaleString('id-ID') }} 
+                                                        <sup class="red--text">
+                                                            <s>
+                                                            Rp
+                                                            {{ Number(data.harga_produk).toLocaleString('id-ID') }}
+                                                            </s>
+                                                        </sup>
                                                     </h3>
                                                 </td>
                                                 <td class="text-right pr-4" style="width:50px">
@@ -1145,13 +1275,26 @@
                                                     <v-img :src="getImageProduk(data.gambar_produk)" class="my-2" width="80px" height="80px"></v-img>
                                                     </center>
                                                 </td>
-                                                <td>
+                                                <td style="width:80%">
                                                     <h3>{{data.nama_produk}}</h3>
                                                     <h5 v-if="data.deskripsi_produk.length < 80">{{data.deskripsi_produk}}</h5>
                                                     <h5 v-else>{{data.deskripsi_produk.substring(0, 80) + '....' }}</h5>
-                                                    <h3>
+                                                    <!-- <h3>
                                                         Rp
                                                         {{ Number(data.harga_produk).toLocaleString('id-ID') }}
+                                                    </h3> -->
+                                                    <h3 v-if="data.bool_diskon == 'N'">
+                                                        Rp {{ Number(data.harga_produk).toLocaleString('id-ID') }}
+                                                    </h3>
+                                                    <h3 v-else>
+                                                        Rp
+                                                        {{ Number(data.harga_diskon).toLocaleString('id-ID') }} 
+                                                        <sup class="red--text">
+                                                            <s>
+                                                            Rp
+                                                            {{ Number(data.harga_produk).toLocaleString('id-ID') }}
+                                                            </s>
+                                                        </sup>
                                                     </h3>
                                                 </td>
                                                 <td class="text-right pr-4" style="width:50px">
@@ -1257,13 +1400,26 @@
                                                     <v-img :src="getImageProduk(data.gambar_produk)" class="my-2" width="80px" height="80px"></v-img>
                                                     </center>
                                                 </td>
-                                                <td>
+                                                <td style="width:80%">
                                                     <h3>{{data.nama_produk}}</h3>
                                                     <h5 v-if="data.deskripsi_produk.length < 80">{{data.deskripsi_produk}}</h5>
                                                     <h5 v-else>{{data.deskripsi_produk.substring(0, 80) + '....' }}</h5>
-                                                    <h3>
+                                                    <!-- <h3>
                                                         Rp
                                                         {{ Number(data.harga_produk).toLocaleString('id-ID') }}
+                                                    </h3> -->
+                                                    <h3 v-if="data.bool_diskon == 'N'">
+                                                        Rp {{ Number(data.harga_produk).toLocaleString('id-ID') }}
+                                                    </h3>
+                                                    <h3 v-else>
+                                                        Rp
+                                                        {{ Number(data.harga_diskon).toLocaleString('id-ID') }} 
+                                                        <sup class="red--text">
+                                                            <s>
+                                                            Rp
+                                                            {{ Number(data.harga_produk).toLocaleString('id-ID') }}
+                                                            </s>
+                                                        </sup>
                                                     </h3>
                                                 </td>
                                                 <td class="text-right pr-4" style="width:50px">
@@ -1374,13 +1530,26 @@
                                                     <v-img :src="getImageProduk(data.gambar_produk)" class="my-2" width="80px" height="80px"></v-img>
                                                     </center>
                                                 </td>
-                                                <td>
+                                                <td style="width:80%">
                                                     <h3>{{data.nama_produk}}</h3>
                                                     <h5 v-if="data.deskripsi_produk.length < 80">{{data.deskripsi_produk}}</h5>
                                                     <h5 v-else>{{data.deskripsi_produk.substring(0, 80) + '....' }}</h5>
-                                                    <h3>
+                                                    <!-- <h3>
                                                         Rp
                                                         {{ Number(data.harga_produk).toLocaleString('id-ID') }}
+                                                    </h3> -->
+                                                    <h3 v-if="data.bool_diskon == 'N'">
+                                                        Rp {{ Number(data.harga_produk).toLocaleString('id-ID') }}
+                                                    </h3>
+                                                    <h3 v-else>
+                                                        Rp
+                                                        {{ Number(data.harga_diskon).toLocaleString('id-ID') }} 
+                                                        <sup class="red--text">
+                                                            <s>
+                                                            Rp
+                                                            {{ Number(data.harga_produk).toLocaleString('id-ID') }}
+                                                            </s>
+                                                        </sup>
                                                     </h3>
                                                 </td>
                                                 <td class="text-right pr-4" style="width:50px">
@@ -1482,13 +1651,26 @@
                                                     <v-img :src="getImageProduk(data.gambar_produk)" class="my-2" width="80px" height="80px"></v-img>
                                                     </center>
                                                 </td>
-                                                <td>
+                                                <td style="width:80%">
                                                     <h3>{{data.nama_produk}}</h3>
                                                     <h5 v-if="data.deskripsi_produk.length < 80">{{data.deskripsi_produk}}</h5>
                                                     <h5 v-else>{{data.deskripsi_produk.substring(0, 80) + '....' }}</h5>
-                                                    <h3>
+                                                    <!-- <h3>
                                                         Rp
                                                         {{ Number(data.harga_produk).toLocaleString('id-ID') }}
+                                                    </h3> -->
+                                                    <h3 v-if="data.bool_diskon == 'N'">
+                                                        Rp {{ Number(data.harga_produk).toLocaleString('id-ID') }}
+                                                    </h3>
+                                                    <h3 v-else>
+                                                        Rp
+                                                        {{ Number(data.harga_diskon).toLocaleString('id-ID') }} 
+                                                        <sup class="red--text">
+                                                            <s>
+                                                            Rp
+                                                            {{ Number(data.harga_produk).toLocaleString('id-ID') }}
+                                                            </s>
+                                                        </sup>
                                                     </h3>
                                                 </td>
                                                 <td class="text-right pr-4" style="width:50px">

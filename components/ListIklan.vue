@@ -5,6 +5,14 @@
       @click="
         go(item.id_produk, item.nama_produk)"
     >
+      <v-card-title style="position: absolute; z-index: 1; right: -2px" v-if="item.bool_diskon == 'Y'">
+        <v-avatar
+          color="#EB5757"
+          size="48"
+        >
+          <span class="white--text" style="font-size:15px"> -{{item.diskon}}% </span>
+        </v-avatar>
+      </v-card-title>
 
       <v-img :src="getImageProduk(item.gambar_produk)" style="border-radius:2% 2% 0 0" height="210">
       </v-img>
@@ -29,7 +37,7 @@
 
             <v-divider class="mb-2"> </v-divider>
 
-            <div class="d-flex">
+            <div class="d-flex" v-if="item.bool_diskon == 'N'">
               <!--  iklan baris -->
               <v-list-item-title
               >
@@ -44,6 +52,42 @@
                 Rp
                 {{ Number(item.harga_produk).toLocaleString('id-ID') }}
               </v-list-item-title>
+            </div>
+            <div v-if="item.bool_diskon == 'Y'">
+              <div class="d-flex">
+                <!--  iklan baris -->
+                <v-list-item-title
+                >
+                  Harga Produk
+                </v-list-item-title>
+
+                <!-- IB -->
+                <v-list-item-title
+                  align="right"
+                  class="red--text"
+                >
+                  <s>
+                    Rp
+                    {{ Number(item.harga_produk).toLocaleString('id-ID') }}
+                  </s>
+                </v-list-item-title>
+              </div>
+              <div class="d-flex">
+                <!--  iklan baris -->
+                <v-list-item-title
+                >
+                  Harga Spesial
+                </v-list-item-title>
+
+                <!-- IB -->
+                <v-list-item-title
+                  align="right"
+                  class="red--text"
+                >
+                  Rp
+                  {{ Number(item.harga_diskon).toLocaleString('id-ID') }}
+                </v-list-item-title>
+              </div>
             </div>
           </v-list-item-content>
         </v-list-item>

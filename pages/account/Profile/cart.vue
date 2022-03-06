@@ -20,9 +20,22 @@
                     <h3>{{item.data.nama_produk}}</h3>
                     <h5 v-if="item.data.deskripsi_produk.length < 80">{{item.data.deskripsi_produk}}</h5>
                     <h5 v-else>{{item.data.deskripsi_produk.substring(0, 80) + '....' }}</h5>
-                    <h3>
+                    <!-- <h3>
                       Rp
                       {{ Number(item.data.harga_produk).toLocaleString('id-ID') }}
+                    </h3> -->
+                    <h3 v-if="item.data.bool_diskon == 'N'">
+                      Rp {{ Number(item.data.harga_produk).toLocaleString('id-ID') }}
+                    </h3>
+                    <h3 v-else>
+                      Rp
+                      {{ Number(item.data.harga_diskon).toLocaleString('id-ID') }} 
+                      <sup class="red--text">
+                          <s>
+                          Rp
+                          {{ Number(item.data.harga_produk).toLocaleString('id-ID') }}
+                          </s>
+                      </sup>
                     </h3>
                   </div>
                   <div>
@@ -105,13 +118,26 @@
                       <v-img :src="getImageProduk(item.data.gambar_produk)" class="my-2" width="80px" height="80px"></v-img>
                       </center>
                     </td>
-                    <td>
+                    <td style="width:85%">
                       <h3>{{item.data.nama_produk}}</h3>
                       <h5 v-if="item.data.deskripsi_produk.length < 80">{{item.data.deskripsi_produk}}</h5>
                       <h5 v-else>{{item.data.deskripsi_produk.substring(0, 80) + '....' }}</h5>
-                      <h3>
+                      <!-- <h3>
                         Rp
                         {{ Number(item.data.harga_produk).toLocaleString('id-ID') }}
+                      </h3> -->
+                      <h3 v-if="item.data.bool_diskon == 'N'">
+                        Rp {{ Number(item.data.harga_produk).toLocaleString('id-ID') }}
+                      </h3>
+                      <h3 v-else>
+                        Rp
+                        {{ Number(item.data.harga_diskon).toLocaleString('id-ID') }} 
+                        <sup class="red--text">
+                            <s>
+                            Rp
+                            {{ Number(item.data.harga_produk).toLocaleString('id-ID') }}
+                            </s>
+                        </sup>
                       </h3>
                     </td>
                     <td class="text-right pr-4" style="width:50px">
@@ -410,12 +436,18 @@ export default {
       this.checkout = []
       for (let i = 0; i < this.infoKeranjang.length; i++) {
         if (this.infoKeranjang[i].check == true) {
+          var dataJumlah = 0
+          if (this.infoKeranjang[i].data.bool_diskon == 'N') {
+            dataJumlah = this.infoKeranjang[i].data.harga_produk*this.infoKeranjang[i].unit
+          }else{
+            dataJumlah = this.infoKeranjang[i].data.harga_diskon*this.infoKeranjang[i].unit
+          }
           this.checkout.push(
             {
               data:this.infoKeranjang[i].data,
               unit:this.infoKeranjang[i].unit,
               weight:this.infoKeranjang[i].data.berat_produk*this.infoKeranjang[i].unit,
-              jumlah:this.infoKeranjang[i].data.harga_produk*this.infoKeranjang[i].unit,
+              jumlah:dataJumlah,
             }
           )
         }

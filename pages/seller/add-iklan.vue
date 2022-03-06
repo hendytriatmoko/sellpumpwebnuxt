@@ -150,7 +150,38 @@
                     v-model="produk[0].harga_produk"
                   ></v-text-field>
                 </v-col>
-                <v-row class="mx-1">
+                <v-col cols="12">
+                  <v-list style="margin-top: -6%">
+                    <v-list-item>
+                      <v-list-item-content>
+                        <v-list-item-title
+                          ><b> Gunakan Diskon ?</b></v-list-item-title
+                        >
+                        <v-list-item-subtitle>
+                          Isikan harga setelah diskon
+                        </v-list-item-subtitle>
+                      </v-list-item-content>
+
+                      <v-list-item-action>
+                        <v-switch
+                          v-model="useDiskon"
+                          input-value="true"
+                          color="#20929D"
+                        ></v-switch>
+                      </v-list-item-action>
+                    </v-list-item>
+
+                    <v-list-item v-if="useDiskon">
+                      <v-text-field
+                        v-model="produk[0].harga_diskon"
+                        label="Harga setelah diskon"
+                        outlined
+                        dense
+                      ></v-text-field>
+                    </v-list-item>
+                  </v-list>
+                </v-col>
+                <v-row class="mx-1 mt-2">
                     <v-col cols="6" style="margin-top: -3%">
                     <div class="pb-2"><b> Informasi Kategori </b></div>
                     <v-autocomplete
@@ -303,6 +334,7 @@ export default {
     hasImage: false,
     listKategori:[],
     listMerk:[],
+    useDiskon:false,
     // produk
     produk:[
       {
@@ -323,6 +355,8 @@ export default {
         tayangan: "",
         link_tokopedia:"",
         link_bukalapak:"",
+        harga_diskon:0,
+        diskon:0,
         tipe_produk: "",
         updated_at: "",
       }
@@ -418,6 +452,8 @@ export default {
       }
     },
     async storeIklan(){
+      this.produk[0].diskon = (this.produk[0].harga_diskon*100)/this.produk[0].harga_produk
+      this.produk[0].diskon = 100 - Math.round(this.produk[0].diskon)
       let formData = new FormData()
 
       formData.append('nama_produk', this.produk[0].nama_produk)
@@ -431,6 +467,16 @@ export default {
       formData.append('id_kategori_produk', parseInt(this.produk[0].id_kategori_produk))
       formData.append('link_tokopedia', this.produk[0].link_tokopedia)
       formData.append('link_bukalapak', this.produk[0].link_bukalapak)
+      if (this.useDiskon == true) {
+        formData.append('harga_diskon', this.produk[0].harga_diskon)
+        formData.append('diskon', this.produk[0].diskon)
+        formData.append('bool_diskon', "Y")
+      }else{
+        formData.append('harga_diskon', 0)
+        formData.append('diskon', 0)
+        formData.append('bool_diskon', "N")
+      }
+
       if (this.list[0].foto != null) {
         formData.append('gambar_produk', this.list[0].foto)
       }
@@ -523,6 +569,9 @@ export default {
           this.produk = []
           let hits = response.data.data[0]
           this.produk = [hits]
+          if (this.produk[0].bool_diskon == "Y") {
+            this.useDiskon = true
+          }
           this.list[0].previewUrl = this.produk[0].gambar_produk
           console.log('produk', this.produk)
         })
