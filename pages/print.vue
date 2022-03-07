@@ -25,8 +25,7 @@
                   </v-col>
                   <v-col cols="12" sm="4">
                       <div style="text-align:right;margin-right:10px">
-                          No. {{ listInv[0].no_inv }} <br>
-                          PO No : POVE-01670-1221
+                          No. {{ listInv[0].no_inv }}
                       </div>
                   </v-col>
               </v-row>

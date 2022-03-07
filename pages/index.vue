@@ -340,7 +340,7 @@
             dark
             outlined
             @click="getIklanTerbaru"
-            v-if="iklanTerbaru.length < 40 && iklanTerbaru.length < total"
+            v-if="iklanTerbaru.length < total"
           >
             Muat Lebih Banyak
           </v-btn>
@@ -454,7 +454,7 @@ export default {
     iklanPromo: [],
     iklanTerbaru: [],
     page: 1,
-    limit: 4,
+    limit: 8,
     offset: 0,
     id_type_banner: [],
     total: 0,
@@ -556,21 +556,22 @@ export default {
 
       await this.$axios
         .get('/produk/v1/produk/getproduk',{
-          // params: {
-          //   limit: 4,
-          //   offset: offset,
-          // },
+          params: {
+            limit: 8,
+            offset: offset,
+          },
         })
         .then((response) => {
-          this.iklanTerbaru = response.data.data
-          console.log('produk', this.iklanTerbaru)
-          // let data = response.data
-          // let { hits } = response.data.data
-          // this.iklanTerbaru.push(...hits)
+          // this.iklanTerbaru = response.data.data
+          // console.log('produk', this.iklanTerbaru)
+          let data = response.data.data
+          // let { hits } = data
+          this.iklanTerbaru.push(...data)
 
-          // this.total = data.hits.total.value
-          // this.lengthPage = Math.ceil(this.total / this.limit)
-          // this.page++
+          this.total = response.data.count
+          this.lengthPage = Math.ceil(this.total / this.limit)
+          this.page++
+          console.log('produk', this.iklanTerbaru)
           // console.log('tot', data.hits.total.value)
         })
         .catch((error) => {
@@ -700,7 +701,7 @@ export default {
     this.DataToken = this.$cookies.get("token");
     this.DataUser = this.$cookies.get("user");
     await this.getArtikel()
-    this.getIklanTerbaru()
+    await this.getIklanTerbaru()
     await this.getPesanan()
     this.getDataProdukKhusus()
     // await this.getTbBerlangsung()

@@ -23,7 +23,7 @@
         </div>
       </nuxt-link>
 
-      <v-menu open-on-hover offset-y v-if="$vuetify.breakpoint.smAndUp">
+      <!-- <v-menu open-on-hover offset-y v-if="$vuetify.breakpoint.smAndUp">
         <template v-slot:activator="{ on, attrs }">
           <v-btn text v-bind="attrs" v-on="on" class="mx-2" color="#000000">
             Kategori
@@ -107,7 +107,7 @@
         <v-icon>mdi-plus</v-icon>
       </v-btn>
 
-      <account v-else />
+      <account v-else /> -->
     </v-app-bar>
   </div>
 </template>

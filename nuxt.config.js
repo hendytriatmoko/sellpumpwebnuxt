@@ -11,7 +11,7 @@ export default {
 
 
   server: {
-    port: 70,
+    port: 32,
     host: '0.0.0.0'
   },
   googleAnalytics: {

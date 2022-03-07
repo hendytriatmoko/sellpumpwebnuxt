@@ -15,6 +15,7 @@
         <v-tab
           v-for="(item,index) in items"
           :key="index"
+          @click="testTab(item.status)"
         >
           <span>
             <v-icon
@@ -136,6 +137,17 @@
                         </div>
                     </v-card>
                 </div>
+                <div align="center">
+                    <v-btn
+                        color="#20929D"
+                        dark
+                        outlined
+                        @click="getInv()"
+                        v-if="listInv.length < total"
+                    >
+                        Muat Lebih Banyak
+                    </v-btn>
+                </div>
             </v-container>
             <v-container v-else>
                 <div
@@ -240,6 +252,17 @@
                             </table>
                         </div>
                     </v-card>
+                </div>
+                <div align="center">
+                    <v-btn
+                        color="#20929D"
+                        dark
+                        outlined
+                        @click="getInv()"
+                        v-if="listInv.length < total"
+                    >
+                        Muat Lebih Banyak
+                    </v-btn>
                 </div>
             </v-container>
           </v-tab-item>
@@ -368,6 +391,17 @@
                             </table>
                         </div>
                     </v-card>
+                </div>
+                <div align="center">
+                    <v-btn
+                        color="#20929D"
+                        dark
+                        outlined
+                        @click="getInv()"
+                        v-if="listInv.length < total"
+                    >
+                        Muat Lebih Banyak
+                    </v-btn>
                 </div>
             </v-container>
             <v-container v-else>
@@ -500,6 +534,17 @@
                         </div>
                     </v-card>
                 </div>
+                <div align="center">
+                    <v-btn
+                        color="#20929D"
+                        dark
+                        outlined
+                        @click="getInv()"
+                        v-if="listInv.length < total"
+                    >
+                        Muat Lebih Banyak
+                    </v-btn>
+                </div>
             </v-container>
           </v-tab-item>
           <!-- cancelpembeli -->
@@ -599,6 +644,17 @@
                             </table>
                         </div>
                     </v-card>
+                </div>
+                <div align="center">
+                    <v-btn
+                        color="#20929D"
+                        dark
+                        outlined
+                        @click="getInv()"
+                        v-if="listInv.length < total"
+                    >
+                        Muat Lebih Banyak
+                    </v-btn>
                 </div>
             </v-container>
           </v-tab-item>
@@ -715,6 +771,17 @@
                             </table>
                         </div>
                     </v-card>
+                </div>
+                <div align="center">
+                    <v-btn
+                        color="#20929D"
+                        dark
+                        outlined
+                        @click="getInv()"
+                        v-if="listInv.length < total"
+                    >
+                        Muat Lebih Banyak
+                    </v-btn>
                 </div>
             </v-container>
           </v-tab-item>
@@ -842,6 +909,17 @@
                         </div>
                     </v-card>
                 </div>
+                <div align="center">
+                    <v-btn
+                        color="#20929D"
+                        dark
+                        outlined
+                        @click="getInv()"
+                        v-if="listInv.length < total"
+                    >
+                        Muat Lebih Banyak
+                    </v-btn>
+                </div>
             </v-container>
             <v-container v-else>
                 <div
@@ -963,6 +1041,17 @@
                         </div>
                     </v-card>
                 </div>
+                <div align="center">
+                    <v-btn
+                        color="#20929D"
+                        dark
+                        outlined
+                        @click="getInv()"
+                        v-if="listInv.length < total"
+                    >
+                        Muat Lebih Banyak
+                    </v-btn>
+                </div>
             </v-container>
           </v-tab-item>
           <!-- lunas -->
@@ -973,6 +1062,7 @@
                     <v-tab
                     v-for="(item,index) in pengirimanLunas"
                     :key="index"
+                    @click="testSubTab(item.status)"
                     >
                     <span>
                         <v-icon
@@ -1105,6 +1195,17 @@
                                 </div>
                             </v-card>
                         </div>
+                        <div align="center">
+                            <v-btn
+                                color="#20929D"
+                                dark
+                                outlined
+                                @click="getInv()"
+                                v-if="listInv.length < total"
+                            >
+                                Muat Lebih Banyak
+                            </v-btn>
+                        </div>
                     </v-container>
                     <v-container v-else>
                         <div
@@ -1230,6 +1331,17 @@
                                     </v-card-actions>
                                 </div>
                             </v-card>
+                        </div>
+                        <div align="center">
+                            <v-btn
+                                color="#20929D"
+                                dark
+                                outlined
+                                @click="getInv()"
+                                v-if="listInv.length < total"
+                            >
+                                Muat Lebih Banyak
+                            </v-btn>
                         </div>
                     </v-container>
                   </v-tab-item>
@@ -1359,6 +1471,17 @@
                                 </div>
                             </v-card>
                         </div>
+                        <div align="center">
+                            <v-btn
+                                color="#20929D"
+                                dark
+                                outlined
+                                @click="getInv()"
+                                v-if="listInv.length < total"
+                            >
+                                Muat Lebih Banyak
+                            </v-btn>
+                        </div>
                     </v-container>
                     <v-container v-else>
                         <div
@@ -1486,6 +1609,17 @@
                                 </div>
                             </v-card>
                         </div>
+                        <div align="center">
+                            <v-btn
+                                color="#20929D"
+                                dark
+                                outlined
+                                @click="getInv()"
+                                v-if="listInv.length < total"
+                            >
+                                Muat Lebih Banyak
+                            </v-btn>
+                        </div>
                     </v-container>
                   </v-tab-item>
                   <!-- selesai -->
@@ -1610,6 +1744,17 @@
                                 </div>
                             </v-card>
                         </div>
+                        <div align="center">
+                            <v-btn
+                                color="#20929D"
+                                dark
+                                outlined
+                                @click="getInv()"
+                                v-if="listInv.length < total"
+                            >
+                                Muat Lebih Banyak
+                            </v-btn>
+                        </div>
                       </v-container>
                       <v-container v-else>
                         <div
@@ -1732,6 +1877,17 @@
                                     </table>
                                 </div>
                             </v-card>
+                        </div>
+                        <div align="center">
+                            <v-btn
+                                color="#20929D"
+                                dark
+                                outlined
+                                @click="getInv()"
+                                v-if="listInv.length < total"
+                            >
+                                Muat Lebih Banyak
+                            </v-btn>
                         </div>
                       </v-container>
                   </v-tab-item>
@@ -2025,17 +2181,17 @@ Vue.use(Viewer)
         tab: null,
         tabLunas:null,
         items: [
-          { id: 1,color:'blue', name: 'Menunggu Pembayaran', icon: 'mdi-credit-card-clock-outline' },
-          { id: 2,color:'orange', name: 'Sedang Diverifikasi', icon: 'mdi-timer-outline' },
-          { id: 3,color:'dark', name: 'Dibatalkan Pembeli', icon: 'mdi-close-octagon' },
-          { id: 4,color:'grey', name: 'Dibatalkan Penjual', icon: 'mdi-close-octagon' },
-          { id: 5,color:'red', name: 'Pembayaran Ditolak', icon: 'mdi-close-octagon' },
-          { id: 6,color:'green', name: 'Lunas', icon: 'mdi mdi-check-circle' },
+          { id: 1,color:'blue', name: 'Menunggu Pembayaran',status:'1', icon: 'mdi-credit-card-clock-outline' },
+          { id: 2,color:'orange', name: 'Sedang Diverifikasi',status:'4', icon: 'mdi-timer-outline' },
+          { id: 3,color:'dark', name: 'Dibatalkan Pembeli',status:'3', icon: 'mdi-close-octagon' },
+          { id: 4,color:'grey', name: 'Dibatalkan Penjual',status:'5', icon: 'mdi-close-octagon' },
+          { id: 5,color:'red', name: 'Pembayaran Ditolak',status:'6', icon: 'mdi-close-octagon' },
+          { id: 6,color:'green', name: 'Lunas',status:'2', icon: 'mdi mdi-check-circle' },
         ],
         pengirimanLunas:[
-            {id:1, color: 'blue', name:'Sedang Dikemas', icon : 'mdi-package-down'},
-            {id:2, color: 'orange', name:'Dalam Pengiriman', icon : 'mdi-transit-connection-variant'},
-            {id:3, color: 'green', name:'Selesai', icon : 'mdi-check-all'},
+            {id:1, color: 'blue',status:'1', name:'Sedang Dikemas', icon : 'mdi-package-down'},
+            {id:2, color: 'orange',status:'2', name:'Dalam Pengiriman', icon : 'mdi-transit-connection-variant'},
+            {id:3, color: 'green',status:'3', name:'Selesai', icon : 'mdi-check-all'},
         ],
         list: [
             {
@@ -2057,6 +2213,8 @@ Vue.use(Viewer)
         rating: 0,
         komentarRating:'',
         noResi:'',
+        id_status_pembayaran:'1',
+        id_status_pengiriman:'1',
         detailPengiriman: false,
         alasanTolakBatalkan:'',
         batalkanPembelian: false,
@@ -2085,6 +2243,11 @@ Vue.use(Viewer)
             },
         ],
         pickVerifikasiPembayaran:'',
+        total: 0,
+        lengthPage: 0,
+        page: 1,
+        limit: 2,
+        offset: 0,
     }),
     computed: {
         ...mapGetters({
@@ -2192,9 +2355,14 @@ Vue.use(Viewer)
             }
         },
         async getInv(){
+            let offset = (this.page - 1) * this.limit
             var params = new URLSearchParams();
-            
-            // params.append("id_user", this.user.id_user);
+
+            params.append("id_status_pembayaran", this.id_status_pembayaran);
+            params.append("id_status_pengiriman", this.id_status_pengiriman);
+
+            params.append("limit", this.limit);
+            params.append("offset", offset);
 
             var request = {
                 params: params,
@@ -2203,7 +2371,15 @@ Vue.use(Viewer)
             this.$axios
                 .get("/keranjang/v1/invoice/getinvoice", request)
                 .then(response => {
-                    this.listInv = response.data.data
+                    // this.listInv = response.data.data
+
+                    let data = response.data.data
+                    // let { hits } = data
+                    this.listInv.push(...data)
+
+                    this.total = response.data.count
+                    this.lengthPage = Math.ceil(this.total / this.limit)
+                    this.page++
                     console.log('inv', this.listInv)
                 })
                 .catch(error => {
@@ -2373,6 +2549,28 @@ Vue.use(Viewer)
         },
         async goDetailUser(id){
             this.$router.push('/DetailUser?id='+id)
+        },
+        async testTab(status){
+            this.id_status_pembayaran = status
+            this.id_status_pengiriman = '1'
+            this.listInv = []
+            this.total= 0,
+            this.lengthPage= 0,
+            this.page= 1,
+            this.limit= 2,
+            this.offset= 0,
+            this.getInv()
+        },
+        async testSubTab(status){
+            this.id_status_pembayaran = '2'
+            this.id_status_pengiriman = status
+            this.listInv = []
+            this.total= 0,
+            this.lengthPage= 0,
+            this.page= 1,
+            this.limit= 2,
+            this.offset= 0,
+            this.getInv()
         }
     },
     created(){
