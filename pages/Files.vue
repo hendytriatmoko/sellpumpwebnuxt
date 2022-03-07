@@ -240,16 +240,16 @@ export default {
                     },
                 })
                 .then(response => {
-                    // const url = window.URL.createObjectURL(new Blob([response.data]))
-                    // const link = document.createElement('a')
-                    // link.href = url
-                    // link.setAttribute('download',urls)
-                    // document.body.appendChild(link)
-                    // link.click()
-                    // this.download = true
-                    // setTimeout(() => {
-                    //     this.download = false
-                    // }, 2000)
+                    const url = window.URL.createObjectURL(new Blob([response.data]))
+                    const link = document.createElement('a')
+                    link.href = url
+                    link.setAttribute('download',urls)
+                    document.body.appendChild(link)
+                    link.click()
+                    this.download = true
+                    setTimeout(() => {
+                        this.download = false
+                    }, 2000)
                     console.log(response)
                     })
                 .catch(error => {

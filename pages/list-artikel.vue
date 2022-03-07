@@ -26,7 +26,19 @@
             <list-artikel :item="item" />
           </v-col>
         </v-row>
-        <br>
+        <br />
+  
+        <div align="center">
+          <v-btn
+            color="#20929D"
+            dark
+            outlined
+            @click="getArtikel"
+            v-if="artikel.length < total"
+          >
+            Muat Lebih Banyak
+          </v-btn>
+        </div>
         <v-divider></v-divider>
         <br>
         <Footer/>
@@ -52,6 +64,11 @@ export default {
     },
     data: () => ({
         artikel:[],
+        total: 0,
+        lengthPage: 0,
+        page: 1,
+        limit: 8,
+        offset: 0,
     }),
     computed: {
         ...mapGetters({
@@ -68,12 +85,27 @@ export default {
             setUnitID: 'product/setUnit',
         }),
         async getArtikel() {
+          let offset = (this.page - 1) * this.limit
+
           await this.$axios
-            .get('/produk/v1/artikel/getartikel')
+            .get('/produk/v1/artikel/getartikel',{
+              params: {
+                limit: 8,
+                offset: offset,
+              },
+            })
             .then((response) => {
-                let { data } = response.data
-                this.artikel = data
-                console.log('artikel', this.artikel)
+                // let { data } = response.data.data
+                // this.artikel = response.data.data
+                // console.log('artikel', this.artikel)
+
+                let data = response.data.data
+                // let { hits } = data
+                this.artikel.push(...data)
+
+                this.total = response.data.count
+                this.lengthPage = Math.ceil(this.total / this.limit)
+                this.page++
             })
             .catch((error) => {
                 let responses = error.response.data

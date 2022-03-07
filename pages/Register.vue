@@ -289,7 +289,7 @@ export default {
             color: 'success',
             text: 'Pendaftaran berhasil, silahkan verifikasi email',
           })
-          this.$router.push('/login')
+          this.$router.push('/verifikasi')
         })
         .catch((error) => {
           let responses = error.response.data
