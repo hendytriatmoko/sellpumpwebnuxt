@@ -10,7 +10,7 @@
 
     >
       <nuxt-link to="/" class="d-flex ml-5 mr-5">
-        <v-img src="/img/logogsp.png" width="120"></v-img>
+        <v-img src="/img/logogsp.PNG" width="120"></v-img>
         <!-- <div class="ml-3">
           <div style="width:80px">
             <h3>G R I Y A</h3>

@@ -84,6 +84,7 @@ export default {
                 .then((response) => {
                     this.dataVerifikasi = response.data.data[0]
                     console.log('data', this.dataVerifikasi)
+                    this.verified = true
                 })
                 .catch((error) => {
                     let responses = error.response.data
