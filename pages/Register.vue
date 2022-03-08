@@ -287,9 +287,9 @@ export default {
           this.setAlert({
             status: true,
             color: 'success',
-            text: 'Pendaftaran berhasil, silahkan verifikasi email',
+            text: 'Pendaftaran berhasil',
           })
-          this.$router.push('/verifikasi')
+          this.$router.push('/login')
         })
         .catch((error) => {
           let responses = error.response.data
