@@ -111,7 +111,7 @@
                         >
                         </v-text-field>
                     </v-col>
-                    <v-col cols="3" >
+                    <v-col cols="6" >
                         <v-text-field
                             label="Berat Produk"
                             dense
@@ -121,7 +121,7 @@
                         >
                         </v-text-field>
                     </v-col>
-                    <v-col cols="3" >
+                    <!-- <v-col cols="3" >
                         <v-text-field
                             label="Stok Produk"
                             dense
@@ -129,7 +129,7 @@
                             v-model="produk[0].stok_produk"
                         >
                         </v-text-field>
-                    </v-col>
+                    </v-col> -->
                 </v-row>
                 <v-col cols="12" style="margin-top: -3%">
                   <v-textarea
@@ -350,7 +350,7 @@ export default {
         kode_produk: "",
         nama_merk: "",
         nama_produk: "",
-        stok_produk: "",
+        stok_produk: "99",
         sub_kategori: "",
         tayangan: "",
         link_tokopedia:"",

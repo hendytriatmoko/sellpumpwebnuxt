@@ -467,7 +467,7 @@ export default {
             )
         },
         async getProvinsi(){
-            this.$axios('http://sellpump.xyz:2299/sellpump/api/keranjang/v1/rajaongkir/getprovince'
+            this.$axios('https://lokasi.sellpump.xyz/sellpump/api/keranjang/v1/rajaongkir/getprovince'
             ).then( ({ data }) => {
                 let data_province = data.data
                 let province = JSON.parse(data_province)
@@ -481,7 +481,7 @@ export default {
             var request = {
                 params: params,
             };
-            this.$axios('http://sellpump.xyz:2299/sellpump/api/keranjang/v1/rajaongkir/getcity',request
+            this.$axios('https://lokasi.sellpump.xyz/sellpump/api/keranjang/v1/rajaongkir/getcity',request
             ).then( ({ data }) => {
                 let data_city = data.data
                 let city = JSON.parse(data_city)
@@ -495,7 +495,7 @@ export default {
             var request = {
                 params: params,
             };
-            this.$axios('http://sellpump.xyz:2299/sellpump/api/keranjang/v1/rajaongkir/getsubdistrict',request
+            this.$axios('https://lokasi.sellpump.xyz/sellpump/api/keranjang/v1/rajaongkir/getsubdistrict',request
             ).then( ({ data }) => {
                 let data_kecamatan = data.data
                 let kecamatan = JSON.parse(data_kecamatan)
@@ -510,7 +510,7 @@ export default {
             var request = {
                 params: params,
             };
-            this.$axios('http://sellpump.xyz:2299/sellpump/api/keranjang/v1/rajaongkir/getsubdistrict',request
+            this.$axios('https://lokasi.sellpump.xyz/sellpump/api/keranjang/v1/rajaongkir/getsubdistrict',request
             ).then( ({ data }) => {
                 let data_kecamatan = data.data
                 let kecamatan = JSON.parse(data_kecamatan)
@@ -526,7 +526,7 @@ export default {
             var request = {
                 params: params,
             };
-            this.$axios('http://sellpump.xyz:2299/sellpump/api/keranjang/v1/rajaongkir/getcost',request
+            this.$axios('https://lokasi.sellpump.xyz/sellpump/api/keranjang/v1/rajaongkir/getcost',request
             ).then( ({ data }) => {
                 let data_cost = data.data
                 let cost = JSON.parse(data_cost)
