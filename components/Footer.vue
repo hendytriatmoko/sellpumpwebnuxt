@@ -5,29 +5,57 @@
     <v-card flat color="grey lighten-2" >
       <v-container>
         <v-row>
-          <v-col cols="6" sm="3">
-            <h2>Griya Seller Pump</h2>
-            <a href="/tentang?tab=about" target="_blank"> <div class="black--text">Tentang Griya Seller Pump</div></a>
-           <a href="https://blog.simotor.id/" target="_blank"> <div class="black--text">Blog</div></a>
-        
-             <a href="/tentang?tab=faq" target="_blank" > <div class="black--text">FAQ</div></a>
+          <v-col cols="6" sm="4">
+            <div>
+              <h2>Griya Seller Pump</h2>
+              <a> <div class="black--text">Tentang Griya Seller Pump</div></a>
+              <a> <div class="black--text">Blog</div></a>
+              <a> <div class="black--text">FAQ</div></a>
+            </div>
+            <div>
+              <h2>Contact Us</h2>
+              <div class="d-flex">
+                <v-icon color="black">
+                  mdi-map-marker-radius
+                </v-icon>
+                <div class="mx-6">Grand Wisata Cluster Water Spring, BD 7. No 27, Lambangjaya, 
+                     Tambun Selatan, Bekasi Regency, West Java 17510
+                </div>
+              </div>
+              <div class="d-flex">
+                <v-icon color="red">
+                  mdi-gmail
+                </v-icon>
+                <div class="mx-6">
+                  griyasallerpump01@gmail.com
+                </div>
+              </div>
+              <div class="d-flex">
+                <v-icon color="green">
+                  mdi-whatsapp
+                </v-icon>
+                <div class="mx-6">
+                  0813-1101-0786
+                </div>
+              </div>
+            </div>
           </v-col>
 
-          <v-col cols="6" sm="4">
+          <v-col cols="6" sm="3">
             <h2>Bantuan dan Panduan</h2>
-            <a href="/tentang?tab=bantuan" target="_blank">
+            <a >
             <div class="black--text">Bantuan Griya Seller Pump</div>
             </a>
-            <a href="/tentang?tab=ketentuan" target="_blank">
+            <a>
               <div class="black--text">Ketentuan Penggunaan</div>
             </a>
-            <a href="/tentang?tab=kebijakan" target="_blank">
+            <a>
               <div class="black--text">Kebijakan Privasi</div>
             </a>
-            <a href="/tentang?tab=panduanpembeli" target="_blank">
+            <a>
               <div class="black--text">Panduan Penggunaan</div>
             </a>
-            <a href="/tentang?tab=kodeetik" target="_blank">
+            <a>
               <div class="black--text">Kode Etik Pengguna</div>
             </a>
           </v-col>
@@ -38,16 +66,32 @@
               <br />
               <v-row justify="space-around">
                 <a
-                  href="https://www.facebook.com/OfficialSiMotor/"
+                  href="https://www.tokopedia.com/griya-pump"
                   target="_blank"
                 >
                   <v-img src="/img/tokped.png" style="margin-top:-10px" width="70" ></v-img>
                 </a>
-                <a href="https://www.instagram.com/simotor.id/" target="_blank">
+                <a target="_blank">
                   <v-img src="/img/bukalapak.png" width="50" ></v-img>
                 </a>
               </v-row>
             </div>
+            <br>
+            <div>
+              <h2>Follow Us</h2>
+              <br />
+              <v-row justify="space-around">
+                <a  href="https://www.facebook.com/profile.php?id=100077285774402" 
+                    target="_blank">
+                  <img width="50px" src="/img/fb.png" alt="">
+                </a>
+                <a href="https://www.instagram.com/griyapump/"
+                   target="_blank">
+                  <img width="50px" src="/img/ig.png" alt="">
+                </a>
+              </v-row>
+            </div>
+            <br>
           </v-col>
 
           <v-spacer></v-spacer>
@@ -58,14 +102,14 @@
               <br />
               <v-row justify="space-around">
                 <a
-                  href="https://www.facebook.com/OfficialSiMotor/" target="_blank"
+                  target="_blank"
                 >
                   <v-img src="/img/tiki.png" style="margin-top:-10px" width="70" ></v-img>
                 </a>
-                <a href="https://www.instagram.com/simotor.id/" target="_blank">
+                <a target="_blank">
                   <v-img src="/img/posindo.png" width="50" ></v-img>
                 </a>
-                <a href="https://www.instagram.com/simotor.id/" target="_blank">
+                <a target="_blank">
                   <v-img src="/img/jne.png" width="50" ></v-img>
                 </a>
               </v-row>
@@ -76,14 +120,12 @@
               <br />
               <v-row justify="space-around">
                 <a
-                  href="https://www.facebook.com/OfficialSiMotor/" target="_blank"
                 >
-                  <v-img src="/img/bca.jpg" style="margin-top:-10px" width="70" ></v-img>
+                  <img src="/img/bank/bca.png" style="margin-top:-10px" width="70" >
                 </a>
                 <a
-                  href="https://www.facebook.com/OfficialSiMotor/" target="_blank"
                 >
-                  <v-img src="/img/mandiri.jpg" style="margin-top:-10px" width="70" ></v-img>
+                  <img src="/img/bank/mandiri.png" style="margin-top:-10px" width="70" >
                 </a>
               </v-row>
             </div>

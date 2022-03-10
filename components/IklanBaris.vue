@@ -234,7 +234,8 @@
         small
         color="indigo"
       >
-        <a href="whatsapp://send?text=Hello saya ingin pesan&phone=+6285893157871" _blank><img style="width:30px" src="/img/wa.png"></a>
+        <!-- <a href="whatsapp://send?text=Hello saya ingin pesan barang dari Griya Saller Pump&phone=+6283137130082" _blank><img style="width:30px" src="/img/wa.png"></a> -->
+        <a href="https://wa.me/6285893157871"><img style="width:30px" src="/img/wa.png"></a>
       </v-btn>
       <v-btn
         fab
@@ -1116,7 +1117,7 @@ export default {
         });
     },
     async clipboard(){
-      navigator.clipboard.writeText('http://sellpump.xyz:70'+this.$route.path);
+      navigator.clipboard.writeText('http://distributorsellerpump.com'+this.$route.path);
       this.setAlert({
         status: true,
         color: 'success',

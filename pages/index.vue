@@ -1,7 +1,7 @@
 <template>
   <div>
     <app-bar />
-  
+    
     <v-card flat class="pa-4" rounded="xl">
       <v-carousel
         cycle
@@ -22,7 +22,52 @@
     </v-card>
 
     <br />
-
+    <div id="create" style="margin-top:-30px;margin-left:20px">
+      <v-speed-dial
+      v-model="fab"
+      :top="top"
+      :bottom="bottom"
+      :right="right"
+      :left="left"
+      :direction="direction"
+      :open-on-hover="hover"
+      :transition="transition"
+    >
+      <template v-slot:activator>
+        <v-btn
+          v-model="fab"
+          color="blue darken-2"
+          dark
+          fab
+        >
+          <v-icon v-if="fab">
+            mdi-close
+          </v-icon>
+          <v-icon v-else>
+            mdi-share-variant
+          </v-icon>
+        </v-btn>
+      </template>
+      <v-btn
+        fab
+        dark
+        small
+        color="indigo"
+      >
+        <!-- <a href="whatsapp://send?text=Hello saya tertarik memesan barang di Griya Saller Pump&phone=+6285893157871" _blank><img style="width:30px" src="/img/wa.png"></a> -->
+        <a href="https://wa.me/6285893157871"><img style="width:30px" src="/img/wa.png"></a>
+      </v-btn>
+      <v-btn
+        fab
+        dark
+        small
+        color="red"
+        @click="clipboard()"
+      >
+        <v-icon>mdi-clipboard-outline</v-icon>
+      </v-btn>
+    </v-speed-dial>
+    </div>
     <div class="text-center">
       <h2>SELAMAT DATANG DI GRIYA SALLER PUMP</h2>
       <p>
@@ -376,6 +421,7 @@
       </div> -->
    
     </div>
+    
           <Footer />
   </div>
 </template>
@@ -475,6 +521,7 @@ export default {
   },
   methods: {
     ...mapActions({
+      setAlert: 'alert/set',
       setSellertId: 'product/setSeller',
       setProductId: 'product/setProduct',
     }),
@@ -495,6 +542,14 @@ export default {
           let responses = error.response.data
           console.log(responses.api_message)
         })
+    },
+    clipboard(){
+      navigator.clipboard.writeText('https://distributorsellerpump.com')
+      this.setAlert({
+          status: true,
+          color: 'success',
+          text: 'Link berhasil disalin',
+      })
     },
     async getJadwalTB() {
       await this.$axios
@@ -733,5 +788,12 @@ export default {
 .scrolling-wrapper-flexbox {
   width: 100%;
   -webkit-overflow-scrolling: touch;
+}
+#create .v-speed-dial {
+  position: fixed;
+}
+
+#create .v-btn--floating {
+  position: relative;
 }
 </style>
