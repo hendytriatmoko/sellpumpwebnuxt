@@ -524,7 +524,7 @@ export default {
         },
         async getCost(){
             var params = new URLSearchParams();
-            params.append("origin", 2113);
+            params.append("origin", 746);
             params.append("destination", this.idKecamatan);
             params.append("weight", this.dataKhusus.berat_khusus);
             var request = {
