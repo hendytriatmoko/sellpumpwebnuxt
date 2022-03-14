@@ -266,15 +266,19 @@
                                 <table>
                                 <tr>
                                     <td>
-                                    <v-img v-if="item.code == 'jne'" src="/img/jne.png" width="100px"></v-img>
-                                    <v-img v-if="item.code == 'pos'" src="/img/posindo.png" width="100px"></v-img>
-                                    <v-img v-if="item.code == 'tiki'" src="/img/tiki.png" width="100px"></v-img>
+                                        <v-img v-if="item.code == 'jne'" src="/img/jne.png" width="100px"></v-img>
+                                        <v-img v-if="item.code == 'pos'" src="/img/posindo.png" width="100px"></v-img>
+                                        <v-img v-if="item.code == 'tiki'" src="/img/tiki.png" width="100px"></v-img>
+                                        <v-img v-if="item.code == 'J&T'" src="/img/jnt.PNG" width="100px"></v-img>
+                                        <v-img v-if="item.code == 'wahana'" src="/img/wahana.PNG" width="100px"></v-img>
+                                        <v-img v-if="item.code == 'sicepat'" src="/img/sicepat.PNG" width="100px"></v-img>
+                                        <v-img v-if="item.code == 'anteraja'" src="/img/anteraja.PNG" width="100px"></v-img>
                                     </td>
                                     <td>
-                                    <h3 class="pl-2">{{ item.name }}</h3>
-                                    <div class="pl-2">{{ item.service }} - {{ item.description }}</div>
-                                    <div class="pl-2">{{ item.etd }} <span v-if="item.code != 'pos'">Hari</span></div>
-                                    <h4 class="red--text pl-2">Rp {{ Number(item.value).toLocaleString('id-ID') }}</h4>
+                                        <h3 class="pl-2">{{ item.name }}</h3>
+                                        <div class="pl-2">{{ item.service }} - {{ item.description }}</div>
+                                        <div class="pl-2" v-if="item.etd != ''">{{ item.etd }} <span v-if="item.code != 'pos'">Hari</span></div>
+                                        <h4 class="red--text pl-2">Rp {{ Number(item.value).toLocaleString('id-ID') }}</h4>
                                     </td>
                                 </tr>
                                 </table>
