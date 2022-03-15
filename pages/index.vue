@@ -14,9 +14,8 @@
         <v-carousel-item
           v-for="(item, index) in banners"
           :key="index"
-          :src="item.foto"
+          :src="$vuetify.breakpoint.xs ? item.fotomobile : item.fotoweb"
           max-height="400"
-          max-width="1920"
         ></v-carousel-item>
       </v-carousel>
     </v-card>
@@ -448,27 +447,28 @@ export default {
     banners: [
       {
         id:1,
-        foto:'/img/banner1.PNG'
+        fotoweb:'/img/web5.png',
+        fotomobile:'/img/mobile5.png'
       },
       {
         id:2,
-        foto:'/img/banner2.PNG'
+        fotoweb:'/img/web3.png',
+        fotomobile:'/img/mobile3.png'
       },
       {
         id:3,
-        foto:'/img/banner3.PNG'
+        fotoweb:'/img/web2.png',
+        fotomobile:'/img/mobile2.png'
       },
       {
         id:4,
-        foto:'/img/banner4.PNG'
+        fotoweb:'/img/web4.png',
+        fotomobile:'/img/mobile4.png'
       },
       {
         id:5,
-        foto:'/img/banner5.PNG'
-      },
-      {
-        id:6,
-        foto:'/img/banner6.PNG'
+        fotoweb:'/img/web1.png',
+        fotomobile:'/img/mobile1.png'
       },
     ],
     categories: [
