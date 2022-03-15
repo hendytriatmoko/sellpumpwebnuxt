@@ -100,7 +100,7 @@
             <div>
               <h2>Shipping</h2>
               <br />
-              <v-row justify="space-around">
+              <v-row justify="space-between">
                 <a
                   target="_blank"
                 >
@@ -112,6 +112,20 @@
                 <a target="_blank">
                   <v-img src="/img/jne.png" width="50" ></v-img>
                 </a>
+                <v-row class="mt-3 ml-3" justify="space-between">
+                  <a target="_blank">
+                    <v-img src="/img/jnt.PNG" width="50" ></v-img>
+                  </a>
+                  <a target="_blank">
+                    <v-img src="/img/wahana.PNG" width="50" ></v-img>
+                  </a>
+                  <a target="_blank">
+                    <v-img src="/img/sicepat.PNG" width="50" ></v-img>
+                  </a>
+                  <a target="_blank">
+                    <v-img src="/img/anteraja.PNG" width="50" ></v-img>
+                  </a>
+                </v-row>
               </v-row>
             </div>
             <br>
