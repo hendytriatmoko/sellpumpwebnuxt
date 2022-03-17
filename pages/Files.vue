@@ -64,7 +64,7 @@
                 <template v-slot:[`item.aksi`]="{ item }">
                     <div class="d-flex">
                         <v-btn
-                            @click="downloadFile(item.file)"
+                            @click="cobaDownload(item.file,item.nama_file)"
                             color="#20929d"
                             small
                             outlined
@@ -240,17 +240,18 @@ export default {
                     },
                 })
                 .then(response => {
-                    const url = window.URL.createObjectURL(new Blob([response.data]))
+                    const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }))
+                    console.log('ini file',urls)
                     const link = document.createElement('a')
                     link.href = url
                     link.setAttribute('download',urls)
                     document.body.appendChild(link)
-                    link.click()
-                    this.download = true
-                    setTimeout(() => {
-                        this.download = false
-                    }, 2000)
-                    console.log(response)
+                    // link.click()
+                    // this.download = true
+                    // setTimeout(() => {
+                    //     this.download = false
+                    // }, 2000)
+                    // console.log(response)
                     })
                 .catch(error => {
                     let responses = error.response.data
@@ -260,6 +261,42 @@ export default {
                         text: responses.api_message,
                     })
                 });
+        },
+        async cobaDownload(urls,nama){
+            const response = await this.$axios.get("https://api.sellpump.xyz/sellpump/api/produk/photo"+urls, { responseType: "blob" });
+            const blob = new Blob([response.data], { type: "application/pdf" });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = nama+'.pdf';
+            link.click();
+            URL.revokeObjectURL(link.href);
+        },
+        async deleteFile(item){
+            let formData = new FormData()
+
+            formData.append('id_file', item.id_file)
+
+            await this.$axios
+                .put('/produk/v1/file/delete', formData, {
+                    headers: { Authorization: this.DataToken }
+                })
+                .then((response) => {
+                    console.log(response)
+                    this.setAlert({
+                        status: true,
+                        color: 'success',
+                        text: 'File berhasil dihapus',
+                    })
+                    this.getFile()
+                })
+                .catch((error) => {
+                    let responses = error.response.data
+                    this.setAlert({
+                        status: true,
+                        color: 'error',
+                        text: responses.api_message,
+                    })
+                })
         }
     },
     async created(){

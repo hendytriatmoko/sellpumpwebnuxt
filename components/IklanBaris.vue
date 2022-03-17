@@ -6,6 +6,26 @@
           <v-img :src="getImageProduk(hits.gambar_produk)">
           </v-img>
           <v-divider class="mt-2"></v-divider>
+          <div v-if="hits.id_file != ''">
+            <h3>Download Brosur:</h3>
+            <v-tooltip right>
+              <template v-slot:activator="{ on, attrs }">
+                <table v-bind="attrs" v-on="on" @click="downloadFile()">
+                  <tr style="cursor:pointer">
+                    <td>
+                      <v-icon size="50" color="red">
+                        mdi-file-pdf-box
+                      </v-icon>
+                    </td>
+                    <td>
+                      <div>{{brosur.nama_file}}.pdf</div>
+                    </td>
+                  </tr>
+                </table>
+              </template>
+              <span>Download</span>
+            </v-tooltip>
+          </div>
         </v-col>
 
         <v-col cols="12" sm="6">
@@ -666,6 +686,7 @@ export default {
     dataInv:[],
     distinctInv:[],
     nomorInvoice:'',
+    brosur:'',
   }),
   computed: {
     ...mapGetters({
@@ -681,6 +702,15 @@ export default {
       setSellertId: 'product/setSeller',
       setAuth: 'auth/set',
     }),
+    async downloadFile(){
+      const response = await this.$axios.get("https://api.sellpump.xyz/sellpump/api/produk/photo"+this.brosur.file, { responseType: "blob" });
+      const blob = new Blob([response.data], { type: "application/pdf" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = this.brosur.nama_file+'.pdf';
+      link.click();
+      URL.revokeObjectURL(link.href);
+    },
     async getDtlIklan() {
       await this.$axios
         .get('/produk/v1/produk/getproduk',{
@@ -691,11 +721,33 @@ export default {
         .then((response) => {
           this.hits = response.data.data[0]
           this.descLength = this.hits.deskripsi_produk.length
+          if (this.hits.id_file != '') {
+            this.getFile(this.hits.id_file)
+          }
           console.log('hits', this.hits)
         })
         .catch((error) => {
           let responses = error.response.data
           console.log(responses.api_message)
+        })
+    },
+    async getFile(idfile){
+      var params = new URLSearchParams();
+      
+      params.append("id_file", idfile);
+
+      var request = {
+        params: params,
+      };
+      await this.$axios
+        .get('/produk/v1/file/getfile', request)
+        .then((response) => {
+            this.brosur = response.data.data[0]
+            console.log('brosur', this.brosur)
+        })
+        .catch((error) => {
+            let responses = error.response.data
+            console.log(responses.api_message)
         })
     },
     goEdit() {

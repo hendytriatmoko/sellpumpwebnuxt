@@ -182,31 +182,43 @@
                   </v-list>
                 </v-col>
                 <v-row class="mx-1 mt-2">
-                    <v-col cols="6" style="margin-top: -3%">
-                    <div class="pb-2"><b> Informasi Kategori </b></div>
-                    <v-autocomplete
-                        v-model="produk[0].id_kategori_produk"
-                        :items="infoKategori"
-                        outlined
-                        item-text="desc"
-                        item-value="id"
-                        dense
-                        readonly
-                        @click="editKategori = true"
-                        label="Kategori"
-                    ></v-autocomplete>
+                    <v-col cols="4" style="margin-top: -3%">
+                      <div class="pb-2"><b> Informasi Kategori </b></div>
+                      <v-autocomplete
+                          v-model="produk[0].id_kategori_produk"
+                          :items="infoKategori"
+                          outlined
+                          item-text="desc"
+                          item-value="id"
+                          dense
+                          readonly
+                          @click="editKategori = true"
+                          label="Kategori"
+                      ></v-autocomplete>
                     </v-col>
-                    <v-col cols="6" style="margin-top: -3%">
-                    <div class="pb-2"><b> Informasi Merk </b></div>
-                    <v-autocomplete
-                        v-model="produk[0].id_merk_produk"
-                        :items="listMerk"
-                        outlined
-                        item-text="nama_merk"
-                        item-value="id_merk"
-                        dense
-                        label="Merk"
-                    ></v-autocomplete>
+                    <v-col cols="4" style="margin-top: -3%">
+                      <div class="pb-2"><b> Informasi Merk </b></div>
+                      <v-autocomplete
+                          v-model="produk[0].id_merk_produk"
+                          :items="listMerk"
+                          outlined
+                          item-text="nama_merk"
+                          item-value="id_merk"
+                          dense
+                          label="Merk"
+                      ></v-autocomplete>
+                    </v-col>
+                    <v-col cols="4" style="margin-top: -3%">
+                      <div class="pb-2"><b> Informasi Brosur </b></div>
+                      <v-autocomplete
+                          v-model="produk[0].id_file"
+                          :items="files"
+                          outlined
+                          item-text="nama_file"
+                          item-value="id_file"
+                          dense
+                          label="Brosur"
+                      ></v-autocomplete>
                     </v-col>
                 </v-row>
                 <v-row class="mx-1">
@@ -357,6 +369,7 @@ export default {
         link_bukalapak:"",
         harga_diskon:0,
         diskon:0,
+        id_file:'',
         tipe_produk: "",
         updated_at: "",
       }
@@ -365,6 +378,7 @@ export default {
     infoKategori:[],
     listSubkategori : [],
     editKategori: false,
+    files:[],
   }),
   computed: {
     ...mapGetters({
@@ -391,6 +405,23 @@ export default {
         .catch((error) => {
           let responses = error.response.data
           console.log(responses.api_message)
+        })
+    },
+    async getFile(){
+      var params = new URLSearchParams();
+
+      var request = {
+        params: params,
+      };
+      await this.$axios
+        .get('/produk/v1/file/getfile', request)
+        .then((response) => {
+            this.files = response.data.data
+            console.log('file', this.files)
+        })
+        .catch((error) => {
+            let responses = error.response.data
+            console.log(responses.api_message)
         })
     },
     async editDataKategori(){
@@ -462,11 +493,13 @@ export default {
       formData.append('tipe_produk', this.produk[0].tipe_produk)
       formData.append('berat_produk', parseInt(this.produk[0].berat_produk))
       formData.append('id_merk_produk', parseInt(this.produk[0].id_merk_produk))
+      formData.append('id_file', this.produk[0].id_file)
       formData.append('deskripsi_produk', this.produk[0].deskripsi_produk)
       formData.append('stok_produk', parseInt(this.produk[0].stok_produk))
       formData.append('id_kategori_produk', parseInt(this.produk[0].id_kategori_produk))
       formData.append('link_tokopedia', this.produk[0].link_tokopedia)
       formData.append('link_bukalapak', this.produk[0].link_bukalapak)
+      console.log('id_file', this.produk[0].id_file)
       if (this.useDiskon == true) {
         formData.append('harga_diskon', this.produk[0].harga_diskon)
         formData.append('diskon', this.produk[0].diskon)
@@ -586,6 +619,7 @@ export default {
     console.log('data produk pra', this.produk[0])
     await this.getKategori()
     await this.getMerk()
+    await this.getFile()
     console.log('rote', this.$route.query.id)
     this.DataToken = this.$cookies.get("token");
     if (this.$route.query.id != undefined) {
