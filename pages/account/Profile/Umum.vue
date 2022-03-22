@@ -107,7 +107,8 @@
             class="d-flex align-center justify-space-between"
             v-if="!ubahPerusahaan"
           >
-            <div>{{ profil.nama }}</div>
+            <div v-if="profil.nama != ''">{{ profil.nama }}</div>
+            <div v-else style="color:grey">Belum Diatur</div>
 
             <v-btn
               text
@@ -140,7 +141,8 @@
           <v-container>
           <div class="teal--text">Alamat Perusahaan</div>
           <div class="d-flex align-center justify-space-between" v-if="!ubahAlamat">
-            <div>{{ profil.alamat }}</div>
+            <div v-if="profil.alamat != ''">{{ profil.alamat }}</div>
+            <div v-else style="color:grey">Belum Diatur</div>
 
             <v-btn
               text
@@ -168,7 +170,36 @@
       </v-card>
       <br />
       <v-card rounded="lg" elevation="6" raised class="pt-3">
-        <table style="width:100%">
+        <v-row>
+          <v-col cols="12" sm="4">
+            <center>
+              <div class="teal--text">NPWP</div><br>
+              <img style="width:200px;margin-top:-20px" :src="getImageUser(profil.npwp)"><br>
+              <v-btn id="buttonid" color="#20929D" @click="updateNpwp" class="mt-2 white--text" small>
+                Ubah
+              </v-btn>
+            </center>
+          </v-col>
+          <v-col cols="12" sm="4">
+            <center>
+              <div class="teal--text">SIUP</div><br>
+              <img style="width:200px;margin-top:-20px" :src="getImageUser(profil.siup)"><br>
+              <v-btn id="buttonid" color="#20929D" @click="updateNpwp" class="mt-2 white--text" small>
+                Ubah
+              </v-btn>
+            </center>
+          </v-col>
+          <v-col cols="12" sm="4">
+            <center>
+              <div class="teal--text">TDP</div><br>
+              <img style="width:200px;margin-top:-20px" :src="getImageUser(profil.tdp)"><br>
+              <v-btn id="buttonid" color="#20929D" @click="updateNpwp" class="mt-2 white--text" small>
+                Ubah
+              </v-btn>
+            </center>
+          </v-col>
+        </v-row>
+        <!-- <table style="width:100%">
           <tr>
             <td class="text-center"><b>NPWP</b></td>
             <td class="text-center"><b>SIUP</b></td>
@@ -196,7 +227,7 @@
               </v-btn>
             </td>
           </tr>
-        </table>
+        </table> -->
         <br>
       </v-card>
       <br>
@@ -223,7 +254,7 @@
             :rules="alamatRules"
           ></v-text-field>
         </div>
-        <div class="d-flex ml-6">
+        <!-- <div class="d-flex ml-6">
           <div
             v-for="item in list"
             :key="item.id"
@@ -277,7 +308,7 @@
           >
             Simpan
           </v-btn>
-        </v-card-actions>
+        </v-card-actions> -->
       </v-card>
     </v-form>
     <v-form ref="form" v-model="validNpwp">

@@ -40,6 +40,7 @@
             <div class="d-flex" v-if="item.bool_diskon == 'N'">
               <!--  iklan baris -->
               <v-list-item-title
+                v-if="$vuetify.breakpoint.smAndUp"
               >
                 Harga Produk
               </v-list-item-title>
@@ -57,6 +58,7 @@
               <div class="d-flex">
                 <!--  iklan baris -->
                 <v-list-item-title
+                  v-if="$vuetify.breakpoint.smAndUp"
                 >
                   Harga Produk
                 </v-list-item-title>

@@ -100,7 +100,52 @@
             <div>
               <h2>Shipping</h2>
               <br />
-              <v-row justify="space-between">
+              <table style="width:100%">
+                <tr style="align:center">
+                  <td>
+                    <a
+                      target="_blank"
+                    >
+                      <v-img src="/img/tiki.png" style="margin-top:-10px" width="70" ></v-img>
+                    </a>
+                  </td>
+                  <td>
+                    <a target="_blank">
+                      <v-img src="/img/posindo.png" width="50" ></v-img>
+                    </a>
+                  </td>
+                  <td>
+                    <a target="_blank">
+                      <v-img src="/img/jne.png" width="50" ></v-img>
+                    </a>
+                  </td>
+                </tr>
+                <tr style="align:center">
+                  <td class="pl-2">
+                    <a target="_blank">
+                      <v-img src="/img/jnt.PNG" width="50" ></v-img>
+                    </a>
+                  </td>
+                  <td class="pt-2">
+                    <a target="_blank">
+                      <v-img src="/img/wahana.PNG" width="50" ></v-img>
+                    </a>
+                  </td>
+                  <td>
+                    <a target="_blank">
+                      <v-img src="/img/sicepat.PNG" width="50" ></v-img>
+                    </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="pl-2">
+                    <a target="_blank">
+                      <v-img src="/img/anteraja.PNG" width="50" ></v-img>
+                    </a>
+                  </td>
+                </tr>
+              </table>
+              <!-- <v-row justify="space-between">
                 <a
                   target="_blank"
                 >
@@ -126,7 +171,7 @@
                     <v-img src="/img/anteraja.PNG" width="50" ></v-img>
                   </a>
                 </v-row>
-              </v-row>
+              </v-row> -->
             </div>
             <br>
             <div>
@@ -135,11 +180,11 @@
               <v-row justify="space-around">
                 <a
                 >
-                  <img src="/img/bank/bca.png" style="margin-top:-10px" width="70" >
+                  <img src="/img/bca.png" style="margin-top:-10px" width="70" >
                 </a>
                 <a
                 >
-                  <img src="/img/bank/mandiri.png" style="margin-top:-10px" width="70" >
+                  <img src="/img/mandiri.png" style="margin-top:-10px" width="70" >
                 </a>
               </v-row>
             </div>

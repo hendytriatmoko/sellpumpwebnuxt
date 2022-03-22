@@ -2,11 +2,11 @@
   <div>
     <app-bar />
 
-    <v-app-bar app color="#22939E" dark v-if="$vuetify.breakpoint.xs">
+    <!-- <v-app-bar app color="#22939E" dark v-if="$vuetify.breakpoint.xs">
       <v-btn icon @click.stop="$router.go(-1)">
         <v-icon>mdi-arrow-left-circle</v-icon>
       </v-btn>
-    </v-app-bar>
+    </v-app-bar> -->
 
     <div style="max-width: 1240px; margin: 0 auto !important">
       <v-row>

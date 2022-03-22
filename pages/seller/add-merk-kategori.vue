@@ -2,11 +2,11 @@
   <div>
     <app-bar />
 
-    <v-app-bar app color="#20929D" dark v-if="$vuetify.breakpoint.xs">
+    <!-- <v-app-bar app color="#20929D" dark v-if="$vuetify.breakpoint.xs">
       <v-btn icon @click.stop="$router.go(-1)">
         <v-icon>mdi-arrow-left-circle</v-icon>
       </v-btn>
-    </v-app-bar>
+    </v-app-bar> -->
     <!-- <v-app-bar app color="#20929D" dark>
       <v-btn icon @click.stop="$router.go(-1)">
         <v-icon>mdi-arrow-left-circle</v-icon>
@@ -24,8 +24,14 @@
                         rounded="lg"
                         style="margin: 0 auto !important"
                   >
-                    <v-toolbar dense flat>
+                    <v-card-title
+                      v-if="$vuetify.breakpoint.smAndDown"
+                    >
+                        <b>Pengaturan Kategori </b>
+                    </v-card-title>
+                    <v-toolbar flat dense>
                         <v-card-title
+                          v-if="$vuetify.breakpoint.smAndUp"
                         >
                             <b>Pengaturan Kategori </b>
                         </v-card-title>
@@ -79,9 +85,13 @@
                   >
                     <v-toolbar dense flat>
                         <v-card-title
+                          v-if="$vuetify.breakpoint.smAndUp"
                         >
                             <b>Pengaturan Merk </b>
                         </v-card-title>
+                        <div v-if="$vuetify.breakpoint.smAndDown">
+                          <b>Pengaturan Merk </b>
+                        </div>
                         <v-spacer></v-spacer>
                         <v-card-actions
                         ><v-btn color="primary" @click="addMerk=true" dark>

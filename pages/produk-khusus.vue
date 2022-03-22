@@ -580,7 +580,7 @@ export default {
         },
         async buatPesanan(){
             if (this.ppn == true) {
-                if (this.profil == undefined) {
+                if (this.profil.npwp == '' && this.profil.siup == '' && this.profil.tdp == '') {
                     this.akunProfile = true
                 } else {
                     this.cekInv()

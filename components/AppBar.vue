@@ -6,21 +6,21 @@
       app
       clipped-left
       color="white"
-      v-if="$vuetify.breakpoint.smAndUp || isHome"
 
     >
       <nuxt-link to="/" class="d-flex ml-5 mr-5">
-        <v-img src="/img/logogsp.PNG" width="120"></v-img>
-        <!-- <div class="ml-3">
-          <div style="width:80px">
-            <h3>G R I Y A</h3>
-          </div>
-          <div style="width:80px">
-            <h5>Saller Pump</h5>
-          </div>
-          <h3 >Griya</h3>
-          <h5>Saller Pump</h5>
-        </div> -->
+        <v-img :style="$vuetify.breakpoint.xs ? 'margin-left:-20px' : ''" src="/img/logogsp.png" width="120"></v-img>
+        <v-btn
+          color="#0288D1"
+          dark
+          style="margin-left:40%;margin-top:7%"
+          v-if="guest && $vuetify.breakpoint.smAndDown"
+          :x-small="$vuetify.breakpoint.xs ? true : false"
+          to="/login"
+        >
+          Masuk/Daftar
+        </v-btn>
+        
       </nuxt-link>
 
       <v-menu open-on-hover offset-y v-if="$vuetify.breakpoint.smAndUp">
@@ -72,9 +72,9 @@
       <v-menu offset-y :slot="$vuetify.breakpoint.xs ? 'extension' : 'default'">
         <template v-slot:activator="{ on, attrs }">
           <label class="d-flex"
-            :style="$vuetify.breakpoint.xs ? 'width:90%' : 'width:35%'"
+            :style="$vuetify.breakpoint.xs ? 'width:70%' : 'width:35%'"
           >
-          <v-icon size="30">mdi-magnify</v-icon>
+          <v-icon v-if="$vuetify.breakpoint.smAndUp" size="30">mdi-magnify</v-icon>
           <v-text-field
             v-model="keyword"
             dense
@@ -94,10 +94,58 @@
         </v-card>
       </v-menu>
 
+      <v-menu 
+        open-on-hover offset-y 
+        v-if="$vuetify.breakpoint.smAndDown" 
+        :slot="$vuetify.breakpoint.xs ? 'extension' : 'default'"
+      >
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn text v-bind="attrs" v-on="on" class="mx-2" color="#000000">
+            kategori
+            <v-icon right>mdi-chevron-down</v-icon>
+          </v-btn>
+        </template>
+
+        <v-list>
+          <v-list-item
+            v-for="item in categories"
+            :key="item.id"
+            :href="item.route"
+          >
+            <v-list-item-title>{{ item.title }}</v-list-item-title>
+
+            <v-list-item-action>
+              <v-icon>mdi-chevron-right</v-icon>
+            </v-list-item-action>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+      <div v-if="user.status != 'pembeli'">
+        <v-menu open-on-hover offset-y v-if="$vuetify.breakpoint.smAndDown">
+          <template v-slot:activator="{ on, attrs }" v-if="!guest">
+            <v-btn  text v-bind="attrs" v-on="on" color="#000000">
+              Jual
+              <v-icon right>mdi-plus</v-icon>
+            </v-btn>
+          </template>
+
+          <v-list >
+            <v-list-item v-for="item in jual" :key="item.id" :to="item.route">
+              <v-list-item-title>{{ item.title }}</v-list-item-title>
+
+              <v-list-item-action>
+                <v-icon>mdi-chevron-right</v-icon>
+              </v-list-item-action>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </div>
+      
+
       <v-btn
         color="#0288D1"
         dark
-        v-if="guest"
+        v-if="guest && $vuetify.breakpoint.smAndUp"
         class="mx-2"
         :x-small="$vuetify.breakpoint.xs ? true : false"
         to="/login"
@@ -107,7 +155,7 @@
         <v-icon>mdi-plus</v-icon>
       </v-btn>
 
-      <account v-else />
+      <account style="margin-right:10px" v-if="!guest" />
     </v-app-bar>
   </div>
 </template>

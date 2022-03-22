@@ -2,13 +2,30 @@
   <div>
     <app-bar />
     
+    <!-- <v-card flat class="pa-4" rounded="xl">
+      <v-carousel
+        cycle
+        show-arrows
+        hide-delimiter-background
+        :show-arrows-on-hover="$vuetify.breakpoint.xs ? true : true"
+        height="400"
+        align="center"
+      >
+        <v-carousel-item
+          v-for="(item, index) in banners"
+          :key="index"
+          :src="$vuetify.breakpoint.xs ? item.fotomobile : item.fotoweb"
+          max-height="400"
+        ></v-carousel-item>
+      </v-carousel>
+    </v-card> -->
     <v-card flat class="pa-4" rounded="xl">
       <v-carousel
         cycle
         show-arrows
         hide-delimiter-background
-        :show-arrows-on-hover="$vuetify.breakpoint.xs ? false : true"
-        height="400"
+        :show-arrows-on-hover="$vuetify.breakpoint.xs ? true : true"
+        height="auto"
         align="center"
       >
         <v-carousel-item
@@ -21,7 +38,7 @@
     </v-card>
 
     <br />
-    <div id="create" style="margin-top:-30px;margin-left:20px">
+    <div id="create">
       <v-speed-dial
       v-model="fab"
       :top="top"
@@ -35,6 +52,7 @@
       <template v-slot:activator>
         <v-btn
           v-model="fab"
+          :style="$vuetify.breakpoint.xs ? 'margin-top:60px' : 'margin-top:-30px'"
           color="blue darken-2"
           dark
           fab
@@ -54,7 +72,7 @@
         color="indigo"
       >
         <!-- <a href="whatsapp://send?text=Hello saya tertarik memesan barang di Griya Saller Pump&phone=+6285893157871" _blank><img style="width:30px" src="/img/wa.png"></a> -->
-        <a href="https://wa.me/6285893157871"><img style="width:30px" src="/img/wa.png"></a>
+        <a href="https://wa.me/6281311010786"><img style="width:30px" src="/img/wa.png"></a>
       </v-btn>
       <v-btn
         fab

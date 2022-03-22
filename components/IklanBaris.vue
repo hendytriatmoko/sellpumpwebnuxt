@@ -255,7 +255,7 @@
         color="indigo"
       >
         <!-- <a href="whatsapp://send?text=Hello saya ingin pesan barang dari Griya Saller Pump&phone=+6283137130082" _blank><img style="width:30px" src="/img/wa.png"></a> -->
-        <a href="https://wa.me/6285893157871"><img style="width:30px" src="/img/wa.png"></a>
+        <a href="https://wa.me/6281311010786"><img style="width:30px" src="/img/wa.png"></a>
       </v-btn>
       <v-btn
         fab
@@ -998,7 +998,7 @@ export default {
     },
     async buatPesanan(){
       if (this.ppn == true) {
-        if (this.profil == undefined) {
+        if (this.profil.npwp == '' && this.profil.siup == '' && this.profil.tdp == '') {
           this.akunProfile = true
         } else {
           this.cekInv()

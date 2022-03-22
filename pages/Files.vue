@@ -2,11 +2,11 @@
   <div>
       <app-bar />
 
-        <v-app-bar app color="#20929D" dark v-if="$vuetify.breakpoint.xs">
+        <!-- <v-app-bar app color="#20929D" dark v-if="$vuetify.breakpoint.xs">
         <v-btn icon @click.stop="$router.go(-1)">
             <v-icon>mdi-arrow-left-circle</v-icon>
         </v-btn>
-        </v-app-bar>
+        </v-app-bar> -->
         <!-- <v-app-bar app color="#20929D" dark>
         <v-btn icon @click.stop="$router.go(-1)">
             <v-icon>mdi-arrow-left-circle</v-icon>
@@ -17,7 +17,49 @@
         <v-divider></v-divider>
         <br>
         <v-card class="mx-6">
-            <v-row v-if="user.status != 'penjual'">
+            <v-toolbar v-if="$vuetify.breakpoint.smAndUp" flat class="mx-2 pt-3">
+                <v-text-field
+                    class="mt-7"
+                    solo
+                    :style="user.status == 'pembeli' ? 'width:100%' : 'width:70%'"
+                    label="Cari File"
+                    v-model="cariFile"
+                    clearable
+                    prepend-inner-icon="mdi-magnify"
+                ></v-text-field>
+                <v-spacer></v-spacer>
+                <v-btn
+                    v-if="user.status != 'pembeli'"
+                    class="white--text"
+                    color="#20929d"
+                    large
+                    @click="dialogFile = true"
+                >
+                    <v-icon>mdi-plus </v-icon> Tambah File
+                </v-btn>
+            </v-toolbar>
+            <v-toolbar v-if="$vuetify.breakpoint.smAndDown" flat class="mx-2 pt-3">
+                <v-text-field
+                    class="mt-7"
+                    solo
+                    :style="user.status == 'pembeli' ? 'width:100%' : 'width:80%'"
+                    label="Cari File"
+                    v-model="cariFile"
+                    clearable
+                    prepend-inner-icon="mdi-magnify"
+                ></v-text-field>
+                <v-spacer></v-spacer>
+                <v-btn
+                    v-if="user.status != 'pembeli'"
+                    class="white--text"
+                    color="#20929d"
+                    large
+                    @click="dialogFile = true"
+                >
+                    <v-icon>mdi-plus </v-icon>
+                </v-btn>
+            </v-toolbar>
+            <!-- <v-row v-if="user.status != 'penjual'">
                 <v-col cols="12" sm="12">
                     <v-text-field
                         class="mx-6"
@@ -50,7 +92,8 @@
                         <v-icon>mdi-plus </v-icon> Tambah File
                     </v-btn>
                 </v-col>
-            </v-row>
+            </v-row> -->
+            <br>
             <v-data-table
                 :headers="headers"
                 :search="cariFile"
